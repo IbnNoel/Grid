@@ -105,16 +105,16 @@ class Refunds {
     if (!!evt.data.id && !!evt.data.message) {
       switch (evt.data.message) {
         case 'GET_TOKEN':
-          Refunds.dispatchTo({message: 'TOKEN_UPDATED', token: Refunds.getToken()}, evt.data.id);
+          this.Refunds.dispatchTo({message: 'TOKEN_UPDATED', token: this.Refunds.getToken()}, evt.data.id);
           break;
         case 'GET_PROFILE':
-          Refunds.dispatchTo({message: 'PROFILE_UPDATED', token: Refunds.getProfile()}, evt.data.id);
+          this.Refunds.dispatchTo({message: 'PROFILE_UPDATED', token: this.Refunds.getProfile()}, evt.data.id);
           break;
         case 'GET_TRANSLATIONS':
-          Refunds.dispatchTo({message: 'TRANSLATIONS_UPDATED', token: Refunds.getTranslations()}, evt.data.id);
+          this.Refunds.dispatchTo({message: 'TRANSLATIONS_UPDATED', token: this.Refunds.getTranslations()}, evt.data.id);
           break;
         case 'WINDOW_RESIZED':
-          Refunds.resizeWindow(evt.data.id, evt.data.height);
+          this.Refunds.resizeWindow(evt.data.id, evt.data.height);
           break;
       }
     }
