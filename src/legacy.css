@@ -1,0 +1,62 @@
+body {
+  font-family: 'Open Sans',sans-serif;
+  font-size: 13px
+}
+.content, .reportPanel {
+  background-image: none;
+  border-top: 5px solid #ffdd00;
+}
+.content {
+  background-color: #FFFFFF;
+}
+.content {
+  border: 1px solid #ccc;
+  border-bottom: 3px solid #ccc;
+  padding: 20px 20px 20px;
+  margin-bottom: 30px;
+}
+.nav-tabs li.active a {
+  border: 1px solid #c1c1c1;
+  border-bottom: 1px solid #ffdd00;
+  margin-bottom: -2px !important;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .btn.btn-primary{
+  background-color:#ffdd00;
+  color:#333333;
+}
+.btn.btn-primary {
+  border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
+}
+.form-group .control-label {
+  font-weight: 400;
+}
+.nav-tabs li:not(.active) a {
+  background-color: #f8f8f8;
+  color: #333333;
+}
+.nav-tabs li:not(.active) a, .nav-pills>li:not(active)>a {
+  background-color: #f8f8f8;
+}
+.nav>li>a {
+  color: #000000;
+}
+.nav-tabs>li>a {
+  font-weight: 600;
+}
+.nav>li>a {
+  color: #222;
+  padding: 8px 20px;
+  font-size: 14px;
+}
+
+@media (max-width: 480px) {
+  .nav-tabs:not(.gpfi-response-nav) li.active,
+  .nav-tabs:not(.gpfi-response-nav) > li.active > a:focus,
+  .nav-tabs:not(.gpfi-response-nav) > li.active > a:hover,
+  .nav-tabs:not(.gpfi-response-nav) > li.active > a {
+    background-color: #ffdd00;
+    color:#333333;
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "/refund-service": {
+    "target": "http://localhost:8001",
+    "source": false
+  }
+}

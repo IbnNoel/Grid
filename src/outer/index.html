@@ -1,0 +1,25 @@
+<html>
+<head>
+  <script
+    src="https://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+
+        gp2.Refunds.init($(".gp2-refunds"), "http://localhost:4200/refunds/manage");
+
+        gp2.Refunds.setToken("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJHUCAyIiwiaWF0IjoxNTY4ODA4NjAzLCJleHAiOjE2MDA4NjMwMDMsImF1ZCI6Ind3dy53ZXN0ZXJudW5pb24uY29tIiwic3ViIjoibXlVc2VySWQiLCJ1c2VyTmFtZSI6IlphaGlkIE11aGFtbWFkIiwiZW1haWwiOiJ0ZXN0QHdlc3Rlcm51bmlvbi5jb20iLCJhdXRob3JpdGllcyI6WyJJbml0aWF0ZVJlZnVuZCIsIkFwcHJvdmVSZWZ1bmQiLCJHZW9Vc2VyIl0sImNsaWVudElkIjoiMTAwMDAyMTIxMDIwIn0.2j6lG93wuVK2jmlTPdON2C6TYcw4MkFrwco09pk5XeI");
+
+
+        gp2.Refunds.setProfile({name: "Omer"});
+        gp2.Refunds.setTranslations({});
+    });
+  </script>
+</head>
+<body>
+<h1>Outer Frame</h1>
+<div class="gp2-refunds"></div>
+<script src="refunds.proxy.js"></script>
+</body>
+</html>
