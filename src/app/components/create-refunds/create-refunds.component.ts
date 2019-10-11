@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {RefundService, RefundView} from '../core/refund.service';
+import {RefundService, RefundView} from '../../core/refund.service';
 import {NgForm} from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { State } from '../../reducers';
+import { AddRefundAction } from '../../actions/refundAction';
 
 @Component({
   selector: 'app-create-refunds',
@@ -9,7 +12,7 @@ import {NgForm} from '@angular/forms';
 })
 export class CreateRefundsComponent implements OnInit {
 
-  constructor(private refundService: RefundService) { }
+  constructor(private refundService: RefundService, private store: Store<State>) { }
 
   ngOnInit() {
   }
@@ -19,6 +22,7 @@ export class CreateRefundsComponent implements OnInit {
       this.refundService.createRefund(formData.value)
         .subscribe(response => {
           if (response.success) {
+            this.store.dispatch(new AddRefundAction(formData.value as RefundView))
             formData.resetForm();
           }
         });

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {RefundService, RefundView} from '../core/refund.service';
+import {RefundService, RefundView} from '../../core/refund.service';
 
 @Component({
   selector: 'app-manage-refunds',
