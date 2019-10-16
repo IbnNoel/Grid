@@ -19,18 +19,14 @@ const routes: Routes = [
         component: AdministratorComponent,
         canActivate: [AuthGuardService],
         children:[{
-          path:'clientSettings',
-          component: ClientSettingsComponent
-        },
-        {
-          path:'directRejectionRequest',
-          component:DirectRejectRequestComponent
-        }, 
-        {
-          path: '',
-          pathMatch: 'full',
-          redirectTo: 'clientSettings?clientId=0'
-        }]
+        path:'clientSettings',
+        component: ClientSettingsComponent
+      },
+      {
+        path:'directRejectionRequest',
+        component:DirectRejectRequestComponent
+      }
+    ]
       },
       {
         path: 'create',

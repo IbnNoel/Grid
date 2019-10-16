@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { switchMap, map } from 'rxjs/operators';
+import { switchMap, map, take } from 'rxjs/operators';
 import { AdministratorService, ClientSettings } from 'src/app/core/administrator.service';
 import { Observable } from 'rxjs';
+import { Store, select, createSelector } from '@ngrx/store';
+import { State } from 'src/app/reducers';
+import { settings } from 'cluster';
 
 @Component({
   selector: 'app-client-settings',
@@ -15,15 +18,23 @@ export class ClientSettingsComponent implements OnInit {
   industrySegments: Array<string>;
   clientSettings$: Observable<ClientSettings>;
 
-  constructor(private route: ActivatedRoute, private adminService: AdministratorService) {
-    this.industrySegments = ["test1", "test2", "test3"];
-   }
+  constructor(private route: ActivatedRoute, private store: Store<State>, private adminService: AdministratorService) {
+      this.industrySegments = ["test1", "test2", "test3"];
+
+      
+      this.store.pipe(
+        take(1),
+        select(createSelector((state) => state.adminSettings,
+        (adminSettings) => adminSettings.clientSettings)))
+          .subscribe((response) => {
+            this.clientSettings = Object.assign({},response);
+        })
+    }
 
   ngOnInit() {
+    
     // TODO:- implement loading gif, and validation 
-      this.route.paramMap.pipe(
-        switchMap(params => this.adminService.getClientSettings({id:params.get('clientId')}))
-      ).subscribe(response => this.clientSettings = response);
+
   }
 
   onSave(){

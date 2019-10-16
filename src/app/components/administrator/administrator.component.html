@@ -1,9 +1,13 @@
-
-        <ul class="nav nav-pills">
-            <li routerLinkActive="active" ><a routerLink ="/refunds/admin/clientSettings">Client Settings</a></li>
-            <li routerLinkActive="active"><a routerLink="/refunds/admin/directRejectionRequest">Refund Request Settings</a></li>
-        </ul>
-        <div class="content">
-            <router-outlet></router-outlet>
-        </div>
+<div [hidden]="clientId == null">
+    <div class="row">
+        <div class="col-xs-12" style="text-align: center"><h4>Editing: Bugs Bunny</h4></div>
+    </div>
+    <ul class="nav nav-pills">
+        <li routerLinkActive="active" ><a routerLink ="/refunds/admin/clientSettings">Client Settings</a></li>
+        <li routerLinkActive="active"><a routerLink="/refunds/admin/directRejectionRequest">Refund Request Settings</a></li>
+    </ul>
+    <div class="content">
+        <router-outlet></router-outlet>
+    </div>
+</div>
 

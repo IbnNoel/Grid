@@ -23,6 +23,9 @@ body {
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
 }
+
+.nav-pills>li.active>a,
+.nav-pills>li.active>a:focus,
 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .btn.btn-primary{
   background-color:#ffdd00;
   color:#333333;

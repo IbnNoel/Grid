@@ -3,7 +3,7 @@ import {RefundService, RefundView} from '../../core/refund.service';
 import {NgForm} from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { State } from '../../reducers';
-import { AddRefundAction } from '../../actions/refundAction';
+
 
 @Component({
   selector: 'app-create-refunds',
@@ -22,7 +22,7 @@ export class CreateRefundsComponent implements OnInit {
       this.refundService.createRefund(formData.value)
         .subscribe(response => {
           if (response.success) {
-            this.store.dispatch(new AddRefundAction(formData.value as RefundView))
+            //this.store.dispatch(new AddRefundAction(formData.value as RefundView))
             formData.resetForm();
           }
         });

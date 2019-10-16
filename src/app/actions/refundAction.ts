@@ -1,27 +1,22 @@
 import { Action } from '@ngrx/store';
 import { RefundView } from '../core/refund.service';
-import { AdminSettings } from '../core/administrator.service';
+import { AdminSettings, ClientSettings } from '../core/administrator.service';
 
 export enum RefundActionTypes{
-    SELECT_CLIENT = "[REFUND] Select Refund",
-    OPEN_CLIENT_SETTING_TAB = "[REFUND] Open Client tab",
-    OPEN_REFUND_REQUEST = "[REFUND] Open Refund Request",
-    CREATE_REFUND = "[REFUND] Create Refund",
+    RETREIVE_ADMIN_SETTINGS ="[REFUND] Get admin settings",
+    SAVE_CLIENT ="[REFUND] Save client setting"
 }
 
-export class AddRefundAction implements Action{
-    readonly type = RefundActionTypes.CREATE_REFUND;
-    constructor(public payload: RefundView){}
+export class GetAdminSettingAction implements Action{
+    readonly type = RefundActionTypes.RETREIVE_ADMIN_SETTINGS;
+
+    constructor(public payload: AdminSettings){}
 }
 
-export class SelectClientAction implements Action{
-    readonly type = RefundActionTypes.SELECT_CLIENT;
+export class SaveClientSettingsAction implements Action{
+    readonly type = RefundActionTypes.SAVE_CLIENT;
 
-    constructor(public payload: Number){ }
+    constructor(public payload: ClientSettings){}
 }
 
-
-
-export type RefundAction = AddRefundAction;
-
-export type AdminAction = SelectClientAction | AddRefundAction;
+export type AdminAction = GetAdminSettingAction | SaveClientSettingsAction;

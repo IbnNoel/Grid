@@ -22,8 +22,8 @@ export class AdministratorService {
       error: "",
       data: {
         clientId:1,
-        industrySegment:"test1",
-        enableSecurityChallenge:true
+        industrySegment:"",
+        enableSecurityChallenge:false
       }
     } 
     
