@@ -25,10 +25,13 @@ import { OperationButtonsComponent } from './components/controls/operation-butto
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { AdministratorService } from './core/administrator.service';
+import { DataTableComponent } from './components/controls/data-table/data-table.component';
+import { GpfiModalComponent } from './components/controls/gpfi-modal/gpfi-modal.component';
+import { LoadingDirective } from './directives/loading.directive';
 
 @NgModule({
   declarations: [
-    AppComponent, RefundsComponent, CreateRefundsComponent, ManageRefundsComponent, AdministratorComponent, ClientSettingsComponent, DirectRejectRequestComponent, OperationButtonsComponent
+    AppComponent, RefundsComponent, CreateRefundsComponent, ManageRefundsComponent, AdministratorComponent, ClientSettingsComponent, DirectRejectRequestComponent, OperationButtonsComponent, DataTableComponent, GpfiModalComponent, LoadingDirective
   ],
   imports: [
     BrowserModule,

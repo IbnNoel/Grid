@@ -13822,86 +13822,86 @@ interface JQuery {
   /**
    * Initialize SemanticUI.Modal
    */
-  modal(param ? : SemanticUI.Modal.Settings): JQuery
+  //modal(param ? : SemanticUI.Modal.Settings): JQuery
 
   /**
    * Change SemanticUI.Modal settings
    */
-  modal(param: 'setting', settingName: SemanticUI.Modal.SettingNames, value ? : any): JQuery
+  //modal(param: 'setting', settingName: SemanticUI.Modal.SettingNames, value ? : any): JQuery
 
 
 
   /**
    * Shows the modal
    */
-  modal(param: 'show'): any
+  //modal(param: 'show'): any
 
   /**
    * Hides the modal
    */
-  modal(param: 'hide'): any
+  //modal(param: 'hide'): any
 
   /**
    * Toggles the modal
    */
-  modal(param: 'toggle'): any
+  //modal(param: 'toggle'): any
 
   /**
    * Refreshes centering of modal on page
    */
-  modal(param: 'refresh'): any
+  //modal(param: 'refresh'): any
 
   /**
    * Shows associated page dimmer
    */
-  modal(param: 'show dimmer'): any
+  //modal(param: 'show dimmer'): any
 
   /**
    * Hides associated page dimmer
    */
-  modal(param: 'hide dimmer'): any
+  //modal(param: 'hide dimmer'): any
 
   /**
    * Hides all modals not selected modal in a dimmer
    */
-  modal(param: 'hide others'): any
+  //modal(param: 'hide others'): any
 
   /**
    * Hides all visible modals in the same dimmer
    */
-  modal(param: 'hide all'): any
+  //modal(param: 'hide all'): any
 
   /**
    * Caches current modal size
    */
-  modal(param: 'cache sizes'): any
+  //modal(param: 'cache sizes'): any
 
   /**
    * Returns whether the modal can fit on the page
    */
-  modal(param: 'can fit'): any
+  //modal(param: 'can fit'): any
 
   /**
    * Returns whether the modal is active
    */
-  modal(param: 'is active'): any
+  //modal(param: 'is active'): any
 
   /**
    * Sets modal to active
    */
-  modal(param: 'set active'): any
+  //modal(param: 'set active'): any
 
   /**
    * Attach modal events to another element
    * @param {HTMLElement | JQuery | string} selector
    * @param {Modal.BehaviorNames} behavior?
    */
-  modal(param: 'attach events', selector: HTMLElement | JQuery | string, behavior ? : SemanticUI.Modal.BehaviorNames): any
+  //modal(param: 'attach events', selector: HTMLElement | JQuery | string, behavior ? : SemanticUI.Modal.BehaviorNames): any
 
   /**
    * Removes all changes to the page made by initialization
    */
-  modal(param: 'destroy'): any
+  //modal(param: 'destroy'): any
 
 
   //nag

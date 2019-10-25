@@ -29,7 +29,9 @@ function adminSettingsReducer(state = new AdminSettingsState(), action: AdminAct
     case RefundActionTypes.RETREIVE_ADMIN_SETTINGS:
       return action.payload;
     case RefundActionTypes.SAVE_CLIENT:
-      return {...state, clientSettings: action.payload}
+      return {...state, clientSettings: action.payload};
+    case RefundActionTypes.SAVE_REF_REQUEST_SETTINGS:
+      return {...state, refundRequestSettings: action.payload}
     default:
       return state;
   }

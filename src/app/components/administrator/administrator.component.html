@@ -1,6 +1,7 @@
+<!--<app-data-table></app-data-table>-->
 <div [hidden]="clientId == null">
     <div class="row">
-        <div class="col-xs-12" style="text-align: center"><h4>Editing: Bugs Bunny</h4></div>
+        <div class="col-xs-12" style="text-align: center"><h4>Editing: {{clientName}}</h4></div>
     </div>
     <ul class="nav nav-pills">
         <li routerLinkActive="active" ><a routerLink ="/refunds/admin/clientSettings">Client Settings</a></li>

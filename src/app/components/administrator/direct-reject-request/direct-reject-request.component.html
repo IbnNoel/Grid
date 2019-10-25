@@ -7,69 +7,84 @@
     </div>
 </div>
 
-<h5>Field Handling</h5>
-<div class="row">
-    <div class="form-group" >
-        <div class="col-md-3">
-            <label>Pledge Reference</label>
-        </div>
-        <div class="col-md-6">
-            <div class="col-md-3">
-                <label class="radio-inline"><input type="radio" name="pledgeReferencDisplayStatus"> Hidden</label>
-            </div>
-            <div class="col-md-3">
-                <label class="radio-inline"><input type="radio" name="pledgeReferencDisplayStatus"> Displayed</label>
-            </div>
-            <div class="col-md-3">
-                <label class="radio-inline"><input type="radio" name="pledgeReferenceMandatory"> Optional</label>
-            </div>
-            <div class="col-md-3">
-                <label class="radio-inline"><input type="radio" name="pledgeReferenceMandatory"> Mandatory</label>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="form-group" >
-        <div class="col-md-3">
-            <label>Requested refund amount</label>
-        </div>
-        <div class="col-md-6">
-            <div class="col-md-3">
-                <label class="radio-inline"><input type="radio"> Hidden</label>
-            </div>
-            <div class="col-md-3">
-                <label class="radio-inline"><input type="radio"> Displayed</label>
-            </div>
-            <div class="col-md-3">
-                <label class="radio-inline"><input type="radio"> Optional</label>
-            </div>
-            <div class="col-md-3">
-                <label class="radio-inline"><input type="radio"> Mandatory</label>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="form-group" >
-        <div class="col-md-3">
-            <label>Reason for refund</label>
-        </div>
-        <div class="col-md-6">
-            <div class="col-md-3">
-                <label class="radio-inline"><input type="radio"> Hidden</label>
-            </div>
-            <div class="col-md-3">
-                <label class="radio-inline"><input type="radio"> Displayed</label>
-            </div>
-            <div class="col-md-3">
-                <label class="radio-inline"><input type="radio"> Optional</label>
-            </div>
-            <div class="col-md-3">
-                <label class="radio-inline"><input type="radio"> Mandatory</label>
-            </div>
-        </div>
-    </div>
-</div>
 
-<app-operation-buttons></app-operation-buttons>
+<ng-container *ngIf="refundRequestSettings as rf">
+    <h5>Field Handling</h5>
+    <div class="row">
+        <div class="form-group" >
+            <div class="col-md-3">
+                <label>Pledge Reference</label>
+            </div>
+            <div class="col-md-6 col-xs-12">
+                <div class="col-md-6 col-xs-12 list-group-item" >
+                    <div class="col-xs-6">
+                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.pledgeReferenceVisible" [value] = "false" name="pledgeReferenceVisible"> Hidden</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.pledgeReferenceVisible" [value] = "true"  name="pledgeReferenceVisible"> Displayed</label>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xs-12 list-group-item">
+                    <div class="col-xs-6">
+                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.pledgeReferenceMandatory" [value] = "false"  name="pledgeReferenceMandatory"> Optional</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.pledgeReferenceMandatory" [value] ="true"  name="pledgeReferenceMandatory"> Mandatory</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group" >
+            <div class="col-md-3">
+                <label>Requested refund amount</label>
+            </div>
+            <div class="col-md-6 col-xs-12">
+                <div class="col-md-6 col-xs-12 list-group-item" >
+                    <div class="col-xs-6">
+                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.refundAmountVisible" [value] = "false" name="refundAmountVisible"> Hidden</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.refundAmountVisible" [value] = "true"  name="refundAmountVisible"> Displayed</label>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xs-12 list-group-item" >
+                    <div class="col-xs-6">
+                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.refundAmountMandatory" [value] = "false"  name="refundAmountMandatory"> Optional</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.refundAmountMandatory" [value] ="true"  name="refundAmountMandatory"> Mandatory</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group" >
+            <div class="col-md-3">
+                <label>Reason for refund</label>
+            </div>
+            <div class="col-md-6 col-xs-12">
+                <div class="col-md-6 col-xs-12 list-group-item" >
+                    <div class="col-xs-6">
+                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.reasonForRefundVisible" [value] = "false" name="reasonForRefundVisible"> Hidden</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.reasonForRefundVisible" [value] = "true"  name="reasonForRefundVisible"> Displayed</label>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xs-12 list-group-item" >
+                    <div class="col-xs-6">
+                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.reasonForRefundMandatory" [value] = "false"  name="reasonForRefundMandatory"> Optional</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.reasonForRefundMandatory" [value] ="true"  name="reasonForRefundMandatory"> Mandatory</label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</ng-container>
+<app-operation-buttons (onCancel)="onCancel()" (onSave)="onSave($event)"></app-operation-buttons>

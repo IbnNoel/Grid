@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store'
 import { State } from 'src/app/reducers';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GetAdminSettingAction } from 'src/app/actions/refundAction';
-
+import { RefundService } from 'src/app/core/refund.service';
 
 @Component({
   selector: 'app-administrator',
@@ -15,12 +15,11 @@ import { GetAdminSettingAction } from 'src/app/actions/refundAction';
 
 export class AdministratorComponent implements OnInit {
 
-  clientId = 1;
+  clientId = 100000001;
+  clientName = "";
   adminSettings$: Observable<AdminSettings>;
 
   constructor(private adminService : AdministratorService, private store: Store<State>, private router: Router, private route: ActivatedRoute) {
-    /*debugger;
-    this.store.dispatch(new SelectClientAction(this.clientId));*/
   }
 
   ngOnInit() {
@@ -33,9 +32,12 @@ export class AdministratorComponent implements OnInit {
       clientSettings: this.adminService.getClientSettings(this.clientId),
       refundRequestSettings: this.adminService.getRefundRequestSettings(this.clientId)
      }).subscribe(data => {
-       this.store.dispatch(new GetAdminSettingAction(data));
+       this.clientName = data.clientSettings.name;
+       this.store.dispatch(new GetAdminSettingAction(data as AdminSettings));
        this.router.navigate([ '../admin/clientSettings'], { relativeTo: this.route });
-     })
+     }, error => {
+       console.error(error);
+      })
   }
 
 }

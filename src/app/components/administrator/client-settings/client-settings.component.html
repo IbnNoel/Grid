@@ -1,25 +1,26 @@
 <div class="row">
-        <div class="col-md-3">
-            <div class="form-group">
-                <!-- readd control-label class-->
-                <label>Industry Segment</label>
-                <select class="wuselect form-control" [(ngModel)]="clientSettings.industrySegment">
-                        <option value={{indSeg}} *ngFor="let indSeg of industrySegments">
-                                {{ indSeg }}
-                        </option>
-                </select>
-            </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <!-- readd control-label class-->
+            <label>Industry Segment</label>
+            <select class="wuselect form-control" [(ngModel)]="clientSettings.industryId">
+                <option value={{indSeg.industryId}} *ngFor="let indSeg of industrySegments$ | async">
+                    {{ indSeg.name }}
+                </option>
+            </select>
         </div>
-        <!--<div class="col-md-12">
+    </div>
+    <!--<div class="col-md-12">
             <mat-checkbox class="example-margin" [(ngModel)]="clientSettings.directRejection">Enable 'direct rejection request'</mat-checkbox>
         </div>
         <div class="col-md-12">
             <mat-checkbox class="example-margin" [(ngModel)]="clientSettings.nonDirectRejection">Enable 'non-direct rejection request'</mat-checkbox>
         </div>-->
-        <div class="col-md-12">
-            <div class="form-group">
-                <mat-checkbox class="example-margin control-label" [(ngModel)]="clientSettings.enableSecurityChallenge">Enable Security Challange / Capture</mat-checkbox>
-            </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <mat-checkbox class="example-margin control-label" [(ngModel)]="clientSettings.securityChallengeEnabled">
+                Enable Security Challange / Capture</mat-checkbox>
         </div>
- </div>
-<app-operation-buttons (onCancel)="onCancel()" (onSave)="onSave()"></app-operation-buttons>
+    </div>
+</div>
+<app-operation-buttons (onCancel)="onCancel()" (onSave)="onSave($event)"></app-operation-buttons>
