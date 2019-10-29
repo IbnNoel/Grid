@@ -9,6 +9,7 @@ class Refunds {
   private static profile: object = null;
   private static translations: object = null;
   private static onResize: ResizeCallback = null;
+  private static apiUrl: string = null;
 
   private windowId: string;
 
@@ -39,6 +40,15 @@ class Refunds {
   static setToken(token: string) {
     this.token = token;
     this.dispatch({message: 'TOKEN_UPDATED', token});
+  }
+
+  static setApiUri(uri: string) {
+    this.apiUrl = uri;
+    this.dispatch({message: 'API_URI_UPDATED', uri});
+  }
+
+  static getApiUri() {
+    return this.apiUrl;
   }
 
   static setOnResizeCallback(callback: ResizeCallback) {
@@ -108,10 +118,13 @@ class Refunds {
           this.Refunds.dispatchTo({message: 'TOKEN_UPDATED', token: this.Refunds.getToken()}, evt.data.id);
           break;
         case 'GET_PROFILE':
-          this.Refunds.dispatchTo({message: 'PROFILE_UPDATED', token: this.Refunds.getProfile()}, evt.data.id);
+          this.Refunds.dispatchTo({message: 'PROFILE_UPDATED', profile: this.Refunds.getProfile()}, evt.data.id);
           break;
         case 'GET_TRANSLATIONS':
-          this.Refunds.dispatchTo({message: 'TRANSLATIONS_UPDATED', token: this.Refunds.getTranslations()}, evt.data.id);
+          this.Refunds.dispatchTo({message: 'TRANSLATIONS_UPDATED', translations: this.Refunds.getTranslations()}, evt.data.id);
+          break;
+        case 'GET_API_URI':
+          this.Refunds.dispatchTo({message: 'API_URI_UPDATED', uri: this.Refunds.getApiUri()}, evt.data.id);
           break;
         case 'WINDOW_RESIZED':
           this.Refunds.resizeWindow(evt.data.id, evt.data.height);
