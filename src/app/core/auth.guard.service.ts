@@ -21,12 +21,11 @@ export class AuthService {
   }
 
   constructor(private httpClient: HttpClient, private gp2Service: Gp2Service) {
-    this.gp2Service.token$
-      .pipe(
-        filter(token => !!token),
-        first(),
-        flatMap(() => this.httpClient.get<ApiResponse<AuthInfo>>(this.SYNC_URI))
-      ).subscribe(info => {
+    combineLatest([
+      this.gp2Service.token$.pipe(filter(token => !!token), first()),
+      this.gp2Service.apiUri$.pipe(filter(uri => !!uri), first())
+    ]).pipe(flatMap(() => this.httpClient.get<ApiResponse<AuthInfo>>(this.SYNC_URI)))
+      .subscribe(info => {
       this.authInfoLocal = info.data;
       this.gp2Service.authInfo$.next(info.data);
     });
@@ -41,8 +40,10 @@ export class AppHttpInterceptor implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const uri = this.gp2Service.apiUri$.getValue();
     if (!!this.gp2Service.token$.getValue()) {
       req = req.clone({
+        url: !!uri ? req.url.replace(/^\/refund-service/, uri) : req.url,
         setHeaders: {
           Authorization: 'Bearer ' + this.gp2Service.token$.getValue()
         }
@@ -62,6 +63,7 @@ export class AuthGuardService implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     return combineLatest([
         this.gp2Service.token$.pipe(filter(token => !!token), first()),
+        this.gp2Service.apiUri$.pipe(filter(uri => !!uri), first()),
         this.gp2Service.authInfo$.pipe(filter(info => !!info), first())
       ]
     ).pipe(map(() => true));
