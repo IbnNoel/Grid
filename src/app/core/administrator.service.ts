@@ -51,16 +51,15 @@ export class AdministratorService {
 }
 
 export interface IndustrySegment{
-  industryId:number;
-  name:string;
+  templateId:number;
+  description:string;
 }
 
 export interface ClientSettings{
   clientId?: number;
-
   cctClientId?: string;
   convenienceUrl?: string;
-  industryId?: number,
+  industryTemplateId?: string,
   isRefundConfigured?: number;
   name?: string;
   portalDefaultLanguage?:string;
