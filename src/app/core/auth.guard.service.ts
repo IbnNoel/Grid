@@ -3,6 +3,7 @@ import {Gp2Service} from './gp2.service';
 import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {combineLatest, Observable} from 'rxjs';
 import {filter, first, flatMap, map} from 'rxjs/operators';
+import * as _ from 'lodash';
 import {HttpClient, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 
 @Injectable()
@@ -13,6 +14,10 @@ export class AuthService {
   private authInfoLocal: AuthInfo;
   get authInfo() {
     return this.authInfoLocal;
+  }
+  
+  hasPrivleges(roles: Array<string>){
+     return _.intersection(roles, this.authInfoLocal.authorities).length == roles.length; 
   }
 
   constructor(private httpClient: HttpClient, private gp2Service: Gp2Service) {
@@ -64,6 +69,18 @@ export class AuthGuardService implements CanActivate {
 
 }
 
+@Injectable()
+export class RoleAuthGuard implements CanActivate {
+   constructor(private authService: AuthService) { }
+
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot){ 
+    let roles = route.data.roles as Array<string>;
+    
+    return this.authService.hasPrivleges(roles);
+  }
+}
+
+
 export interface ApiResponse<T> {
   success: boolean;
   error: string;
@@ -75,5 +92,5 @@ export interface AuthInfo {
   userName: string;
   email: string;
   clientId: string;
-  privileges: string[];
+  authorities: string[];
 }

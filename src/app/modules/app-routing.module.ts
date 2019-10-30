@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {RefundsComponent} from '../refunds.component';
-import {AuthGuardService} from '../core/auth.guard.service';
+import {AuthGuardService, RoleAuthGuard} from '../core/auth.guard.service';
 import {ManageRefundsComponent} from '../components/manage-refunds/manage-refunds.component';
 import {CreateRefundsComponent} from '../components/create-refunds/create-refunds.component';
 import { AdministratorComponent } from '../components/administrator/administrator.component';
@@ -17,16 +17,17 @@ const routes: Routes = [
       {
         path: 'admin',
         component: AdministratorComponent,
-        canActivate: [AuthGuardService],
+        canActivate: [AuthGuardService, RoleAuthGuard],
+        data:{ roles:["ManageRefundPortal"] },
         children:[{
-        path:'clientSettings',
-        component: ClientSettingsComponent
-      },
-      {
-        path:'directRejectionRequest',
-        component:DirectRejectRequestComponent
-      }
-    ]
+            path:'clientSettings',
+            component: ClientSettingsComponent
+          },
+          {
+            path:'directRejectionRequest',
+            component:DirectRejectRequestComponent
+          }
+        ]
       },
       {
         path: 'create',

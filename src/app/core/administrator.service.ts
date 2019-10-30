@@ -10,11 +10,12 @@ import { of, throwError, Observable, OperatorFunction } from 'rxjs';
 export class AdministratorService {
 
   // TODO:- Mangage these URL strings possibly put in global api dependency
-  private readonly GET_CLIENT_URL = '/refund-service/admin/clientSettings/';
-  private readonly GET_INDUSTRY_SEGMENT_URL = '/refund-service/admin/industrySegments';
-  private readonly SET_CLIENT_URL = '/refund-service/admin/configure/clientSettings';
-  private readonly GET_REFUND_URL = '/refund-service/admin/refundRequestSettings/';
-  private readonly SET_REFUND_URL = '/refund-service/admin/configure/refundRequestSettings';
+  private readonly ROUTE_URL = '/refund-service/admin';
+  private readonly GET_CLIENT_URL = `${this.ROUTE_URL}/clientSettings/`;
+  private readonly GET_INDUSTRY_SEGMENT_URL =  `${this.ROUTE_URL}/industrySegments`;
+  private readonly SET_CLIENT_URL =  `${this.ROUTE_URL}/configure/clientSettings`;
+  private readonly GET_REFUND_URL =  `${this.ROUTE_URL}/refundRequestSettings/`;
+  private readonly SET_REFUND_URL =  `${this.ROUTE_URL}/configure/refundRequestSettings`;
 
   private apiResponseMap: OperatorFunction<ApiResponse<any>,any> =  flatMap(response => { 
     if(response.success){

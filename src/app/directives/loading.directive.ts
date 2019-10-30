@@ -1,10 +1,29 @@
-import { Directive, ElementRef } from '@angular/core';
+import { Directive, ElementRef, OnInit } from '@angular/core';
+import { LoaderService } from '../core/loader.service';
+import * as $ from 'jquery';
 
 @Directive({
-  selector: '[appLoading]'
+  selector: '[loadingDialog]'
 })
-export class LoadingDirective {
-  constructor() {
+export class LoadingDirective implements OnInit {
+  constructor(private el: ElementRef, private loadingService : LoaderService) {
+ 
+    this.loadingService.isLoading.subscribe(v => {
+      this.toogleLoader(v);
+    });
     //el.nativeElement
  }
+
+ ngOnInit() {
+  $(this.el.nativeElement).addClass("ui segment");
+  $(this.el.nativeElement).append('<div class="mask hidden"></div><div class="ui inverted active dimmer"><div class="ui big loader"></div></div>');
+ }
+
+  toogleLoader(isLoading){
+    $(this.el.nativeElement).find(".mask").toggleClass("hidden", !isLoading);
+    $(this.el.nativeElement).find(".dimmer").toggleClass("hidden", !isLoading);
+  }
+
 }
+
+

@@ -6,7 +6,7 @@ import {AppComponent} from './app.component';
 import {WINDOW_PROVIDERS} from './core/window.service';
 import {Gp2Service} from './core/gp2.service';
 import {RefundsComponent} from './refunds.component';
-import {AppHttpInterceptor, AuthGuardService, AuthService} from './core/auth.guard.service';
+import {AppHttpInterceptor, AuthGuardService, AuthService, RoleAuthGuard} from './core/auth.guard.service';
 import {CreateRefundsComponent} from './components/create-refunds/create-refunds.component';
 import {ManageRefundsComponent} from './components/manage-refunds/manage-refunds.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
@@ -28,6 +28,7 @@ import { AdministratorService } from './core/administrator.service';
 import { DataTableComponent } from './components/controls/data-table/data-table.component';
 import { GpfiModalComponent } from './components/controls/gpfi-modal/gpfi-modal.component';
 import { LoadingDirective } from './directives/loading.directive';
+import { LoaderInterceptor, LoaderService } from './core/loader.service';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { LoadingDirective } from './directives/loading.directive';
     WidgetsModule,
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
-  providers: [WINDOW_PROVIDERS, Gp2Service, AuthGuardService, AuthService, RefundService, AdministratorService,
+  providers: [WINDOW_PROVIDERS, Gp2Service, AuthGuardService, AuthService, RefundService, AdministratorService, RoleAuthGuard, LoaderService, LoaderInterceptor,
+    { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
     {provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })

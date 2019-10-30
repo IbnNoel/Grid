@@ -2,7 +2,7 @@
     <div class="col-md-3">
         <div class="form-group">
             <!-- readd control-label class-->
-            <label>Industry Segment</label>
+            <label class="control-label">Industry Segment</label>
             <select class="wuselect form-control" [(ngModel)]="clientSettings.industryId">
                 <option value={{indSeg.industryId}} *ngFor="let indSeg of industrySegments$ | async">
                     {{ indSeg.name }}
