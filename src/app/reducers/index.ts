@@ -24,7 +24,7 @@ export class AdminSettingsState implements AdminSettings{
   refundRequestSettings: RefundRequestSettings;
 }
 
-function adminSettingsReducer(state = new AdminSettingsState(), action: AdminAction): AdminSettingsState{
+export function adminSettingsReducer(state = new AdminSettingsState(), action: AdminAction): AdminSettingsState{
   switch (action.type){
     case RefundActionTypes.RETREIVE_ADMIN_SETTINGS:
       return action.payload;
