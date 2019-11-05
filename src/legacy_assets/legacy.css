@@ -24,6 +24,9 @@ body {
   border-top-right-radius: 8px;
 }
 
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:hover, 
+.nav-pills > li.active > a:focus,
 .nav-pills>li.active>a,
 .nav-pills>li.active>a:focus,
 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .btn.btn-primary{

@@ -16,7 +16,7 @@ export class LoadingDirective implements OnInit {
 
  ngOnInit() {
   $(this.el.nativeElement).addClass("ui segment");
-  $(this.el.nativeElement).append('<div class="mask hidden"></div><div class="ui inverted active dimmer"><div class="ui big loader"></div></div>');
+  $(this.el.nativeElement).append('<div class="mask hidden"></div><div class="ui inverted active dimmer hidden"><div class="ui big loader"></div></div>');
  }
 
   toogleLoader(isLoading){

@@ -1,3 +1,7 @@
 .nav-pills{
     padding-bottom: 10px;
 }
+
+.collapsed .glyphicon-chevron-up:before {
+    content: "\e114";
+}

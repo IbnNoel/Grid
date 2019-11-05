@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { ApiResponse } from './auth.guard.service';
 import { map, switchMap, tap, flatMap } from 'rxjs/operators';
 import { of, throwError, Observable, OperatorFunction } from 'rxjs';
+import { PagedResponse } from './refund.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export class AdministratorService {
   private readonly SET_CLIENT_URL =  `${this.ROUTE_URL}/configure/clientSettings`;
   private readonly GET_REFUND_URL =  `${this.ROUTE_URL}/refundRequestSettings/`;
   private readonly SET_REFUND_URL =  `${this.ROUTE_URL}/configure/refundRequestSettings`;
+  private readonly CONFIGURE_DEFAULT_URL = `${this.ROUTE_URL}/configure/default`;
 
   private apiResponseMap: OperatorFunction<ApiResponse<any>,any> =  flatMap(response => { 
     if(response.success){
@@ -48,6 +50,19 @@ export class AdministratorService {
   setRefundRequestSettings(settings: RefundRequestSettings) {
     return this.httpClient.put<ApiResponse<RefundRequestSettings>>(this.SET_REFUND_URL, settings);
   }
+
+  setDefaultSettings(settings: ClientSettings){
+    return this.httpClient.post<ApiResponse<ClientSettings>>(this.CONFIGURE_DEFAULT_URL, settings).pipe(this.apiResponseMap);
+  }
+
+  /*getClients(name : string, pageNo, size){
+    let GET_CLIENT_URL = `${this.ROUTE_URL}/client/search`;
+    const params = new HttpParams().set('name', name)
+      .set('page', pageNo).set('size', size);
+
+    return this.httpClient.get<ApiResponse<PagedResponse<Client>>>(GET_CLIENT_URL, {params});
+  }*/
+
 }
 
 export interface IndustrySegment{
@@ -59,10 +74,12 @@ export interface ClientSettings{
   clientId?: number;
   cctClientId?: string;
   convenienceUrl?: string;
+  countrySegment?: string;
+  industrySegment?: string;
   industryTemplateId?: string,
-  isRefundConfigured?: number;
   name?: string;
   portalDefaultLanguage?:string;
+  refundConfigured?: boolean;
   refundPortalDomain?:string;
   securityChallengeEnabled?:boolean;
 }
