@@ -1,3 +1,4 @@
+import { BehaviorSubject, Observable } from 'rxjs';
 
   export class PageSettings{
     private _pageSize = 10;
@@ -5,7 +6,7 @@
     private _currentPage = 1;
     private _onPageChange : any;
 
-    constructor(onPageChangeFunc: () => {}){
+    constructor(onPageChangeFunc: () => void){
       this._onPageChange = onPageChangeFunc;
     }
 
@@ -25,12 +26,12 @@
       return Math.ceil(this._totalRecords/ this._pageSize);
     }
 
-    get totalRecords(){
+    getTotalRecords(){
       return this._totalRecords;
     }
 
-    set totalRecords(totalRecords){
-      this.totalRecords = totalRecords;
+    setTotalRecords(totalRecords){
+      this._totalRecords = totalRecords;
     }
 
     get currentPage(){
@@ -51,12 +52,15 @@
     constructor(tableApi, pageSettings){
       this._tableApi = tableApi;
       this._pagingSettings = pageSettings;
-      this.getPageHolder().addClass("gpfiPagination")
+      this.getPageHolder().addClass("gpfiPagination");
     }
 
     renderButtons(){
+      if(this._pagingSettings.pagesNumber == 0){
+          this.hidePagingButtons();
+          return;
+      }
       let pageButtonDiv = this.getPageButtonDiv();
-
       pageButtonDiv.html("").append(this.createPrvBtn());
       this.calculateStartingMaxPageNumbers();
       let numberOfPages = this.getPageNumbers();
@@ -64,19 +68,26 @@
         pageButtonDiv.append(this.createPageNoButtons(i));
       }
       pageButtonDiv.append(this.createNxtBtn()).addClass("pagination-sm");
+      this.getPageHolder().css("display", "inline");
+    }
+
+    initPaging(createTableFunc:() => void){
+        this.hidePagingButtons();
+        this._tableApi.page.len(this._pagingSettings.pageSize);
+        createTableFunc();
+        this.renderButtons();
     }
 
     hidePagingButtons(){
         this.getPageHolder().css("display", "none");
     }
 
-    private onPageButtonClick(event){
+    private onPageButtonClick = (event) => {
         var pageNo = event.data.page;
         this.hidePagingButtons();
         // add loading overLay
         this._pagingSettings.currentPage = pageNo;
         this._pagingSettings.onPageChange();
-
     }
 
     private createPrvBtn(){
@@ -115,7 +126,6 @@
           nxBtn.click({page:this.getPageNumbers()},this.onPageButtonClick);
       }
       return nxBtn;
-
     }
 
     private calculateStartingMaxPageNumbers(){
@@ -145,17 +155,14 @@
     }
 
     private getPageHolder(){
-        return  $(this._tableApi.containers()[0]).find(".dataTables_paginate");
-      }
+      return $(this._tableApi.context[0].nTableWrapper).find(".dataTables_paginate");
+    }
   
-      private getPageButtonDiv(){
-          return $(this._tableApi.containers()[0]).find('.pagination');
-      }
+    private getPageButtonDiv(){
+      return $(this._tableApi.context[0].nTableWrapper).find('.pagination');
+    }
   
-      private getTableClass() {
+    private getTableClass() {
         return this._tableApi.context[0].sInstance;
-      }
-
-       
-
+    }
   }
