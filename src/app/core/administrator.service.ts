@@ -3,7 +3,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { ApiResponse } from './auth.guard.service';
 import { map, switchMap, tap, flatMap } from 'rxjs/operators';
 import { of, throwError, Observable, OperatorFunction } from 'rxjs';
-import { PagedResponse } from './refund.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,9 +16,10 @@ export class AdministratorService {
   private readonly SET_CLIENT_URL =  `${this.ROUTE_URL}/configure/clientSettings`;
   private readonly GET_REFUND_URL =  `${this.ROUTE_URL}/refundRequestSettings/`;
   private readonly SET_REFUND_URL =  `${this.ROUTE_URL}/configure/refundRequestSettings`;
+  private readonly IS_STANDARD_RFR_ENABLED_URL =  `${this.ROUTE_URL}/configure/refundRequestSettings`;
   private readonly CONFIGURE_DEFAULT_URL = `${this.ROUTE_URL}/configure/default`;
 
-  private apiResponseMap: OperatorFunction<ApiResponse<any>,any> =  flatMap(response => { 
+  private apiResponseMap: OperatorFunction<ApiResponse<any>,any> =  flatMap(response => {
     if(response.success){
         return of(response.data);
       }else {
@@ -27,8 +27,8 @@ export class AdministratorService {
       }
     });
 
-  constructor(private httpClient: HttpClient) { 
-    // get the token id from gp2.service and store it locally 
+  constructor(private httpClient: HttpClient) {
+    // get the token id from gp2.service and store it locally
   }
 
   getClientSettings(id) {
@@ -37,6 +37,10 @@ export class AdministratorService {
 
   getIndustrySegments(){
     return this.httpClient.get<ApiResponse<Array<IndustrySegment>>>(this.GET_INDUSTRY_SEGMENT_URL).pipe(this.apiResponseMap);
+  }
+
+  getLanguageList(){
+    return of(Array.of("en","hi","jp"));
   }
 
   setClientSettings(settings: ClientSettings) {
@@ -63,6 +67,11 @@ export class AdministratorService {
     return this.httpClient.get<ApiResponse<PagedResponse<Client>>>(GET_CLIENT_URL, {params});
   }*/
 
+
+  isStandardRfREnabled(id){
+    return Observable.create(false);
+    //return this.httpClient.get<ApiResponse<boolean>>(this.IS_STANDARD_RFR_ENABLED_URL + id).pipe(this.apiResponseMap);
+  }
 }
 
 export interface IndustrySegment{
@@ -99,3 +108,4 @@ export interface RefundRequestSettings {
   refundAmountMandatory:    boolean;
   refundAmountVisible:      boolean;
 }
+
