@@ -1,5 +1,5 @@
-import {Component, OnInit, ViewContainerRef} from '@angular/core';
-import {AdministratorService} from "../../../../core/administrator.service";
+import {Component, ComponentRef, OnInit, ViewContainerRef} from '@angular/core';
+import {AdministratorService, CustomRfRSettings} from "../../../../core/administrator.service";
 import {Store} from "@ngrx/store";
 import {State} from "../../../../reducers";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -11,7 +11,7 @@ import {ComponentPortal} from '@angular/cdk/portal';
 @Component({
   selector: 'app-reason-for-refund',
   templateUrl: './reason-for-refund.component.html',
-  styleUrls: ['./reason-for-refund.component.scss'],
+  styleUrls: ['./reason-for-refund.component.scss']
 })
 export class ReasonForRefundComponent implements OnInit {
 
@@ -26,6 +26,7 @@ export class ReasonForRefundComponent implements OnInit {
     })
   }
 
+
   ngOnInit() {
   }
 
@@ -38,16 +39,24 @@ export class ReasonForRefundComponent implements OnInit {
     config.hasBackdrop = true;
 
     this.overlayRef = this.overlay.create(config);
-
     this.overlayRef.backdropClick().subscribe(() => {
       this.overlayRef.dispose();
     });
-    this.overlayRef.attach(new ComponentPortal(AddCustomRefundReasonComponent, this.viewContainerRef));
+    const portal = new ComponentPortal(AddCustomRefundReasonComponent, this.viewContainerRef);
+    const compRef: ComponentRef<AddCustomRefundReasonComponent> = this.overlayRef.attach(portal);
+    const instance = compRef.instance;
+    instance.closeOverlay.asObservable().subscribe(() => this.closeOverlay());
+    instance.addCustomRfRSettings.asObservable().subscribe((customRfRSetting: CustomRfRSettings) => this.saveRfRSettings(customRfRSetting));
   }
 
-closeOverlay(){
+  closeOverlay() {
     this.overlayRef.dispose();
-}
+  }
+
+  saveRfRSettings(customRfRSetting) {
+    console.log(JSON.stringify(customRfRSetting));
+  }
+
   switchToStandard() {
 
   }

@@ -1,5 +1,6 @@
-import {Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {Component, ComponentFactoryResolver, ComponentRef, Input, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {AddLanguageCustomRfrChildComponent} from "../add-language-custom-rfr-child/add-language-custom-rfr-child.component";
+import {CustomRfRI18N} from "../../../../../core/administrator.service";
 
 @Component({
   selector: 'app-add-language-custom-rfr',
@@ -9,6 +10,8 @@ import {AddLanguageCustomRfrChildComponent} from "../add-language-custom-rfr-chi
 })
 export class AddLanguageCustomRfrComponent implements OnInit {
 
+  @Input() list: Array<CustomRfRI18N>;
+
   constructor(private CFR: ComponentFactoryResolver) {
   }
 
@@ -17,14 +20,17 @@ export class AddLanguageCustomRfrComponent implements OnInit {
   }
 
   @ViewChild('viewContainerRef', {static: true, read: ViewContainerRef}) VCR: ViewContainerRef;
-  componentsReferences = [];
 
   createComponent(language) {
     let componentFactory = this.CFR.resolveComponentFactory(AddLanguageCustomRfrChildComponent);
     let componentRef: ComponentRef<AddLanguageCustomRfrChildComponent> = this.VCR.createComponent(componentFactory);
     let currentComponent = componentRef.instance;
-    currentComponent.selectedLanguage = language;
-    this.componentsReferences.push(componentRef);
+    currentComponent.customRfRI18N.locale = language;
+    currentComponent.languageChangeEvent.asObservable().subscribe(value => this.createComponent(value));
+    this.list.push(
+      currentComponent.customRfRI18N
+    );
+
   }
 
 }

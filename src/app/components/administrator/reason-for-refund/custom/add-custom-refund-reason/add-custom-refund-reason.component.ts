@@ -1,6 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {AddLanguageCustomRfrComponent} from "../add-language-custom-rfr/add-language-custom-rfr.component";
-import {ReasonForRefundComponent} from "../../reason-for-refund-parent/reason-for-refund.component";
+import {CustomRfRSettings} from "../../../../../core/administrator.service";
 
 
 @Component({
@@ -11,21 +11,23 @@ import {ReasonForRefundComponent} from "../../reason-for-refund-parent/reason-fo
 })
 export class AddCustomRefundReasonComponent implements OnInit {
 
-  @Output() closeOverlay = new EventEmitter();
+  @Output() closeOverlay = new EventEmitter(true);
+  @Output() addCustomRfRSettings = new EventEmitter(true);
+  customRfRSetting: CustomRfRSettings;
 
-
-  constructor(private reasonForRefund: ReasonForRefundComponent) {
+  constructor() {
   }
 
 
   ngOnInit() {
+    this.customRfRSetting = new CustomRfRSettings();
   }
 
   onCancel() {
-    this.reasonForRefund.closeOverlay();
+    this.closeOverlay.emit();
   }
 
   onSave($event: any) {
-
+    this.addCustomRfRSettings.emit(this.customRfRSetting);
   }
 }

@@ -1,17 +1,17 @@
 <div class="row form-row form-group">
   <div class="col-xs-2">
     <label class="col-sm-3 col-form-label">Language</label>
-    <select  name="language" class="form-control wuselect" [(ngModel)]="selectedLanguage" required="true">
+    <select  name="language" class="form-control wuselect" [(ngModel)]="customRfRI18N.locale" required="true">
       <option value={{l}} *ngFor="let  l of languages$ | async">{{l}}</option>
     </select>
   </div>
   <div class="col-xs-3">
     <label class="col-sm-12 col-form-label">Reason for Refund</label>
-    <input  type="text" name="reasonForRefund" class="form-control"/>
+    <input  type="text" name="reasonForRefund" [(ngModel)]="customRfRI18N.reasonForRefund" class="form-control"/>
   </div>
   <div class="col-xs-6">
     <label class="col-sm-3 col-form-label">Hint</label>
-    <textarea  name="hint" class="form-control"></textarea>
+    <textarea  name="hint" [(ngModel)]="customRfRI18N.hint" class="form-control"></textarea>
   </div>
   <div class="col-xs-1">
     <mat-menu #addLangMenu="matMenu">

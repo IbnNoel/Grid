@@ -19,16 +19,16 @@ import {} from 'bootstrap';
 
 export class AdministratorComponent implements OnInit {
 
-  clientId = null;
+  clientId = "1111";
   clientName = "";
   adminSettings$: Observable<AdminSettings>;
 
   colDefinitions: Array<ColumnDefs>  =[{key:"name"}, {key:"cctClientId"}, {key:"refundConfigured"}]
   data = new BehaviorSubject<Array<Client>>([]);
 
-  constructor(private adminService : AdministratorService, private store: Store<State>, private router: Router, 
+  constructor(private adminService : AdministratorService, private store: Store<State>, private router: Router,
     private route: ActivatedRoute, private clientService: ClientSettingsService) {
-      this.colDefinitions.push({cellElement: () => { 
+      this.colDefinitions.push({cellElement: () => {
         return new GPFIButton("CONFIGURE", (data) => { this.onClientClick(data.id,data); });
         }
       })
@@ -59,7 +59,7 @@ export class AdministratorComponent implements OnInit {
   getAllAdminSettings(clientId,clientSettings?:ClientSettings){
     let clientSettings$: Observable<ClientSettings> = (clientSettings) ? of(clientSettings):this.adminService.getRefundRequestSettings(this.clientId);
     forkJoin({
-      clientId:of(clientId), 
+      clientId:of(clientId),
       clientSettings: clientSettings$,
       refundRequestSettings: this.adminService.getRefundRequestSettings(clientId)
      }).subscribe(data => {

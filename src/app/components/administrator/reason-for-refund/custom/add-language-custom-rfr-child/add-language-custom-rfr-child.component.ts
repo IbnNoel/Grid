@@ -1,7 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Observable} from "rxjs";
-import {AdministratorService} from "../../../../../core/administrator.service";
-import {AddLanguageCustomRfrComponent} from "../add-language-custom-rfr/add-language-custom-rfr.component";
+import {AdministratorService, CustomRfRI18N} from "../../../../../core/administrator.service";
 
 @Component({
   selector: 'app-add-language-custom-rfr-child',
@@ -11,20 +10,20 @@ import {AddLanguageCustomRfrComponent} from "../add-language-custom-rfr/add-lang
 export class AddLanguageCustomRfrChildComponent implements OnInit {
 
   languages$: Observable<Array<String>>;
-  @Input() selectedLanguage: String;
-  @Output() languageChangeEvent = new EventEmitter<String>();
+  @Output() languageChangeEvent = new EventEmitter<String>(true);
 
+  customRfRI18N: CustomRfRI18N=new CustomRfRI18N();
 
-  constructor(private adminService: AdministratorService, private parent: AddLanguageCustomRfrComponent) {
+  constructor(private adminService: AdministratorService) {
     this.languages$ = adminService.getLanguageList();
-    this.selectedLanguage = "en";
+    this.customRfRI18N.locale="en";
   }
 
   ngOnInit() {
   }
 
   addLanguage(language) {
-    this.parent.createComponent(language);
+    this.languageChangeEvent.emit(language);
   }
 
 }
