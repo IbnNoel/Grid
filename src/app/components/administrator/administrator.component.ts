@@ -57,9 +57,13 @@ export class AdministratorComponent implements OnInit {
   }
 
   setUpColumnDefintions(){
-    this.colDefinitions = [{key:"name"}, {key:"cctClientId"}, {key:"refundConfigured"} ,{ cellElement: () => { 
+    this.colDefinitions = [
+      {key:"name", className: "data_grid_left_align"}, 
+      {key:"cctClientId", className: "data_grid_center_align"}, 
+      {key:"refundConfigured", className: "data_grid_center_align"} ,
+      { cellElement: () => { 
         return new GPFIButton("CONFIGURE", (data) => { this.onClientClick(data.id,data); });
-      }
+      }, className: "data_grid_center_align"
     }];
   }
 

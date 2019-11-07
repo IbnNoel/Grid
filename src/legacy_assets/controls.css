@@ -29,3 +29,30 @@ select.ieselect {
 select::-ms-expand {
     display: none
 }
+
+/* 008_1 */
+thead, thead tr{
+    background-color: #f0f0f0 !important;
+    color:#333333;
+}
+
+/* 008_2 */
+.gpfi-detail-html thead tr,
+tfoot, tfoot tr  {
+    background-color:#f0f0f0 !important;
+    color:#333333;
+}
+/* 008_3 */
+tbody td{
+    color: #333333;
+}
+table tr:not(.child){
+    background-color:#FFFFFF;
+}
+/* 008_4 */
+tbody tr:not(.child):nth-child(even){
+    background: #FFFFFF;
+}
+tbody tr:not(.child):nth-child(even) td{
+    color:#333333;
+}

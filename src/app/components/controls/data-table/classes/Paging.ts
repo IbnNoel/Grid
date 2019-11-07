@@ -43,16 +43,63 @@ import { BehaviorSubject, Observable } from 'rxjs';
     }
   }
 
+  export class PageLengthControl{
+    private _tableApi : any;
+    private _tableHolder : JQuery<any>;
+    private _pagingSettings : PageSettings;
+    
+    constructor(tableApi, pagingSettings){
+      this._tableApi = tableApi;
+      this._pagingSettings = pagingSettings;
+      this.init();
+    }
+
+    private getDataTablesHolder(){
+      return  $(this._tableApi.context[0].nTableWrapper).find(".dataTables_length");/*.removeClass("dataTables_length").addClass(classes);*/
+    }
+
+    private getLengthElement(){
+      return this.getDataTablesHolder().find("select");
+    }
+
+    private init(){
+      let LENGTHNAMES = ["showTenPerPage", "showTwentyPerPage", "showThirtyPerPage", "showFiftyPerPage"];
+      let lengthSelect = this.getLengthElement();
+      lengthSelect.addClass("wuselect pr40").removeClass("input-sm");
+      /*lengthSelect.find("option").each(function (i) {
+        // TODO: translate _LENGTHNAMES
+        $(this).html(LENGTHNAMES[i]);
+      });*/
+      this.setUpEvent();
+      this.getDataTablesHolder().removeClass("dataTables_length").addClass("tables_length text-right dtLength ");
+    }
+
+    private setUpEvent(){
+      let selectControl = this.getLengthElement();
+      selectControl.off();
+      selectControl.change(()=>{
+        this._pagingSettings.currentPage = 1;
+        this._pagingSettings.pageSize = selectControl.val() as number;
+        if(this._tableApi.data().length > 0){
+          this._pagingSettings.onPageChange();
+        }
+      });
+    }
+
+  }
+
   export class PagingHelper{
     private _tableApi : any;
     private _pagingSettings : PageSettings;
     private _maxPageNumberBtn = 5;
     private _startingPageNumberBtn = 1;
+    private _lengthControl: PageLengthControl;
 
     constructor(tableApi, pageSettings){
       this._tableApi = tableApi;
       this._pagingSettings = pageSettings;
       this.getPageHolder().addClass("gpfiPagination");
+      this._lengthControl = new PageLengthControl(tableApi, pageSettings);
     }
 
     renderButtons(){
@@ -68,7 +115,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
         pageButtonDiv.append(this.createPageNoButtons(i));
       }
       pageButtonDiv.append(this.createNxtBtn()).addClass("pagination-sm");
-      this.getPageHolder().css("display", "inline");
+      this.getPageHolder().css("display", "block");
     }
 
     initPaging(createTableFunc:() => void){

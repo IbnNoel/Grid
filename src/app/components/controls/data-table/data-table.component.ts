@@ -15,7 +15,7 @@ import { HandleColumnSettings, ColumnDefs } from './classes/Columns';
 @Component({
   selector: 'app-data-table',
   templateUrl: './data-table.component.html',
-  styleUrls: ['./data-table.component.scss']
+  styleUrls: ['./data-table.component.scss'],
 })
 export class DataTableComponent implements OnInit, AfterViewInit {
   @ViewChild("table", {static:true} ) tableHtml: ElementRef;
@@ -46,12 +46,16 @@ export class DataTableComponent implements OnInit, AfterViewInit {
     console.log(columnSettings);
     let dataTableSettings:DataTables.Settings  = {
       columns: columnSettings,
-      paging: !!(this.PageSettings),
       info:false,
       ordering:false,
       searching:false,
+      language: {
+        lengthMenu: "_MENU_"
+      },
+      paging: !!(this.PageSettings),
       dom: (this.PageSettings) ? "<'responsive-tables p20'<'container-fluid'<'row gpfiPageLengthControl' <'clearfix'> l><'row't><'row'p>>>" :
-      "<'responsive-tables p20'<'container-fluid'<'row't>>>"
+        "<'responsive-tables p20'<'container-fluid'<'row't>>>",
+      lengthMenu: [[10, 20, 30, 50], ["showTenPerPage", "showTwentyPerPage", "showThirtyPerPage", "showFiftyPerPage"]]
     }
     return dataTableSettings;
   }
