@@ -20,7 +20,7 @@ import { ColumnDefs, GPFIButton } from '../controls/data-table/classes/Columns';
 
 export class AdministratorComponent implements OnInit {
 
-  clientId = 2;
+  clientId = null;
   clientName = "";
   adminSettings$: Observable<AdminSettings>;
   searchName = "";
@@ -33,10 +33,7 @@ export class AdministratorComponent implements OnInit {
 
   constructor(private adminService : AdministratorService, private store: Store<State>, private router: Router,
     private route: ActivatedRoute, private clientService: ClientSettingsService) {
-      this.colDefinitions.push({cellElement: () => {
-        return new GPFIButton("CONFIGURE", (data) => { this.onClientClick(data.id,data); });
-        }
-      })
+      this.setUpColumnDefintions();
   }
 
   ngOnInit() {
@@ -48,7 +45,6 @@ export class AdministratorComponent implements OnInit {
       this.data.next(clients.list);
     });
   }
-
 
   onClientClick(clientId, clientSettings:ClientSettings){
     clientSettings.industryTemplateId = clientSettings.industrySegment;
