@@ -6,7 +6,7 @@ export enum RefundActionTypes {
   RETREIVE_ADMIN_SETTINGS = "[REFUND] Get admin settings",
   SAVE_REF_REQUEST_SETTINGS = "[REFUND] Save Refund Request settings",
   SAVE_CLIENT = "[REFUND] Save client setting",
-  SAVE_CUSTOM_RFR_SETTING = "[REFUND] Save custom rfr settings"
+  ADD_CUSTOM_RFR_SETTING = "[REFUND] Save custom rfr settings"
 }
 
 export class GetAdminSettingAction implements Action {
@@ -30,11 +30,11 @@ export class SaveRefundRequestSettingAction implements Action {
   }
 }
 
-export class SaveCustomRfRSettingsAction implements Action {
-  readonly type = RefundActionTypes.SAVE_CUSTOM_RFR_SETTING;
+export class AddCustomRfRSettingsAction implements Action {
+  readonly type = RefundActionTypes.ADD_CUSTOM_RFR_SETTING;
 
   constructor(public payload: CustomRfRSettings) {
   }
 }
 
-export type AdminAction = GetAdminSettingAction | SaveClientSettingsAction | SaveRefundRequestSettingAction | SaveCustomRfRSettingsAction;
+export type AdminAction = GetAdminSettingAction | SaveClientSettingsAction | SaveRefundRequestSettingAction | AddCustomRfRSettingsAction;

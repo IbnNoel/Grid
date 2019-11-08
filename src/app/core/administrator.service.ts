@@ -47,6 +47,10 @@ export class AdministratorService {
     return this.httpClient.put<ApiResponse<ClientSettings>>(this.SET_CLIENT_URL, settings);
   }
 
+  addCustomRfR(settings:CustomRfRSettings){
+    return this.httpClient.put<ApiResponse<CustomRfRSettings>>(this.SET_CLIENT_URL, settings);
+  }
+
   getRefundRequestSettings(id) {
     return this.httpClient.get<ApiResponse<RefundRequestSettings>>(this.GET_REFUND_URL + id).pipe(this.apiResponseMap);
   }
@@ -66,12 +70,6 @@ export class AdministratorService {
 
     return this.httpClient.get<ApiResponse<PagedResponse<Client>>>(GET_CLIENT_URL, {params});
   }*/
-
-
-  isStandardRfREnabled(id) {
-    return Observable.create(false);
-    //return this.httpClient.get<ApiResponse<boolean>>(this.IS_STANDARD_RFR_ENABLED_URL + id).pipe(this.apiResponseMap);
-  }
 }
 
 export interface IndustrySegment {
@@ -91,6 +89,7 @@ export interface ClientSettings {
   refundConfigured?: boolean;
   refundPortalDomain?: string;
   securityChallengeEnabled?: boolean;
+  isStandardRfREnabled?:boolean
 }
 
 export interface AdminSettings {

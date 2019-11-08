@@ -19,7 +19,7 @@ import {} from 'bootstrap';
 
 export class AdministratorComponent implements OnInit {
 
-  clientId = "1111";
+  clientId = 2;
   clientName = "";
   adminSettings$: Observable<AdminSettings>;
 

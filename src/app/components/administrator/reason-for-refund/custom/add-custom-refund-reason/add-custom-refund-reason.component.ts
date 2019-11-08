@@ -14,6 +14,7 @@ export class AddCustomRefundReasonComponent implements OnInit {
   @Output() closeOverlay = new EventEmitter(true);
   @Output() addCustomRfRSettings = new EventEmitter(true);
   customRfRSetting: CustomRfRSettings;
+  clientId:number;
 
   constructor() {
   }
@@ -21,6 +22,7 @@ export class AddCustomRefundReasonComponent implements OnInit {
 
   ngOnInit() {
     this.customRfRSetting = new CustomRfRSettings();
+    this.customRfRSetting.clientId=this.clientId;
   }
 
   onCancel() {

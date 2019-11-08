@@ -1,4 +1,4 @@
-<div class="row" *ngIf="standardRfREnabled">
+<div class="row" *ngIf="clientSettings.isStandardRfREnabled">
   <div class="col-lg-6">
     <h5>Current 'Reason for Refund' is standard</h5>
   </div>
@@ -6,7 +6,7 @@
     <button class="btn btn-default pull-right" (click)="switchToCustom()" type="button">Maintain custom refund reason</button>
   </div>
 </div>
-<div class="row" *ngIf="!standardRfREnabled">
+<div class="row" *ngIf="!clientSettings.isStandardRfREnabled">
   <div class="col-lg-6">
     <h5>Current 'Reason for Refund' is custom</h5>
   </div>

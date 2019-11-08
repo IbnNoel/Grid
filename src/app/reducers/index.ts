@@ -23,7 +23,7 @@ export function adminSettingsReducer(state = new AdminSettingsState(), action: A
       return {...state, clientSettings: action.payload};
     case RefundActionTypes.SAVE_REF_REQUEST_SETTINGS:
       return {...state, refundRequestSettings: action.payload}
-    case RefundActionTypes.SAVE_CUSTOM_RFR_SETTING:
+    case RefundActionTypes.ADD_CUSTOM_RFR_SETTING:
       return {...state, customRfrSettings: action.payload}
     default:
       return state;
