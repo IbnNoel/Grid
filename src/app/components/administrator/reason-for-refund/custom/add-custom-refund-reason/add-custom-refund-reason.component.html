@@ -1,0 +1,22 @@
+<div class="content">
+  <h5>Add Reason Code</h5>
+  <div class="row form-group">
+    <div class="col-xs-4">
+      <label class="col-sm-5 col-form-label">Reason Code</label>
+      <input type="text" name="reasonCode" class="form-control" [(ngModel)]="customRfRSetting.reasonCode" maxlength="40" required="true"/>
+    </div>
+    <div class="col-xs-4">
+      <label class="col-sm-5 col-form-label">Sort order</label>
+      <input type="text" name="sortOrder" [(ngModel)]="customRfRSetting.sortOrder" class="form-control"/>
+    </div>
+    <div class="col-xs-4">
+      <label class="col-sm-6 col-form-label">No of documents</label>
+      <input type="text" name="noOfDocs" [(ngModel)]="customRfRSetting.noOfDocs" class="form-control"/>
+    </div>
+  </div>
+  <div class="form-group">
+    <app-add-language-custom-rfr [list]="customRfRSetting.customRFRI18NRequestList"></app-add-language-custom-rfr>
+  </div>
+  <app-operation-buttons (onCancel)="onCancel()" (onSave)="onSave($event)"></app-operation-buttons>
+</div>
+

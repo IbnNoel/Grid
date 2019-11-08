@@ -29,10 +29,20 @@ import { DataTableComponent } from './components/controls/data-table/data-table.
 import { GpfiModalComponent } from './components/controls/gpfi-modal/gpfi-modal.component';
 import { LoadingDirective } from './directives/loading.directive';
 import { LoaderInterceptor, LoaderService } from './core/loader.service';
+import { ReasonForRefundComponent } from './components/administrator/reason-for-refund/reason-for-refund-parent/reason-for-refund.component';
+import { AddCustomRefundReasonComponent } from './components/administrator/reason-for-refund/custom/add-custom-refund-reason/add-custom-refund-reason.component';
+import {OverlayModule} from '@angular/cdk/overlay';
+import {PlatformModule} from '@angular/cdk/platform';
+import {PortalModule} from '@angular/cdk/portal';
+import { AddLanguageCustomRfrComponent } from './components/administrator/reason-for-refund/custom/add-language-custom-rfr/add-language-custom-rfr.component';
+import {MatMenuModule} from "@angular/material/menu";
+import {MatIconModule} from "@angular/material/icon";
+import { AddLanguageCustomRfrChildComponent } from './components/administrator/reason-for-refund/custom/add-language-custom-rfr-child/add-language-custom-rfr-child.component';
+
 
 @NgModule({
   declarations: [
-    AppComponent, RefundsComponent, CreateRefundsComponent, ManageRefundsComponent, AdministratorComponent, ClientSettingsComponent, DirectRejectRequestComponent, OperationButtonsComponent, DataTableComponent, GpfiModalComponent, LoadingDirective
+    AppComponent, RefundsComponent, CreateRefundsComponent, ManageRefundsComponent, AdministratorComponent, ClientSettingsComponent, DirectRejectRequestComponent, OperationButtonsComponent, DataTableComponent, GpfiModalComponent, LoadingDirective,  ReasonForRefundComponent, AddCustomRefundReasonComponent, AddLanguageCustomRfrComponent, AddLanguageCustomRfrChildComponent
   ],
   imports: [
     BrowserModule,
@@ -48,12 +58,19 @@ import { LoaderInterceptor, LoaderService } from './core/loader.service';
     }),
     NoopAnimationsModule,
     WidgetsModule,
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
+    StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
+    OverlayModule,
+    PlatformModule,
+    PortalModule,
+    MatMenuModule,
+    MatIconModule
   ],
   providers: [WINDOW_PROVIDERS, Gp2Service, AuthGuardService, AuthService, RefundService, AdministratorService, RoleAuthGuard, LoaderService, LoaderInterceptor,
     { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
     {provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true}],
+  entryComponents:[AddLanguageCustomRfrChildComponent],
   bootstrap: [AppComponent]
+
 })
 export class AppModule {
 }
