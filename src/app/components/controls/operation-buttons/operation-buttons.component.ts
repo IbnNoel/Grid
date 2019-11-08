@@ -25,6 +25,10 @@ export class OperationButtonsComponent implements OnInit {
     });
   }
 
+  hideButton(eventEmit: EventEmitter<any>){
+    return eventEmit.observers.length > 0;
+  }
+
   onCancel: EventEmitter<any> = new EventEmitter();
 
 }

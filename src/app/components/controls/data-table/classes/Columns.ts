@@ -21,6 +21,7 @@ export class HandleColumnSettings{
     header_Func(header: string){
       this.colSettings.className += " head_" + header.replace(" ","_");
       this.colSettings.className = this.colSettings.className.replace("/", "_");
+      this.colSettings.title = header;
     }
 
     key_Func(key: string){
@@ -54,7 +55,9 @@ export class HandleColumnSettings{
 
     translate_Func(){}
 
-    formatter_Func(){}
+    formatter_Func(func: (any) => string){
+      this.colSettings.render = func;
+    }
 
     type_Func(){}
 

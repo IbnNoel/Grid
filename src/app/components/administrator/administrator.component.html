@@ -1,17 +1,32 @@
-<div class="panel panel-default">
+
+<div class="panel panel-default" >
     <div class="panel-heading" role="button" data-toggle="collapse" href="#findClientPanel">Find Client <span class="glyphicon glyphicon-chevron-up pull-right" aria-hidden="true"></span> </div>
     <div id="findClientPanel" class="panel-body collapse in">
+         <div class="container-fluid">
         <form #search = "ngForm" class="form-horizontal" (ngSubmit)="onSearch()" novalidate autocomplete="off">
             <div class="form-group">
-                <div class="col-md-6">
-                <input type="text" class="form-control" name="clientName" id="clientName" placeholder="Search" [(ngModel)]="searchName">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-5 form-group">
+                        <label class="control-label">Client Name</label>
+                            <input type="text" class="form-control col-md-4" name="clientName" id="clientName" placeholder="Search" [(ngModel)]="searchName">
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                <button type="submit" class="btn btn-primary pull-right">SEARCH</button>
+                <div class="row">
+                    <div class="col-md-12">
+                    <button type="submit" class="btn btn-primary pull-right">SEARCH</button>
+                    </div>
                 </div>
             </div>
         </form>
+        </div>
         <app-data-table [Columns]="colDefinitions" [Data]="data" [(PageSettings)]="pageSettings"></app-data-table>
+        <div class="row">
+            <div class="col-xs-12">
+                <button class="btn btn-default pull-left" (click)="onCancel()" type="button">Cancel</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -27,4 +42,9 @@
         <router-outlet></router-outlet>
     </div>
 </div>
+<div class="row">
+        <div class="col-xs-12">
+            <button class="btn btn-default pull-left" (click)="onBack()" *ngIf="clientId != null" type="button">Back</button>
+        </div>
+ </div>
 
