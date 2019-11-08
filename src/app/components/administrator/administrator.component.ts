@@ -49,6 +49,7 @@ export class AdministratorComponent implements OnInit {
     });
   }
 
+
   onClientClick(clientId, clientSettings:ClientSettings){
     clientSettings.industryTemplateId = clientSettings.industrySegment;
     clientSettings.clientId = clientId;
