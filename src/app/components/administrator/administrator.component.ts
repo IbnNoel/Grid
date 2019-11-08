@@ -31,7 +31,7 @@ export class AdministratorComponent implements OnInit {
     this.onSearch();
   });
 
-  constructor(private adminService : AdministratorService, private store: Store<State>, private router: Router, 
+  constructor(private adminService : AdministratorService, private store: Store<State>, private router: Router,
     private route: ActivatedRoute, private clientService: ClientSettingsService) {
       this.setUpColumnDefintions();
   }
@@ -82,7 +82,7 @@ export class AdministratorComponent implements OnInit {
   getAllAdminSettings(clientId,clientSettings?:ClientSettings){
     let clientSettings$: Observable<ClientSettings> = (clientSettings) ? of(clientSettings):this.adminService.getRefundRequestSettings(this.clientId);
     forkJoin({
-      clientId:of(clientId), 
+      clientId:of(clientId),
       clientSettings: clientSettings$,
       refundRequestSettings: this.adminService.getRefundRequestSettings(clientId)
      }).subscribe(data => {

@@ -4,9 +4,11 @@ import {RefundsComponent} from '../refunds.component';
 import {AuthGuardService, RoleAuthGuard} from '../core/auth.guard.service';
 import {ManageRefundsComponent} from '../components/manage-refunds/manage-refunds.component';
 import {CreateRefundsComponent} from '../components/create-refunds/create-refunds.component';
-import { AdministratorComponent } from '../components/administrator/administrator.component';
-import { ClientSettingsComponent } from '../components/administrator/client-settings/client-settings.component';
-import { DirectRejectRequestComponent } from '../components/administrator/direct-reject-request/direct-reject-request.component';
+import {AdministratorComponent} from '../components/administrator/administrator.component';
+import {ClientSettingsComponent} from '../components/administrator/client-settings/client-settings.component';
+import {DirectRejectRequestComponent} from '../components/administrator/direct-reject-request/direct-reject-request.component';
+import {ReasonForRefundComponent} from "../components/administrator/reason-for-refund/reason-for-refund-parent/reason-for-refund.component";
+import {AddCustomRefundReasonComponent} from "../components/administrator/reason-for-refund/custom/add-custom-refund-reason/add-custom-refund-reason.component";
 
 const routes: Routes = [
   {
@@ -18,14 +20,24 @@ const routes: Routes = [
         path: 'admin',
         component: AdministratorComponent,
         canActivate: [AuthGuardService, RoleAuthGuard],
-        data:{ roles:["ManageRefundPortal"] },
-        children:[{
-            path:'clientSettings',
-            component: ClientSettingsComponent
+        data: {roles: ["ManageRefundPortal"]},
+        children: [{
+          path: 'clientSettings',
+          component: ClientSettingsComponent
+        },
+          {
+            path: 'directRejectionRequest',
+            component: DirectRejectRequestComponent
           },
           {
-            path:'directRejectionRequest',
-            component:DirectRejectRequestComponent
+            path: 'reasonForRefund',
+            component: ReasonForRefundComponent,
+            children: [
+              {
+                path: 'addCustomRefundReason',
+                component: AddCustomRefundReasonComponent
+              }
+            ]
           }
         ]
       },
@@ -51,4 +63,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}
