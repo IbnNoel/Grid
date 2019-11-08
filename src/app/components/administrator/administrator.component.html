@@ -1,17 +1,17 @@
 <div class="panel panel-default">
     <div class="panel-heading" role="button" data-toggle="collapse" href="#findClientPanel">Find Client <span class="glyphicon glyphicon-chevron-up pull-right" aria-hidden="true"></span> </div>
     <div id="findClientPanel" class="panel-body collapse in">
-        <form #search = "ngForm" class="form-horizontal" (ngSubmit)="onSearch(search)" novalidate autocomplete="off">
+        <form #search = "ngForm" class="form-horizontal" (ngSubmit)="onSearch()" novalidate autocomplete="off">
             <div class="form-group">
                 <div class="col-md-6">
-                <input type="text" class="form-control" name="clientName" id="clientName" placeholder="Search" ngModel>
+                <input type="text" class="form-control" name="clientName" id="clientName" placeholder="Search" [(ngModel)]="searchName">
                 </div>
                 <div class="col-md-6">
-                <button type="submit" class="btn btn-primary pull-right">Search</button>
+                <button type="submit" class="btn btn-primary pull-right">SEARCH</button>
                 </div>
             </div>
         </form>
-        <app-data-table [Columns]="colDefinitions" [Data]="data"></app-data-table>
+        <app-data-table [Columns]="colDefinitions" [Data]="data" [(PageSettings)]="pageSettings"></app-data-table>
     </div>
 </div>
 

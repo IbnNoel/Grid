@@ -6,7 +6,7 @@ body {
 }
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/*body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }*/
 div.mask {
   z-index:9999;
   width:100%;
@@ -14,4 +14,11 @@ div.mask {
   background-color: rgba(0,0,0,0.15);
   position: absolute;
   top:0;
+}
+
+.data_grid_left_align {
+  text-align: left;
+}
+.data_grid_center_align {
+  text-align: center;
 }

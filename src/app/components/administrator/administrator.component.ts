@@ -6,10 +6,11 @@ import { State } from 'src/app/reducers';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GetAdminSettingAction } from 'src/app/actions/refundAction';
 import { RefundService } from 'src/app/core/refund.service';
-import { ColumnDefs, GPFIButton } from '../controls/data-table/data-table.component';
 import { ClientSettingsService, Client } from 'src/app/core/client-settings.service';
 import {} from 'jquery';
 import {} from 'bootstrap';
+import { PageSettings } from '../controls/data-table/classes/Paging';
+import { ColumnDefs, GPFIButton } from '../controls/data-table/classes/Columns';
 
 @Component({
   selector: 'app-administrator',
@@ -22,9 +23,13 @@ export class AdministratorComponent implements OnInit {
   clientId = 2;
   clientName = "";
   adminSettings$: Observable<AdminSettings>;
+  searchName = "";
 
-  colDefinitions: Array<ColumnDefs>  =[{key:"name"}, {key:"cctClientId"}, {key:"refundConfigured"}]
+  colDefinitions: Array<ColumnDefs>;
   data = new BehaviorSubject<Array<Client>>([]);
+  pageSettings = new PageSettings(() => {
+    this.onSearch();
+  });
 
   constructor(private adminService : AdministratorService, private store: Store<State>, private router: Router,
     private route: ActivatedRoute, private clientService: ClientSettingsService) {
@@ -35,15 +40,13 @@ export class AdministratorComponent implements OnInit {
   }
 
   ngOnInit() {
-     //this.onClientClick();
   }
 
-  onSearch(formData){
-    var name = formData.form.value.clientName;
-    this.clientService.getClients(name ,0 ,10 ).subscribe(clients =>{
+  onSearch(){
+    this.clientService.getClients(this.searchName, this.pageSettings.currentPage, this.pageSettings.pageSize).subscribe(clients => {
+      this.pageSettings.setTotalRecords(clients.totalElements);
       this.data.next(clients.list);
     });
-    console.log(formData);
   }
 
   onClientClick(clientId, clientSettings:ClientSettings){
@@ -54,6 +57,17 @@ export class AdministratorComponent implements OnInit {
       }, error =>{
         console.log(error);
       })
+  }
+
+  setUpColumnDefintions(){
+    this.colDefinitions = [
+      {key:"name", className: "data_grid_left_align"},
+      {key:"cctClientId", className: "data_grid_center_align"},
+      {key:"refundConfigured", className: "data_grid_center_align"} ,
+      { cellElement: () => {
+        return new GPFIButton("CONFIGURE", (data) => { this.onClientClick(data.id,data); });
+      }, className: "data_grid_center_align"
+    }];
   }
 
   getAllAdminSettings(clientId,clientSettings?:ClientSettings){
@@ -67,7 +81,6 @@ export class AdministratorComponent implements OnInit {
        this.clientId = clientId;
        this.store.dispatch(new GetAdminSettingAction(data as AdminSettings));
        this.router.navigate([ '../admin/clientSettings'], { relativeTo: this.route });
-       debugger;
        $("#findClientPanel").collapse('hide');
      }, error => {
        console.error(error);
