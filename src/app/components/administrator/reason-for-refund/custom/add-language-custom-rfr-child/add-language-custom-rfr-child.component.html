@@ -14,11 +14,6 @@
     <textarea  name="hint" [(ngModel)]="customRfRI18N.hint" class="form-control"></textarea>
   </div>
   <div class="col-xs-1">
-    <mat-menu #addLangMenu="matMenu">
-      <button mat-menu-item *ngFor="let l of languages$ | async" (click)="addLanguage(l)">{{l}}</button>
-    </mat-menu>
-    <button mat-icon-button [matMenuTriggerFor]="addLangMenu" class="mat-icon-button">
-      <mat-icon>more_vert</mat-icon>
-    </button>
+    <app-action-menu [buttons]="actionButtons"></app-action-menu>
   </div>
 </div>
