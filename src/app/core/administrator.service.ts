@@ -14,7 +14,7 @@ export class AdministratorService {
   private readonly GET_CLIENT_URL = `${this.ROUTE_URL}/clientSettings/`;
   private readonly GET_INDUSTRY_SEGMENT_URL = `${this.ROUTE_URL}/industrySegments`;
   private readonly SET_CLIENT_URL = `${this.ROUTE_URL}/configure/clientSettings`;
-  private readonly GET_REFUND_URL = `${this.ROUTE_URL}/refundRequestSettings/`;
+  private readonly GET_REFUND_URL = `${this.ROUTE_URL}/getRefundRequestSettings/`;
   private readonly SET_REFUND_URL = `${this.ROUTE_URL}/configure/refundRequestSettings`;
   private readonly IS_STANDARD_RFR_ENABLED_URL = `${this.ROUTE_URL}/configure/refundRequestSettings`;
   private readonly CONFIGURE_DEFAULT_URL = `${this.ROUTE_URL}/configure/default`;
