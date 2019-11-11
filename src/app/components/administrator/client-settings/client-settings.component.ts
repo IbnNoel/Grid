@@ -26,7 +26,11 @@ export class ClientSettingsComponent implements OnInit {
     }
 
   ngOnInit() {
-     this.store.pipe(
+    this.setSavedState();
+  }
+
+  setSavedState(){
+    this.store.pipe(
       take(1),
       select(
         createSelector((state) => state.adminSettings,
@@ -46,7 +50,7 @@ export class ClientSettingsComponent implements OnInit {
   }
 
   onCancel(){
-    // call an action which restores state value!
+    this.setSavedState();
   }
 
 }

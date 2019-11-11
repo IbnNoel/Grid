@@ -17,6 +17,10 @@ export class DirectRejectRequestComponent implements OnInit {
   constructor(private store: Store<State>, private adminService: AdministratorService ) { }
 
   ngOnInit() {
+    this.setSavedState();
+  }
+
+  setSavedState(){
     this.store.pipe(
       take(1),
       select(createSelector((state) => state.adminSettings,
@@ -36,7 +40,7 @@ export class DirectRejectRequestComponent implements OnInit {
   }
 
   onCancel(){
-    // call an action which restores state value!
+    this.setSavedState();
   }
 
 }
