@@ -1,7 +1,7 @@
-<div class="row form-row form-group">
+<div class="row form-row form-group content">
   <div class="col-xs-2">
     <label class="col-sm-3 col-form-label">Language</label>
-    <select  name="language" class="form-control wuselect" [(ngModel)]="customRfRI18N.locale" required="true">
+    <select  name="language" class="form-control wuselect" [(ngModel)]="customRfRI18N.locale" required="true" [disabled]="editMode">
       <option value={{l}} *ngFor="let  l of languages$ | async">{{l}}</option>
     </select>
   </div>
@@ -13,7 +13,8 @@
     <label class="col-sm-3 col-form-label">Hint</label>
     <textarea  name="hint" [(ngModel)]="customRfRI18N.hint" class="form-control"></textarea>
   </div>
-  <div class="col-xs-1">
+  <div class="col-xs-1" *ngIf="!editMode">
     <app-action-menu [buttons]="actionButtons"></app-action-menu>
   </div>
+  <app-operation-buttons (onCancel)="onCancel()" (onSave)="onSave($event)" *ngIf="editMode"></app-operation-buttons>
 </div>

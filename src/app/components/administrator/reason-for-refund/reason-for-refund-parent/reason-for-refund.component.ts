@@ -11,6 +11,7 @@ import {AddCustomRfRSettingsAction} from "../../../../actions/refundAction";
 import {ColumnDefs} from "../../../controls/data-table/classes/Columns";
 import {BehaviorSubject} from "rxjs";
 import {ActionButton, ActionMenuComponent} from "../../../controls/action-menu/action-menu.component";
+import {AddLanguageCustomRfrChildComponent} from "../custom/add-language-custom-rfr-child/add-language-custom-rfr-child.component";
 
 
 @Component({
@@ -40,7 +41,7 @@ export class ReasonForRefundComponent implements OnInit {
     reasonForRefund: "Visa Rejected",
     hint: "Upload rejection letter"
   }, {
-    locale: "fr",
+    locale: "hi",
     reasonForRefund: "Visa Rejected",
     hint: "Upload rejection letter"
   }];
@@ -58,39 +59,45 @@ export class ReasonForRefundComponent implements OnInit {
     this.reasonCodesI18N.next(this.mockCustomRfRI18NSettings);
   }
 
-  /*generateMenuItem() {
-
-    let menu = new MatMenu();
-
-    let menuItem = new MatMenuItem();
-
-    menu.addItem(menuItem);
-  }
-*/
-
-  /*generateActionMenu() {
-    /!*let actionMenu = new ActionMenuComponent();
-    let editButton = new ActionButton("edit");
-    actionMenu.buttons$.next([editButton]);
-    return actionMenu;*!/
-  }*/
   generateActionMenu(data) {
     let menu = new ActionMenuComponent();
     let actionMenu = [];
     let editButton = new ActionButton();
     editButton.label = "edit";
     editButton.data = data;
-    editButton.action = () => {
+    editButton.action = (data) => {
       console.log("calling it");
+      console.log(JSON.stringify(data));
+      return this.createAddLanguageOverlay(data);
     };
     actionMenu.push(editButton);
     menu.buttons.push(editButton);
-    //let html = "<app-action-menu [buttons]='"+actionMenu+"'></app-action-menu>";
-    //return new ActionMenuRenderer().renderActionButtonMenu(actionMenu);
-    //return html;
     return menu;
   };
 
+  createAddLanguageOverlay(data) {
+    let config = new OverlayConfig();
+
+    config.positionStrategy = this.overlay.position()
+      .global().centerHorizontally().centerVertically();
+
+    config.hasBackdrop = true;
+
+    this.overlayRef = this.overlay.create(config);
+    this.overlayRef.backdropClick().subscribe(() => {
+      this.overlayRef.dispose();
+    });
+    const portal = new ComponentPortal(AddLanguageCustomRfrChildComponent, this.viewContainerRef);
+    const compRef: ComponentRef<AddLanguageCustomRfrChildComponent> = this.overlayRef.attach(portal);
+    let instance = compRef.instance;
+    instance.customRfRI18N = data;
+    instance.closeOverlay.asObservable().subscribe(value => this.closeOverlay());
+    instance.updateI18N.asObservable().subscribe(value => ()=>{
+      return console.log(JSON.stringify(instance.customRfRI18N));
+    });
+
+    instance.editMode = true;
+  }
 
   setupReasonCodeColDef() {
     this.reasonCodeColDef = [
@@ -113,9 +120,8 @@ export class ReasonForRefundComponent implements OnInit {
       {key: "reasonForRefund", className: "data_grid_center_align"},
       {key: "hint", className: "data_grid_center_align"},
       {
-
-        cellElement: (data) => {
-          return this.generateActionMenu(data);
+        cellElement: (cellData, rowData) => {
+          return this.generateActionMenu(rowData);
         }, className: "data_grid_center_align"
       }];
   }
@@ -135,6 +141,7 @@ export class ReasonForRefundComponent implements OnInit {
     const portal = new ComponentPortal(AddCustomRefundReasonComponent, this.viewContainerRef);
     const compRef: ComponentRef<AddCustomRefundReasonComponent> = this.overlayRef.attach(portal);
     const instance = compRef.instance;
+    instance.new = true;
     instance.clientId = this.clientSettings.clientId;
     instance.closeOverlay.asObservable().subscribe(() => this.closeOverlay());
     instance.addCustomRfRSettings.asObservable().subscribe((customRfRSetting: CustomRfRSettings) => this.saveCustomRfRSettings(customRfRSetting));
@@ -145,6 +152,7 @@ export class ReasonForRefundComponent implements OnInit {
   }
 
   saveCustomRfRSettings(customRfRSetting) {
+    console.log(JSON.stringify(customRfRSetting));
     this.adminService.addCustomRfR(customRfRSetting).subscribe(response => {
       if (response.success) {
         this.store.dispatch(new AddCustomRfRSettingsAction(response.data));

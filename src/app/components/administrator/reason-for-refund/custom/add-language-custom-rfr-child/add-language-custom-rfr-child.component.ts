@@ -11,15 +11,20 @@ import {ActionButton, ActionMenuComponent} from "../../../../controls/action-men
 })
 export class AddLanguageCustomRfrChildComponent implements OnInit {
 
+  @Output() closeOverlay = new EventEmitter(true);
+  @Output() updateI18N = new EventEmitter(true);
   languages$: Observable<Array<String>>;
+  editMode?:boolean;
+
   @Output() languageChangeEvent = new EventEmitter<String>(true);
 
   customRfRI18N: CustomRfRI18N = new CustomRfRI18N();
   actionButtons: Array<ActionButton> = [];
 
   constructor(private adminService: AdministratorService) {
+    const DEFAULT_LOCALE="en";
     this.languages$ = adminService.getLanguageList();
-    this.customRfRI18N.locale = "en";
+    this.customRfRI18N.locale = DEFAULT_LOCALE;
   }
 
   ngOnInit() {
@@ -34,5 +39,13 @@ export class AddLanguageCustomRfrChildComponent implements OnInit {
         this.actionButtons.push(button);
       })
     });
+  }
+
+  onCancel() {
+    this.closeOverlay.emit();
+  }
+
+  onSave($event: any) {
+    this.updateI18N.emit();
   }
 }

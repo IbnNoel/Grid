@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Input } from '@angular/core';
+import {Component, OnInit, AfterViewInit, ViewChild, ElementRef, Input, ComponentFactoryResolver, ViewContainerRef} from '@angular/core';
 import * as $ from 'jquery';
 import * as _ from 'lodash';
 
@@ -19,23 +19,25 @@ import { HandleColumnSettings, ColumnDefs } from './classes/Columns';
 })
 export class DataTableComponent implements OnInit, AfterViewInit {
   @ViewChild("table", {static:true} ) tableHtml: ElementRef;
+  @ViewChild('table', {static: true, read: ViewContainerRef}) VCR: ViewContainerRef;
+
   @Input() Data: Observable<Array<any>>;
   @Input() Columns: Array<ColumnDefs>;
   @Input() PageSettings: PageSettings;
 
   dataTableApi: DataTables.Api;
   dataTableSettings: DataTables.Settings;
-  columnSettings: DataTables.ColumnSettings 
+  columnSettings: DataTables.ColumnSettings
   columnDef: DataTables.ColumnDefsSettings;
   pagingHelper: PagingHelper;
   pageChangeData: Observable<any>;
 
-  constructor() {}
+  constructor(private CFR: ComponentFactoryResolver) {}
 
   ngAfterViewInit(): void {
     this.dataTableApi = $(this.tableHtml.nativeElement).DataTable(this.constructTableSettings());
     this.initPaging();
-    
+
     this.Data.subscribe( data => {
       this.initTable(data);
     });
@@ -74,7 +76,7 @@ export class DataTableComponent implements OnInit, AfterViewInit {
               table.draw();
      }*/
     }
-  
+
   }
 
   initPaging(){
@@ -90,7 +92,7 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   }
 
   private constructColumnSettings(): Array<DataTables.ColumnSettings>{
-      return _.map(this.Columns, (setting) =>  new HandleColumnSettings(setting).getDataTablesColumns());
+      return _.map(this.Columns, (setting) =>  new HandleColumnSettings(setting,this.VCR,this.CFR).getDataTablesColumns());
   }
 
   ngOnInit() {

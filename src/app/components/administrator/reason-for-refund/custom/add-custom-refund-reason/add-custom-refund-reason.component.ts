@@ -15,6 +15,7 @@ export class AddCustomRefundReasonComponent implements OnInit {
   @Output() addCustomRfRSettings = new EventEmitter(true);
   customRfRSetting: CustomRfRSettings;
   clientId:number;
+  new:boolean;
 
   constructor() {
   }
