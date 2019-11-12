@@ -62,7 +62,33 @@ export class ReasonForRefundComponent implements OnInit {
     let menu = new ActionMenuComponent();
     let actionMenu = [];
     let editButton = new ActionButton();
-    editButton.label = "edit";
+    let addLanguageButton = new ActionButton();
+    let deleteButton = new ActionButton();
+    editButton.label = "Edit";
+    addLanguageButton.label = "Add Language";
+    deleteButton.label = "Delete";
+    addLanguageButton.data = data;
+    addLanguageButton.action = (data) => {
+      return this.createAddLanguageOverlay(data);
+    };
+    editButton.action = (data) => {
+      console.log("Edited data");
+      return;
+    };
+    deleteButton.action = (data) => {
+      console.log("Data deleted");
+      return;
+    };
+    actionMenu.push(editButton, addLanguageButton, deleteButton);
+    menu.buttons.push(editButton, addLanguageButton, deleteButton);
+    return menu;
+  };
+
+  generateI18ActionMenu(data) {
+    let menu = new ActionMenuComponent();
+    let actionMenu = [];
+    let editButton = new ActionButton();
+    editButton.label = "Edit";
     editButton.data = data;
     editButton.action = (data) => {
       console.log("calling it");
@@ -86,12 +112,15 @@ export class ReasonForRefundComponent implements OnInit {
     this.overlayRef.backdropClick().subscribe(() => {
       this.overlayRef.dispose();
     });
-    const portal = new ComponentPortal(EditRfRI18NComponent, this.viewContainerRef);
-    const compRef: ComponentRef<EditRfRI18NComponent> = this.overlayRef.attach(portal);
+    const portal = new ComponentPortal(AddCustomRefundReasonComponent, this.viewContainerRef);
+    const compRef: ComponentRef<AddCustomRefundReasonComponent> = this.overlayRef.attach(portal);
     let instance = compRef.instance;
     instance.data = data;
     instance.closeOverlay.asObservable().subscribe(value => this.closeOverlay());
-    instance.updateRfRI18N.asObservable().subscribe(value => this.updateRfRI18N(value));
+    instance.addCustomRfRSettings.asObservable().subscribe(value => {
+      return console.log(JSON.stringify(value));
+    });
+    instance.editMode = true;
   }
 
   setupReasonCodeColDef() {
@@ -101,8 +130,8 @@ export class ReasonForRefundComponent implements OnInit {
       {key: "reasonForRefund", className: "data_grid_center_align"},
       {key: "numOfDocument", className: "data_grid_center_align"},
       {
-        cellElement: (data) => {
-          return this.generateActionMenu(data);
+        cellElement: (data, rowData) => {
+          return this.generateActionMenu(rowData);
         }, className: "data_grid_center_align"
       }];
   }
@@ -116,7 +145,7 @@ export class ReasonForRefundComponent implements OnInit {
       {key: "hint", className: "data_grid_center_align"},
       {
         cellElement: (cellData, rowData) => {
-          return this.generateActionMenu(rowData);
+          return this.generateI18ActionMenu(rowData);
         }, className: "data_grid_center_align"
       }];
   }
