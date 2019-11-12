@@ -153,6 +153,7 @@ export class CustomRfRSettings {
 }
 
 export class CustomRfRI18N {
+  clientId?:number;
   locale: String;
   hint: String;
   reasonForRefund: String;
