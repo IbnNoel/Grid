@@ -16,13 +16,14 @@ export class AdministratorService {
   private readonly GET_CLIENT_URL = `${this.ROUTE_URL}/clientSettings/`;
   private readonly GET_INDUSTRY_SEGMENT_URL = `${this.ROUTE_URL}/industrySegments`;
   private readonly SET_CLIENT_URL = `${this.ROUTE_URL}/configure/clientSettings`;
-  private readonly ADD_RFR = `${this.ROUTE_URL}/reasonForRefunds/addRFR`;
+  private readonly ADD_RFR = `${this.ROUTE_URL}/client/reasonForRefunds/addRFR`;
   private readonly GET_REFUND_URL = `${this.ROUTE_URL}/getRefundRequestSettings/`;
   private readonly SET_REFUND_URL = `${this.ROUTE_URL}/configure/refundRequestSettings`;
   private readonly CONFIGURE_DEFAULT_URL = `${this.ROUTE_URL}/configure/default`;
-  private readonly GET_RFR = `${this.ROUTE_URL}/reasonForRefunds`;
-  private readonly GET_RFR_I18N = `${this.ROUTE_URL}/reasonForRefunds/I18N`;
+  private readonly GET_RFR = `${this.ROUTE_URL}/client/reasonForRefunds`;
+  private readonly GET_RFR_I18N = `${this.ROUTE_URL}/client/reasonForRefunds/I18N`;
   private readonly TOGGLE_RFR = `${this.ROUTE_URL}/reasonForRefunds/configure/`;
+  private readonly UPDATE_RFR_I18N = `${this.ROUTE_URL}/client/reasonForRefund/updateRFRI18N`;
 
 
   private apiResponseMap: OperatorFunction<ApiResponse<any>, any> = flatMap(response => {
@@ -74,15 +75,25 @@ export class AdministratorService {
     return this.httpClient.put<ApiResponse<ToggleRfrResponse>>(this.TOGGLE_RFR + clientId, "");
   }
 
+  updateRfRI18NForClient(updateRfRI18N: CustomRfRI18N) {
+    return this.httpClient.post<ApiResponse<CustomRfRI18N>>(this.UPDATE_RFR_I18N, updateRfRI18N);
+  }
+
   getRefundRequestSettings(id) {
     return this.httpClient.get<ApiResponse<RefundRequestSettings>>(this.GET_REFUND_URL + id).pipe(this.apiResponseMap);
   }
 
-  setRefundRequestSettings(settings: RefundRequestSettings) {
+  setRefundRequestSettings(settings
+                             :
+                             RefundRequestSettings
+  ) {
     return this.httpClient.put<ApiResponse<RefundRequestSettings>>(this.SET_REFUND_URL, settings);
   }
 
-  setDefaultSettings(settings: ClientSettings) {
+  setDefaultSettings(settings
+                       :
+                       ClientSettings
+  ) {
     return this.httpClient.post<ApiResponse<ClientSettings>>(this.CONFIGURE_DEFAULT_URL, settings).pipe(this.apiResponseMap);
   }
 
@@ -119,7 +130,8 @@ export interface AdminSettings {
   clientId: Number;
   clientSettings: ClientSettings;
   refundRequestSettings: RefundRequestSettings;
-  customRfrSettings: CustomRfRSettings;
+  customRfrSettings: Array<CustomRfRSettings>;
+  customRfRI18N: Array<CustomRfRI18N>;
 }
 
 export interface RefundRequestSettings {
@@ -140,6 +152,7 @@ export class CustomRfRSettings {
 }
 
 export class CustomRfRI18N {
+  clientId?: number;
   locale: String;
   hint: String;
   reasonForRefund: String;
@@ -147,10 +160,12 @@ export class CustomRfRI18N {
   sortOrder?: number;
 }
 
+
 export class AddCustomRfR extends CustomRfRSettings {
   reasonForRefundList: Array<CustomRfRI18N> = [];
 }
-export class ToggleRfrResponse{
-  isStandardRFREnabled:boolean;
+
+export class ToggleRfrResponse {
+  isStandardRFREnabled: boolean;
 }
 

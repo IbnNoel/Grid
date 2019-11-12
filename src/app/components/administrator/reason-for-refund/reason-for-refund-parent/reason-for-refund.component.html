@@ -1,4 +1,4 @@
-<div class="row" *ngIf="isStandardRfREnabled">
+<div class="row form-group" *ngIf="isStandardRfREnabled">
   <div class="col-lg-6">
     <h5>Current 'Reason for Refund' is standard</h5>
   </div>
@@ -6,7 +6,7 @@
     <button class="btn btn-default pull-right" (click)="toggleRfR()" type="button">Maintain custom refund reason</button>
   </div>
 </div>
-<div class="row" *ngIf="!isStandardRfREnabled">
+<div class="row form-group" *ngIf="!isStandardRfREnabled">
   <div class="col-lg-6">
     <h5>Current 'Reason for Refund' is custom</h5>
   </div>
@@ -18,10 +18,10 @@
       <button class="btn btn-default pull-right" (click)="toggleRfR()" type="button">Maintain standard refund reason</button>
     </div>
   </div>
-  <div>
-    <app-data-table [Columns]="reasonCodeColDef" [Data]="reasonCodes" [(PageSettings)]="pageSettings"></app-data-table>
-  </div>
-  <div>
-    <app-data-table [Columns]="reasonCodeI18NColDef" [Data]="reasonCodesI18N" [(PageSettings)]="pageSettings"></app-data-table>
-  </div>
+</div>
+<div>
+  <app-data-table [Columns]="reasonCodeColDef" [Data]="reasonCodes" [(PageSettings)]="reasonCodePageSettings"></app-data-table>
+</div>
+<div>
+  <app-data-table [Columns]="reasonCodeI18NColDef" [Data]="reasonCodesI18N" [(PageSettings)]="reasonCodeI18NPageSettings"></app-data-table>
 </div>
