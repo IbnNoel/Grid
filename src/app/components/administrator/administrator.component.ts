@@ -84,7 +84,8 @@ export class AdministratorComponent implements OnInit {
     forkJoin({
       clientId:of(clientId),
       clientSettings: clientSettings$,
-      refundRequestSettings: this.adminService.getRefundRequestSettings(clientId)
+      refundRequestSettings: this.adminService.getRefundRequestSettings(clientId),
+      industrySegments: this.adminService.getIndustrySegments()
      }).subscribe(data => {
        this.clientName = data.clientSettings.name;
        this.clientId = clientId;

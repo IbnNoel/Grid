@@ -130,8 +130,8 @@ export interface AdminSettings {
   clientId: Number;
   clientSettings: ClientSettings;
   refundRequestSettings: RefundRequestSettings;
-  customRfrSettings: Array<CustomRfRSettings>;
-  customRfRI18N: Array<CustomRfRI18N>;
+  customRfrSettings: CustomRfRSettings;
+  industrySegments: Array<IndustrySegment>;
 }
 
 export interface RefundRequestSettings {
@@ -152,7 +152,6 @@ export class CustomRfRSettings {
 }
 
 export class CustomRfRI18N {
-  clientId?: number;
   locale: String;
   hint: String;
   reasonForRefund: String;
@@ -160,12 +159,10 @@ export class CustomRfRI18N {
   sortOrder?: number;
 }
 
-
 export class AddCustomRfR extends CustomRfRSettings {
   reasonForRefundList: Array<CustomRfRI18N> = [];
 }
-
-export class ToggleRfrResponse {
-  isStandardRFREnabled: boolean;
+export class ToggleRfrResponse{
+  isStandardRFREnabled:boolean;
 }
 

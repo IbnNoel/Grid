@@ -12,6 +12,8 @@ export class AdminSettingsState implements AdminSettings {
   clientId: Number;
   clientSettings: ClientSettings;
   refundRequestSettings: RefundRequestSettings;
+  customRfrSettings: CustomRfRSettings;
+  industrySegments: Array<IndustrySegment>;
   customRfrSettings: Array<CustomRfRSettings>;
   customRfRI18N:Array<CustomRfRI18N>
 }
