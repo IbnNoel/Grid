@@ -1,7 +1,7 @@
 import {Action, ActionReducerMap, MetaReducer} from '@ngrx/store';
 import {environment} from '../../environments/environment';
 import {AdminAction, RefundActionTypes} from '../actions/refundAction';
-import {AdminSettings, ClientSettings, CustomRfRI18N, CustomRfRSettings, RefundRequestSettings} from '../core/administrator.service';
+import {AdminSettings, ClientSettings, CustomRfRI18N, CustomRfRSettings, IndustrySegment, RefundRequestSettings} from '../core/administrator.service';
 
 
 export interface State {
@@ -12,7 +12,6 @@ export class AdminSettingsState implements AdminSettings {
   clientId: Number;
   clientSettings: ClientSettings;
   refundRequestSettings: RefundRequestSettings;
-  customRfrSettings: CustomRfRSettings;
   industrySegments: Array<IndustrySegment>;
   customRfrSettings: Array<CustomRfRSettings>;
   customRfRI18N:Array<CustomRfRI18N>

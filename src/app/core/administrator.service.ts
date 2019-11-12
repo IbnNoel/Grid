@@ -130,7 +130,8 @@ export interface AdminSettings {
   clientId: Number;
   clientSettings: ClientSettings;
   refundRequestSettings: RefundRequestSettings;
-  customRfrSettings: CustomRfRSettings;
+  customRfrSettings: Array<CustomRfRSettings>;
+  customRfRI18N:Array<CustomRfRI18N>;
   industrySegments: Array<IndustrySegment>;
 }
 
