@@ -21,9 +21,12 @@ export class ClientSettingsComponent implements OnInit {
   clientSettings$: Observable<ClientSettings>;
   gpfiModalinfo: GpfiModalInfo;
 
+  adminSettingFunc = (state) => state.adminSettings;
+
   constructor(private route: ActivatedRoute, private store: Store<State>, private adminService: AdministratorService) {
-      this.industrySegments$ = this.adminService.getIndustrySegments();
-    }
+      this.industrySegments$ =  this.store.pipe(take(1),
+        select(createSelector(this.adminSettingFunc, (adminSettings) => adminSettings.industrySegments)));
+  }
 
   ngOnInit() {
     this.setSavedState();
@@ -33,7 +36,7 @@ export class ClientSettingsComponent implements OnInit {
     this.store.pipe(
       take(1),
       select(
-        createSelector((state) => state.adminSettings,
+        createSelector(this.adminSettingFunc,
         (adminSettings) => adminSettings.clientSettings)))
           .subscribe((response) => {
             this.clientSettings = Object.assign({},response);

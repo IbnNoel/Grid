@@ -97,6 +97,7 @@ export interface AdminSettings {
   clientSettings: ClientSettings;
   refundRequestSettings: RefundRequestSettings;
   customRfrSettings: CustomRfRSettings;
+  industrySegments: Array<IndustrySegment>;
 }
 
 export interface RefundRequestSettings {
