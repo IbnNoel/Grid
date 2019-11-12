@@ -4,10 +4,7 @@ body {
   font-family: 'Open Sans',sans-serif;
   font-size: 13px
 }
-.content, .reportPanel {
-  background-image: none;
-  border-top: 5px solid #ffdd00;
-}
+
 .content {
   background-color: #FFFFFF;
 }
@@ -16,6 +13,10 @@ body {
   border-bottom: 3px solid #ccc;
   padding: 20px 20px 20px;
   margin-bottom: 30px;
+}
+.content, .reportPanel {
+  background-image: none;
+  border-top: 5px solid #ffdd00;
 }
 .nav-tabs li.active a {
   border: 1px solid #c1c1c1;
