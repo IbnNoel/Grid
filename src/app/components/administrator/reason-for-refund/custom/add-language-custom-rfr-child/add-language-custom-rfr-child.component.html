@@ -1,7 +1,7 @@
 <div class="row form-row form-group">
   <div class="col-xs-2">
     <label class="col-sm-3 col-form-label">Language</label>
-    <select  name="language" class="form-control wuselect" [(ngModel)]="customRfRI18N.locale" required="true">
+    <select  name="language" class="form-control wuselect" [(ngModel)]="customRfRI18N.locale" required="true" [disabled]="editMode">
       <option value={{l}} *ngFor="let  l of languages$ | async">{{l}}</option>
     </select>
   </div>
@@ -13,12 +13,7 @@
     <label class="col-sm-3 col-form-label">Hint</label>
     <textarea  name="hint" [(ngModel)]="customRfRI18N.hint" class="form-control"></textarea>
   </div>
-  <div class="col-xs-1">
-    <mat-menu #addLangMenu="matMenu">
-      <button mat-menu-item *ngFor="let l of languages$ | async" (click)="addLanguage(l)">{{l}}</button>
-    </mat-menu>
-    <button mat-icon-button [matMenuTriggerFor]="addLangMenu" class="mat-icon-button">
-      <mat-icon>more_vert</mat-icon>
-    </button>
+  <div class="col-xs-1" *ngIf="!editMode">
+    <app-action-menu [buttons]="actionButtons"></app-action-menu>
   </div>
 </div>

@@ -11,6 +11,7 @@ import {CustomRfRI18N} from "../../../../../core/administrator.service";
 export class AddLanguageCustomRfrComponent implements OnInit {
 
   @Input() list: Array<CustomRfRI18N>;
+  @Input() editMode: boolean;
 
   constructor(private CFR: ComponentFactoryResolver) {
   }
@@ -25,11 +26,15 @@ export class AddLanguageCustomRfrComponent implements OnInit {
     let componentFactory = this.CFR.resolveComponentFactory(AddLanguageCustomRfrChildComponent);
     let componentRef: ComponentRef<AddLanguageCustomRfrChildComponent> = this.VCR.createComponent(componentFactory);
     let currentComponent = componentRef.instance;
-    currentComponent.customRfRI18N.locale = language;
+    currentComponent.editMode = this.editMode;
     currentComponent.languageChangeEvent.asObservable().subscribe(value => this.createComponent(value));
-    this.list.push(
-      currentComponent.customRfRI18N
-    );
+    if (!this.editMode) {
+      this.list.push(currentComponent.customRfRI18N);
+      currentComponent.customRfRI18N.locale = language;
+    }else{
+      currentComponent.customRfRI18N=this.list.pop();
+    }
+
 
   }
 
