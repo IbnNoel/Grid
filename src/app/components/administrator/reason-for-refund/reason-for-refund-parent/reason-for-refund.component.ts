@@ -31,10 +31,10 @@ export class ReasonForRefundComponent implements OnInit {
   reasonCodes = new BehaviorSubject<Array<CustomRfRSettings>>([]);
   reasonCodesI18N = new BehaviorSubject<Array<CustomRfRI18N>>([]);
   reasonCodePageSettings = new PageSettings(() => {
-    //this.onSearch();
+    this.updateReasonCodeTable();
   });
   reasonCodeI18NPageSettings = new PageSettings(() => {
-    //this.onSearch();
+    this.updateReasonCodeI18NTable();
   });
 
   constructor(private adminService: AdministratorService, private store: Store<State>, private router: Router, private route: ActivatedRoute, private overlay: Overlay, private viewContainerRef: ViewContainerRef) {
