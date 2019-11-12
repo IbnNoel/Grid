@@ -158,6 +158,7 @@ export class ReasonForRefundComponent implements OnInit {
   toggleRfR() {
     this.adminService.toggleRfR(this.clientId).subscribe(value => {
       this.isStandardRfREnabled = value.data.isStandardRFREnabled;
+      this.updateTables();
     });
   }
 
