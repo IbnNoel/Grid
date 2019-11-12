@@ -1,7 +1,7 @@
 import {Action, ActionReducerMap, MetaReducer} from '@ngrx/store';
 import {environment} from '../../environments/environment';
 import {AdminAction, RefundActionTypes} from '../actions/refundAction';
-import {AdminSettings, ClientSettings, CustomRfRSettings, RefundRequestSettings, IndustrySegment} from '../core/administrator.service';
+import {AdminSettings, ClientSettings, CustomRfRI18N, CustomRfRSettings, IndustrySegment, RefundRequestSettings} from '../core/administrator.service';
 
 
 export interface State {
@@ -12,8 +12,9 @@ export class AdminSettingsState implements AdminSettings {
   clientId: Number;
   clientSettings: ClientSettings;
   refundRequestSettings: RefundRequestSettings;
-  customRfrSettings: CustomRfRSettings;
   industrySegments: Array<IndustrySegment>;
+  customRfrSettings: Array<CustomRfRSettings>;
+  customRfRI18N:Array<CustomRfRI18N>
 }
 
 export function adminSettingsReducer(state = new AdminSettingsState(), action: AdminAction): AdminSettingsState {
@@ -23,9 +24,13 @@ export function adminSettingsReducer(state = new AdminSettingsState(), action: A
     case RefundActionTypes.SAVE_CLIENT:
       return {...state, clientSettings: action.payload};
     case RefundActionTypes.SAVE_REF_REQUEST_SETTINGS:
-      return {...state, refundRequestSettings: action.payload}
-    case RefundActionTypes.ADD_CUSTOM_RFR_SETTING:
-      return {...state, customRfrSettings: action.payload}
+      return {...state, refundRequestSettings: action.payload};
+   /* case RefundActionTypes.ADD_CUSTOM_RFR_SETTING:
+      return {...state, customRfrSettings: action.payload}*/
+    case RefundActionTypes.RETRIEVE_RFR:
+      return {...state, customRfrSettings: action.payload};
+    case RefundActionTypes.RETRIEVE_RFR_I18N:
+      return {...state, customRfRI18N: action.payload}
     default:
       return state;
   }
