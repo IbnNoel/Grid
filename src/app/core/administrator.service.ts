@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {ApiResponse} from './auth.guard.service';
 import {flatMap, map} from 'rxjs/operators';
-import {Observable, of, OperatorFunction, throwError} from 'rxjs';
+import {of, OperatorFunction, throwError} from 'rxjs';
+import {PagedResponse} from "./refund.service";
 
 @Injectable({
   providedIn: 'root'
@@ -14,10 +15,14 @@ export class AdministratorService {
   private readonly GET_CLIENT_URL = `${this.ROUTE_URL}/clientSettings/`;
   private readonly GET_INDUSTRY_SEGMENT_URL = `${this.ROUTE_URL}/industrySegments`;
   private readonly SET_CLIENT_URL = `${this.ROUTE_URL}/configure/clientSettings`;
-  private readonly GET_REFUND_URL = `${this.ROUTE_URL}/refundRequestSettings/`;
+  private readonly ADD_RFR = `${this.ROUTE_URL}/reasonForRefunds/addRFR`;
+  private readonly GET_REFUND_URL = `${this.ROUTE_URL}/getRefundRequestSettings/`;
   private readonly SET_REFUND_URL = `${this.ROUTE_URL}/configure/refundRequestSettings`;
-  private readonly IS_STANDARD_RFR_ENABLED_URL = `${this.ROUTE_URL}/configure/refundRequestSettings`;
   private readonly CONFIGURE_DEFAULT_URL = `${this.ROUTE_URL}/configure/default`;
+  private readonly GET_RFR = `${this.ROUTE_URL}/reasonForRefunds`;
+  private readonly GET_RFR_I18N = `${this.ROUTE_URL}/reasonForRefunds/I18N`;
+  private readonly TOGGLE_RFR = `${this.ROUTE_URL}/reasonForRefunds/configure/`;
+
 
   private apiResponseMap: OperatorFunction<ApiResponse<any>, any> = flatMap(response => {
     if (response.success) {
@@ -35,6 +40,18 @@ export class AdministratorService {
     return this.httpClient.get<ApiResponse<ClientSettings>>(this.GET_CLIENT_URL + id).pipe(map(response => response.data));
   }
 
+  getRFR(id, pageNo, size) {
+    const params = new HttpParams().set('clientId', id)
+      .set('page', pageNo).set('size', size);
+    return this.httpClient.get<ApiResponse<PagedResponse<CustomRfRSettings>>>(this.GET_RFR, {params}).pipe(this.apiResponseMap);
+  }
+
+  getRFRI18N(id, pageNo, size) {
+    const params = new HttpParams().set('clientId', id)
+      .set('page', pageNo).set('size', size);
+    return this.httpClient.get<ApiResponse<PagedResponse<CustomRfRI18N>>>(this.GET_RFR_I18N, {params}).pipe(this.apiResponseMap);
+  }
+
   getIndustrySegments() {
     return this.httpClient.get<ApiResponse<Array<IndustrySegment>>>(this.GET_INDUSTRY_SEGMENT_URL).pipe(this.apiResponseMap);
   }
@@ -47,8 +64,13 @@ export class AdministratorService {
     return this.httpClient.put<ApiResponse<ClientSettings>>(this.SET_CLIENT_URL, settings);
   }
 
-  addCustomRfR(settings:CustomRfRSettings){
-    return this.httpClient.put<ApiResponse<CustomRfRSettings>>(this.SET_CLIENT_URL, settings);
+  addCustomRfR(settings: CustomRfRSettings) {
+    //return of(settings);
+    return this.httpClient.post<ApiResponse<AddCustomRfR>>(this.ADD_RFR, settings);
+  }
+
+  toggleRfR(clientId) {
+    return this.httpClient.put<ApiResponse<ToggleRfrResponse>>(this.TOGGLE_RFR + clientId, "");
   }
 
   getRefundRequestSettings(id) {
@@ -89,7 +111,7 @@ export interface ClientSettings {
   refundConfigured?: boolean;
   refundPortalDomain?: string;
   securityChallengeEnabled?: boolean;
-  isStandardRfREnabled?:boolean
+  standardRFREnabled?: boolean
 }
 
 export interface AdminSettings {
@@ -112,14 +134,22 @@ export interface RefundRequestSettings {
 export class CustomRfRSettings {
   clientId: number;
   reasonCode: String;
-  sortOrder: Number;
-  noOfDocs: Number;
-  customRFRI18NRequestList: Array<CustomRfRI18N>=[];
+  sortOrder: number;
+  numOfDocument: number;
 }
 
 export class CustomRfRI18N {
   locale: String;
   hint: String;
   reasonForRefund: String;
+  reasonCode?: String;
+  sortOrder?: number;
+}
+
+export class AddCustomRfR extends CustomRfRSettings {
+  reasonForRefundList: Array<CustomRfRI18N> = [];
+}
+export class ToggleRfrResponse{
+  isStandardRFREnabled:boolean;
 }
 
