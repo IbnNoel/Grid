@@ -23,6 +23,7 @@ export class AdministratorService {
   private readonly GET_RFR = `${this.ROUTE_URL}/reasonForRefunds`;
   private readonly GET_RFR_I18N = `${this.ROUTE_URL}/reasonForRefunds/I18N`;
   private readonly TOGGLE_RFR = `${this.ROUTE_URL}/reasonForRefunds/configure/`;
+  private readonly UPDATE_REFUND_HANDLING = `${this.ROUTE_URL}/configure/updateRefundHandling`;
 
 
   private apiResponseMap: OperatorFunction<ApiResponse<any>, any> = flatMap(response => {
@@ -86,6 +87,21 @@ export class AdministratorService {
     return this.httpClient.post<ApiResponse<ClientSettings>>(this.CONFIGURE_DEFAULT_URL, settings).pipe(this.apiResponseMap);
   }
 
+  getRefundHandling(id){
+     let obj = {
+       data:{
+        clientId:id,
+        directRejectionCard:true,
+        directRejectionNonCard:true,
+        nonDirectRejection:true
+      },
+      success:true
+    }
+
+    return of(obj).pipe(this.apiResponseMap);
+    //return this.httpClient.get<ApiResponse<RefundHandling>>(this.UPDATE_REFUND_HANDLING + id).pipe(this.apiResponseMap);
+  }
+
   /*getClients(name : string, pageNo, size){
     let GET_CLIENT_URL = `${this.ROUTE_URL}/client/search`;
     const params = new HttpParams().set('name', name)
@@ -115,12 +131,20 @@ export interface ClientSettings {
   standardRFREnabled?: boolean
 }
 
+export interface RefundHandling{
+  clientId: number;
+  directRejectionCard: boolean;
+  directRejectionNonCard: boolean;
+  nonDirectRejection: boolean;
+}
+
 export interface AdminSettings {
   clientId: Number;
   clientSettings: ClientSettings;
   refundRequestSettings: RefundRequestSettings;
   customRfrSettings: CustomRfRSettings;
   industrySegments: Array<IndustrySegment>;
+  refundHandling: RefundHandling
 }
 
 export interface RefundRequestSettings {

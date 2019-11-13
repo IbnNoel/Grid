@@ -40,11 +40,12 @@ import {MatIconModule} from "@angular/material/icon";
 import {AddLanguageCustomRfrChildComponent} from './components/administrator/reason-for-refund/custom/add-language-custom-rfr-child/add-language-custom-rfr-child.component';
 import {ActionMenuComponent} from './components/controls/action-menu/action-menu.component';
 import { AddCustomRefundSettingComponent } from './components/administrator/reason-for-refund/custom/add-custom-refund-setting/add-custom-refund-setting.component';
+import { RefundHandlingComponent } from './components/administrator/refund-handling/refund-handling.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent, RefundsComponent, CreateRefundsComponent, ManageRefundsComponent, AdministratorComponent, ClientSettingsComponent, DirectRejectRequestComponent, OperationButtonsComponent, DataTableComponent, GpfiModalComponent, LoadingDirective, ReasonForRefundComponent, AddCustomRefundReasonComponent, AddLanguageCustomRfrComponent, AddLanguageCustomRfrChildComponent, ActionMenuComponent, AddCustomRefundSettingComponent
+    AppComponent, RefundsComponent, CreateRefundsComponent, ManageRefundsComponent, AdministratorComponent, ClientSettingsComponent, DirectRejectRequestComponent, OperationButtonsComponent, DataTableComponent, GpfiModalComponent, LoadingDirective, ReasonForRefundComponent, AddCustomRefundReasonComponent, AddLanguageCustomRfrComponent, AddLanguageCustomRfrChildComponent, ActionMenuComponent, AddCustomRefundSettingComponent, RefundHandlingComponent
   ],
   imports: [
     BrowserModule,

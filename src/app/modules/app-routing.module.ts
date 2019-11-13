@@ -9,6 +9,7 @@ import {ClientSettingsComponent} from '../components/administrator/client-settin
 import {DirectRejectRequestComponent} from '../components/administrator/direct-reject-request/direct-reject-request.component';
 import {ReasonForRefundComponent} from "../components/administrator/reason-for-refund/reason-for-refund-parent/reason-for-refund.component";
 import {AddCustomRefundReasonComponent} from "../components/administrator/reason-for-refund/custom/add-custom-refund-reason/add-custom-refund-reason.component";
+import { RefundHandlingComponent } from '../components/administrator/refund-handling/refund-handling.component';
 
 const routes: Routes = [
   {
@@ -25,20 +26,24 @@ const routes: Routes = [
           path: 'clientSettings',
           component: ClientSettingsComponent
         },
-          {
-            path: 'directRejectionRequest',
-            component: DirectRejectRequestComponent
-          },
-          {
-            path: 'reasonForRefund',
-            component: ReasonForRefundComponent,
-            children: [
-              {
-                path: 'addCustomRefundReason',
-                component: AddCustomRefundReasonComponent
-              }
-            ]
-          }
+        {
+          path: 'directRejectionRequest',
+          component: DirectRejectRequestComponent
+        },
+        {
+          path: 'refundHandling',
+          component: RefundHandlingComponent
+        },
+        {
+          path: 'reasonForRefund',
+          component: ReasonForRefundComponent,
+          children: [
+            {
+              path: 'addCustomRefundReason',
+              component: AddCustomRefundReasonComponent
+            }
+          ]
+        }
         ]
       },
       {

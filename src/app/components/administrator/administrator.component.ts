@@ -85,7 +85,8 @@ export class AdministratorComponent implements OnInit {
       clientId:of(clientId),
       clientSettings: clientSettings$,
       refundRequestSettings: this.adminService.getRefundRequestSettings(clientId),
-      industrySegments: this.adminService.getIndustrySegments()
+      industrySegments: this.adminService.getIndustrySegments(),
+      refundHandling: this.adminService.getRefundHandling(clientId)
      }).subscribe(data => {
        this.clientName = data.clientSettings.name;
        this.clientId = clientId;
