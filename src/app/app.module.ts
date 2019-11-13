@@ -11,7 +11,7 @@ import {CreateRefundsComponent} from './components/create-refunds/create-refunds
 import {ManageRefundsComponent} from './components/manage-refunds/manage-refunds.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {RefundService} from './core/refund.service';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {StoreModule} from '@ngrx/store';
 import {reducers, metaReducers} from './reducers';
 import {AdministratorComponent} from './components/administrator/administrator.component';
@@ -66,7 +66,8 @@ import { EditRfRI18NComponent } from './components/administrator/reason-for-refu
     PlatformModule,
     PortalModule,
     MatMenuModule,
-    MatIconModule
+    MatIconModule,
+    ReactiveFormsModule
   ],
   providers: [WINDOW_PROVIDERS, Gp2Service, AuthGuardService, AuthService, RefundService, AdministratorService, RoleAuthGuard, LoaderService, LoaderInterceptor,
     {provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true},

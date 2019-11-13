@@ -234,10 +234,6 @@ export class ReasonForRefundComponent implements OnInit {
     })
   }
 
-  collapseReasonCodeI18N() {
-    this.collapseReasonCodeI18NEvent.next({});
-  }
-
   private deleteI18N(data: CustomRfRI18N) {
     let deleteI18NRfR = new DeleteI18NRfR();
     deleteI18NRfR.locale = data.locale;
