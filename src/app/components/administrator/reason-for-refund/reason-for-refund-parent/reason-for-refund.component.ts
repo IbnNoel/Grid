@@ -1,5 +1,5 @@
-import {Component, ComponentRef, OnInit, ViewContainerRef} from '@angular/core';
-import {AddCustomRfR, AdministratorService, ClientSettings, CustomRfRI18N, CustomRfRSettings} from "../../../../core/administrator.service";
+import {Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewContainerRef} from '@angular/core';
+import {AddCustomRfR, AdministratorService, ClientSettings, CustomRfRI18N, CustomRfRSettings, DeleteI18NRfR} from "../../../../core/administrator.service";
 import {createSelector, select, Store} from "@ngrx/store";
 import {State} from "../../../../reducers";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -12,6 +12,8 @@ import {BehaviorSubject, forkJoin, Observable} from "rxjs";
 import {ActionButton, ActionMenuComponent} from "../../../controls/action-menu/action-menu.component";
 import {PageSettings} from "../../../controls/data-table/classes/Paging";
 import {EditRfRI18NComponent} from "../custom/edit-rf-ri18-n/edit-rf-ri18-n.component";
+import {AddLanguageCustomRfrComponent} from "../custom/add-language-custom-rfr/add-language-custom-rfr.component";
+import {AddCustomRefundSettingComponent} from "../custom/add-custom-refund-setting/add-custom-refund-setting.component";
 
 
 @Component({
@@ -29,6 +31,10 @@ export class ReasonForRefundComponent implements OnInit {
   clientId: number;
   isStandardRfREnabled: boolean;
   reasonCodes = new BehaviorSubject<Array<CustomRfRSettings>>([]);
+  expandReasonCodeEvent = new BehaviorSubject<any>({});
+  collapseReasonCodeEvent = new BehaviorSubject<any>({});
+  expandReasonCodeI18NEvent = new BehaviorSubject<any>({});
+  collapseReasonCodeI18NEvent = new BehaviorSubject<any>({});
   reasonCodesI18N = new BehaviorSubject<Array<CustomRfRI18N>>([]);
   reasonCodePageSettings = new PageSettings(() => {
     this.updateReasonCodeTable();
@@ -37,7 +43,7 @@ export class ReasonForRefundComponent implements OnInit {
     this.updateReasonCodeI18NTable();
   });
 
-  constructor(private adminService: AdministratorService, private store: Store<State>, private router: Router, private route: ActivatedRoute, private overlay: Overlay, private viewContainerRef: ViewContainerRef) {
+  constructor(private adminService: AdministratorService, private store: Store<State>, private router: Router, private route: ActivatedRoute, private overlay: Overlay, private viewContainerRef: ViewContainerRef, private CFR: ComponentFactoryResolver) {
     this.setupReasonCodeColDef();
     this.setupReasonCodeI18NColDef();
   }
@@ -58,45 +64,45 @@ export class ReasonForRefundComponent implements OnInit {
     })
   }
 
-  generateActionMenu(data) {
+  generateActionMenuForRfRI18N(cellData, rowData, row) {
     let menu = new ActionMenuComponent();
-    let actionMenu = [];
     let editButton = new ActionButton();
-    let addLanguageButton = new ActionButton();
-    let deleteButton = new ActionButton();
-    editButton.label = "Edit";
-    addLanguageButton.label = "Add Language";
-    deleteButton.label = "Delete";
-    addLanguageButton.data = data;
-    addLanguageButton.action = (data) => {
-      return this.createAddLanguageOverlay(data);
-    };
+    editButton.label = "edit";
+    editButton.data = rowData;
     editButton.action = (data) => {
-      console.log("Edited data");
-      return;
+      this.expandReasonCodeI18NEvent.next({row: row, data: data});
     };
-    deleteButton.action = (data) => {
-      console.log("Data deleted");
-      return;
-    };
-    actionMenu.push(editButton, addLanguageButton, deleteButton);
-    menu.buttons.push(editButton, addLanguageButton, deleteButton);
+    let deleteButton = new ActionButton();
+    deleteButton.label = "delete";
+    deleteButton.data = rowData;
+    deleteButton.action = (data => {
+      this.deleteRfR(data);
+    });
+    menu.buttons.push(editButton, deleteButton);
     return menu;
   };
 
-  generateI18ActionMenu(data) {
+  generateActionMenuForRfr(cellData, rowData, row) {
     let menu = new ActionMenuComponent();
-    let actionMenu = [];
     let editButton = new ActionButton();
-    editButton.label = "Edit";
-    editButton.data = data;
+    editButton.label = "edit";
+    editButton.data = rowData;
     editButton.action = (data) => {
-      console.log("calling it");
-      console.log(JSON.stringify(data));
-      return this.createAddLanguageOverlay(data);
+      this.expandReasonCodeEvent.next({row: row, data: data});
     };
-    actionMenu.push(editButton);
-    menu.buttons.push(editButton);
+    let deleteButton = new ActionButton();
+    deleteButton.label = "delete";
+    deleteButton.data = rowData;
+    deleteButton.action = (data => {
+      this.deleteI18N(data);
+    });
+    let addLanguage = new ActionButton();
+    addLanguage.label = "addLanguage";
+    addLanguage.data = rowData;
+    addLanguage.action = (data => {
+      this.createAddLanguageOverlay(data);
+    });
+    menu.buttons.push(editButton, deleteButton, addLanguage);
     return menu;
   };
 
@@ -112,15 +118,14 @@ export class ReasonForRefundComponent implements OnInit {
     this.overlayRef.backdropClick().subscribe(() => {
       this.overlayRef.dispose();
     });
-    const portal = new ComponentPortal(AddCustomRefundReasonComponent, this.viewContainerRef);
-    const compRef: ComponentRef<AddCustomRefundReasonComponent> = this.overlayRef.attach(portal);
+    const portal = new ComponentPortal(AddLanguageCustomRfrComponent, this.viewContainerRef);
+    const compRef: ComponentRef<AddLanguageCustomRfrComponent> = this.overlayRef.attach(portal);
     let instance = compRef.instance;
-    instance.data = data;
+    instance.reasonCode = data.reasonCode;
+    instance.addNewLanguage = true;
     instance.closeOverlay.asObservable().subscribe(value => this.closeOverlay());
-    instance.addCustomRfRSettings.asObservable().subscribe(value => {
-      return console.log(JSON.stringify(value));
-    });
-    instance.editMode = true;
+    instance.addNewLanguageEvent.asObservable().subscribe(value => this.addNewLanguages(value));
+    return instance;
   }
 
   setupReasonCodeColDef() {
@@ -130,8 +135,8 @@ export class ReasonForRefundComponent implements OnInit {
       {key: "reasonForRefund", className: "data_grid_center_align"},
       {key: "numOfDocument", className: "data_grid_center_align"},
       {
-        cellElement: (data, rowData) => {
-          return this.generateActionMenu(rowData);
+        cellElement: (cellData, rowData, row) => {
+          return this.generateActionMenuForRfr(cellData, rowData, row);
         }, className: "data_grid_center_align"
       }];
   }
@@ -144,8 +149,8 @@ export class ReasonForRefundComponent implements OnInit {
       {key: "reasonForRefund", className: "data_grid_center_align"},
       {key: "hint", className: "data_grid_center_align"},
       {
-        cellElement: (cellData, rowData) => {
-          return this.generateI18ActionMenu(rowData);
+        cellElement: (cellData, rowData, row) => {
+          return this.generateActionMenuForRfRI18N(cellData, rowData, row);
         }, className: "data_grid_center_align"
       }];
   }
@@ -196,12 +201,25 @@ export class ReasonForRefundComponent implements OnInit {
       this.reasonCodes.next(value.list);
     });
   }
-  updateReasonCodeI18NTable(){
+
+  updateReasonCodeI18NTable() {
     this.adminService.getRFRI18N(this.clientId, this.reasonCodeI18NPageSettings.currentPage, this.reasonCodeI18NPageSettings.pageSize).subscribe(value => {
       this.reasonCodesI18N.next(value.list);
     });
   }
-  updateTables(){
+
+  expandReasonCodeI18N() {
+    return (data) => {
+      const componentResolve = this.CFR.resolveComponentFactory(EditRfRI18NComponent);
+      let component = this.viewContainerRef.createComponent(componentResolve);
+      component.instance.data = data;
+      component.instance.updateRfRI18N.asObservable().subscribe(value => this.updateRfRI18N(value));
+      component.instance.closeOverlay.asObservable().subscribe(value => this.collapseReasonCodeI18NEvent.next({value}));
+      return component.location.nativeElement;
+    };
+  }
+
+  updateTables() {
     this.updateReasonCodeTable();
     this.updateReasonCodeI18NTable();
   }
@@ -210,8 +228,64 @@ export class ReasonForRefundComponent implements OnInit {
     data.clientId = this.clientId;
     data.sortOrder = null;
     this.adminService.updateRfRI18NForClient(data).subscribe(value => {
+      this.collapseReasonCodeI18NEvent.next({});
       this.updateTables();
-      this.overlayRef.dispose();
+
+    })
+  }
+
+  private deleteI18N(data: CustomRfRI18N) {
+    let deleteI18NRfR = new DeleteI18NRfR();
+    deleteI18NRfR.locale = data.locale;
+    deleteI18NRfR.reasonCode = data.reasonCode;
+    deleteI18NRfR.clientId = this.clientId;
+    this.adminService.deleteRfRI18N(Object.assign(deleteI18NRfR, data)).subscribe(value => {
+      if (value.success) {
+        this.updateTables();
+      }
+    });
+  }
+
+  expandReasonCode() {
+    return (data) => {
+      const componentResolve = this.CFR.resolveComponentFactory(AddCustomRefundSettingComponent);
+      let component = this.viewContainerRef.createComponent(componentResolve);
+      component.instance.customRfRSetting = data;
+      component.instance.editMode = true;
+      component.instance.closeOverlay.asObservable().subscribe(value => this.collapseReasonCodeEvent.next({}));
+      component.instance.updateRefundSetting.asObservable().subscribe(value => this.updateRefundSetting(value));
+      return component.location.nativeElement;
+    };
+  }
+
+  private addNewLanguages(data) {
+    let request = new AddCustomRfR();
+    request.reasonForRefundList = data.list;
+    request.clientId = this.clientId;
+    request.reasonCode = data.reasonCode;
+    this.adminService.addLanguages(request).subscribe(value => {
+      if (value.success) {
+        this.updateTables();
+        this.closeOverlay();
+      }
+    });
+
+  }
+
+  private updateRefundSetting(request: CustomRfRSettings) {
+    request.clientId = this.clientId;
+    this.adminService.updateRfRForClient(request).subscribe(value => {
+      if (value.success) {
+        this.updateTables();
+        this.collapseReasonCodeEvent.next({});
+      }
+    })
+  }
+
+  private deleteRfR(data: CustomRfRSettings) {
+    data.clientId = this.clientId;
+    this.adminService.deleteRfR(data).subscribe(value => {
+      this.updateTables();
     })
   }
 }

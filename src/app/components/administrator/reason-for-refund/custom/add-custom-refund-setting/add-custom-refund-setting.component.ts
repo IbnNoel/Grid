@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {CustomRfRSettings} from "../../../../../core/administrator.service";
 
 @Component({
@@ -8,11 +8,24 @@ import {CustomRfRSettings} from "../../../../../core/administrator.service";
 })
 export class AddCustomRefundSettingComponent implements OnInit {
 
-  @Input() customRfRSetting:CustomRfRSettings;
+  @Input() customRfRSetting: CustomRfRSettings;
+  editMode: boolean;
+  gridWidth: String;
+  @Output() closeOverlay = new EventEmitter();
+  @Output() updateRefundSetting = new EventEmitter();
 
-  constructor() { }
-
-  ngOnInit() {
+  constructor() {
   }
 
+  ngOnInit() {
+    this.gridWidth = this.editMode ? "col-md-3" : "col-md-4";
+  }
+
+  onCancel() {
+    this.closeOverlay.emit();
+  }
+
+  onSave($event: any) {
+    this.updateRefundSetting.emit(this.customRfRSetting);
+  }
 }

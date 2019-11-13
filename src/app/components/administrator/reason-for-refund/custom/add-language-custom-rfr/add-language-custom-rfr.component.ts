@@ -1,4 +1,4 @@
-import {Component, ComponentFactoryResolver, ComponentRef, Input, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {Component, ComponentFactoryResolver, ComponentRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewContainerRef} from '@angular/core';
 import {AddLanguageCustomRfrChildComponent} from "../add-language-custom-rfr-child/add-language-custom-rfr-child.component";
 import {CustomRfRI18N} from "../../../../../core/administrator.service";
 
@@ -10,8 +10,12 @@ import {CustomRfRI18N} from "../../../../../core/administrator.service";
 })
 export class AddLanguageCustomRfrComponent implements OnInit {
 
-  @Input() list: Array<CustomRfRI18N>;
+  @Input() list: Array<CustomRfRI18N> = [];
   @Input() editMode: boolean;
+  reasonCode:String;
+  addNewLanguage: boolean;
+  @Output() closeOverlay = new EventEmitter();
+  @Output() addNewLanguageEvent = new EventEmitter();
 
   constructor(private CFR: ComponentFactoryResolver) {
   }
@@ -31,11 +35,18 @@ export class AddLanguageCustomRfrComponent implements OnInit {
     if (!this.editMode) {
       this.list.push(currentComponent.customRfRI18N);
       currentComponent.customRfRI18N.locale = language;
-    }else{
-      currentComponent.customRfRI18N=this.list.pop();
+    } else {
+      currentComponent.customRfRI18N = this.list.pop();
     }
 
 
   }
 
+  onSave($event: any) {
+    this.addNewLanguageEvent.emit({list:this.list,reasonCode:this.reasonCode});
+  }
+
+  onCancel() {
+    this.closeOverlay.emit();
+  }
 }

@@ -25,6 +25,10 @@ export class AdministratorService {
   private readonly TOGGLE_RFR = `${this.ROUTE_URL}/reasonForRefunds/configure/`;
   private readonly UPDATE_REFUND_HANDLING = `${this.ROUTE_URL}/configure/updateRefundHandling`;
   private readonly UPDATE_RFR_I18N = `${this.ROUTE_URL}/client/reasonForRefund/updateRFRI18N`;
+  private readonly UPDATE_RFR = `${this.ROUTE_URL}/client/reasonForRefunds/updateRFR`;
+  private readonly DELETE_RFR_I18N = `${this.ROUTE_URL}/client/reasonForRefund/deleteRFRI18N`;
+  private readonly DELETE_RFR = `${this.ROUTE_URL}/client/reasonForRefunds/deleteRFR`;
+  private readonly ADD_RFR_I18N = `${this.ROUTE_URL}/client/reasonForRefunds/addRFRI18N`;
 
 
   private apiResponseMap: OperatorFunction<ApiResponse<any>, any> = flatMap(response => {
@@ -79,22 +83,25 @@ export class AdministratorService {
   updateRfRI18NForClient(updateRfRI18N: CustomRfRI18N) {
     return this.httpClient.post<ApiResponse<CustomRfRI18N>>(this.UPDATE_RFR_I18N, updateRfRI18N);
   }
+  updateRfRForClient(data: CustomRfRSettings) {
+    return this.httpClient.put<ApiResponse<CustomRfRI18N>>(this.UPDATE_RFR, data);
+  }
 
   getRefundRequestSettings(id) {
     return this.httpClient.get<ApiResponse<RefundRequestSettings>>(this.GET_REFUND_URL + id).pipe(this.apiResponseMap);
   }
+  deleteRfRI18N(data){
+    return this.httpClient.request("delete",this.DELETE_RFR_I18N,{body:data});
+  }
+  deleteRfR(data){
+    return this.httpClient.request("delete",this.DELETE_RFR,{body:data});
+  }
 
-  setRefundRequestSettings(settings
-                             :
-                             RefundRequestSettings
-  ) {
+  setRefundRequestSettings(settings:RefundRequestSettings) {
     return this.httpClient.put<ApiResponse<RefundRequestSettings>>(this.SET_REFUND_URL, settings);
   }
 
-  setDefaultSettings(settings
-                       :
-                       ClientSettings
-  ) {
+  setDefaultSettings(settings:ClientSettings  ) {
     return this.httpClient.post<ApiResponse<ClientSettings>>(this.CONFIGURE_DEFAULT_URL, settings).pipe(this.apiResponseMap);
   }
 
@@ -120,6 +127,9 @@ export class AdministratorService {
 
     return this.httpClient.get<ApiResponse<PagedResponse<Client>>>(GET_CLIENT_URL, {params});
   }*/
+  addLanguages(value: AddCustomRfR) {
+    return this.httpClient.post(this.ADD_RFR_I18N,value);
+  }
 }
 
 export interface IndustrySegment {
@@ -172,8 +182,9 @@ export interface RefundRequestSettings {
 export class CustomRfRSettings {
   clientId: number;
   reasonCode: String;
-  sortOrder: number;
-  numOfDocument: number;
+  sortOrder?: number;
+  numOfDocument?: number;
+  reasonForRefund?:String;
 }
 
 export class CustomRfRI18N {
@@ -190,5 +201,10 @@ export class AddCustomRfR extends CustomRfRSettings {
 }
 export class ToggleRfrResponse{
   isStandardRFREnabled:boolean;
+}
+export class DeleteI18NRfR{
+  clientId:number;
+  reasonCode:String;
+  locale:String;
 }
 

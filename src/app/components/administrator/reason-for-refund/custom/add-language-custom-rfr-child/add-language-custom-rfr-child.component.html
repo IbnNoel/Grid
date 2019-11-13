@@ -1,19 +1,32 @@
-<div class="row form-row form-group">
-  <div class="col-xs-2">
-    <label class="col-sm-3 col-form-label">Language</label>
-    <select  name="language" class="form-control wuselect" [(ngModel)]="customRfRI18N.locale" required="true" [disabled]="editMode">
-      <option value={{l}} *ngFor="let  l of languages$ | async">{{l}}</option>
-    </select>
+<div class="row">
+  <div class="form-group col-md-3">
+    <div>
+      <label class="control-label ">Language</label>
+    </div>
+    <div>
+      <select name="language" class="form-control wuselect col-md-3" [(ngModel)]="customRfRI18N.locale" required="true" *ngIf="!editMode">
+        <option value={{l}} *ngFor="let  l of languages$ | async">{{l}}</option>
+      </select>
+      <label class="control-label " *ngIf="editMode">{{customRfRI18N.locale}}</label>
+    </div>
   </div>
-  <div class="col-xs-3">
-    <label class="col-sm-12 col-form-label">Reason for Refund</label>
-    <input  type="text" name="reasonForRefund" [(ngModel)]="customRfRI18N.reasonForRefund" class="form-control"/>
+  <div class="form-group col-md-3">
+    <div>
+      <label class="control-label  ">Reason for Refund</label>
+    </div>
+    <div>
+      <input type="text" name="reasonForRefund" [(ngModel)]="customRfRI18N.reasonForRefund" class="form-control col-md-3 "/>
+    </div>
   </div>
-  <div class="col-xs-6">
-    <label class="col-sm-3 col-form-label">Hint</label>
-    <textarea  name="hint" [(ngModel)]="customRfRI18N.hint" class="form-control"></textarea>
+  <div class="form-group col-md-5">
+    <div>
+      <label class="control-label ">Hint</label>
+    </div>
+    <div>
+      <textarea name="hint" [(ngModel)]="customRfRI18N.hint" class="form-control col-md-5 "></textarea>
+    </div>
   </div>
-  <div class="col-xs-1" *ngIf="!editMode">
+  <div class="col-md-1" *ngIf="!editMode">
     <app-action-menu [buttons]="actionButtons"></app-action-menu>
   </div>
 </div>
