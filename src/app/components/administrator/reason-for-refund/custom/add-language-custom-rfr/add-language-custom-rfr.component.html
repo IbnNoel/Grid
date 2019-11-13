@@ -1,4 +1,5 @@
 <div [ngClass]="(addNewLanguage)?'content':''">
+  <h5 *ngIf="addNewLanguage">Add language</h5>
 <ng-template #viewContainerRef ></ng-template>
 <app-operation-buttons (onCancel)="onCancel()" (onSave)="onSave($event)" *ngIf="addNewLanguage"></app-operation-buttons>
 </div>
