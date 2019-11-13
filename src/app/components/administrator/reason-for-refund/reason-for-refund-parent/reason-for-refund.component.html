@@ -20,7 +20,14 @@
   </div>
 </div>
 <div>
-  <app-data-table [Columns]="reasonCodeColDef" [Data]="reasonCodes" [(PageSettings)]="reasonCodePageSettings"></app-data-table>
+  <app-data-table
+    [expandEvent]="expandReasonCodeEvent"
+    [collapseEvent]="collapseReasonCodeEvent"
+    [detailRow]="true"
+    [detailRowCallback]="expandReasonCode()"
+    [Columns]="reasonCodeColDef"
+    [Data]="reasonCodes"
+    [(PageSettings)]="reasonCodePageSettings"></app-data-table>
 </div>
 <div>
   <app-data-table

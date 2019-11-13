@@ -71,7 +71,7 @@ import { EditRfRI18NComponent } from './components/administrator/reason-for-refu
   providers: [WINDOW_PROVIDERS, Gp2Service, AuthGuardService, AuthService, RefundService, AdministratorService, RoleAuthGuard, LoaderService, LoaderInterceptor,
     {provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true}],
-  entryComponents: [AddLanguageCustomRfrChildComponent, ActionMenuComponent,EditRfRI18NComponent],
+  entryComponents: [AddLanguageCustomRfrChildComponent, ActionMenuComponent,EditRfRI18NComponent,AddLanguageCustomRfrComponent,AddCustomRefundSettingComponent],
   bootstrap: [AppComponent]
 
 })
