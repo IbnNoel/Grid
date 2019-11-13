@@ -1,12 +1,36 @@
-<div class="col-xs-4">
-  <label class="col-sm-5 col-form-label">Reason Code</label>
-  <input type="text" name="reasonCode" class="form-control" [(ngModel)]="customRfRSetting.reasonCode" maxlength="40" required="true"/>
+<div class="row">
+  <div class="form-group" [ngClass]="gridWidth">
+    <div>
+      <label class="control-label">Reason Code</label>
+    </div>
+    <div>
+      <input type="text" name="reasonCode" class="form-control" [(ngModel)]="customRfRSetting.reasonCode" maxlength="40" required="true" *ngIf="!editMode"/>
+      <label class="control-label" *ngIf="editMode">{{customRfRSetting.reasonCode}}</label>
+    </div>
+  </div>
+  <div class="form-group" [ngClass]="gridWidth" *ngIf="editMode">
+    <div>
+      <label class="control-label">Reason for refund</label>
+    </div>
+    <div>
+      <label class="control-label">{{customRfRSetting.reasonForRefund}}</label>
+    </div>
+  </div>
+  <div class=" form-group" [ngClass]="gridWidth">
+    <div>
+      <label class="control-label">Sort order</label>
+    </div>
+    <div>
+      <input type="number" name="sortOrder" [(ngModel)]="customRfRSetting.sortOrder" class="form-control" pattern="[0-9]"/>
+    </div>
+  </div>
+  <div class=" form-group" [ngClass]="gridWidth">
+    <div>
+      <label class="control-label">No of documents</label>
+    </div>
+    <div>
+      <input type="number" name="numOfDocument" [(ngModel)]="customRfRSetting.numOfDocument" class="form-control" pattern="[0-9]"/>
+    </div>
+  </div>
 </div>
-<div class="col-xs-4">
-  <label class="col-sm-5 col-form-label">Sort order</label>
-  <input type="text" name="sortOrder" [(ngModel)]="customRfRSetting.sortOrder" class="form-control"/>
-</div>
-<div class="col-xs-4">
-  <label class="col-sm-6 col-form-label">No of documents</label>
-  <input type="text" name="numOfDocument" [(ngModel)]="customRfRSetting.numOfDocument" class="form-control"/>
-</div>
+<app-operation-buttons *ngIf="editMode" (onCancel)="onCancel()" (onSave)="onSave($event)"></app-operation-buttons>
