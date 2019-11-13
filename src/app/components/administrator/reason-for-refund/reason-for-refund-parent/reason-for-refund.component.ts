@@ -7,11 +7,11 @@ import {AddCustomRefundReasonComponent} from "../custom/add-custom-refund-reason
 import {Overlay, OverlayConfig, OverlayRef} from '@angular/cdk/overlay';
 import {ComponentPortal} from '@angular/cdk/portal';
 import {take} from "rxjs/operators";
-import {AddCustomRfRSettingsAction, GetRFR, GetRFRI18N} from "../../../../actions/refundAction";
 import {ColumnDefs} from "../../../controls/data-table/classes/Columns";
 import {BehaviorSubject, forkJoin, Observable} from "rxjs";
 import {ActionButton, ActionMenuComponent} from "../../../controls/action-menu/action-menu.component";
 import {PageSettings} from "../../../controls/data-table/classes/Paging";
+import {EditRfRI18NComponent} from "../custom/edit-rf-ri18-n/edit-rf-ri18-n.component";
 
 
 @Component({
@@ -30,8 +30,11 @@ export class ReasonForRefundComponent implements OnInit {
   isStandardRfREnabled: boolean;
   reasonCodes = new BehaviorSubject<Array<CustomRfRSettings>>([]);
   reasonCodesI18N = new BehaviorSubject<Array<CustomRfRI18N>>([]);
-  pageSettings = new PageSettings(() => {
-    //this.onSearch();
+  reasonCodePageSettings = new PageSettings(() => {
+    this.updateReasonCodeTable();
+  });
+  reasonCodeI18NPageSettings = new PageSettings(() => {
+    this.updateReasonCodeI18NTable();
   });
 
   constructor(private adminService: AdministratorService, private store: Store<State>, private router: Router, private route: ActivatedRoute, private overlay: Overlay, private viewContainerRef: ViewContainerRef) {
@@ -49,12 +52,7 @@ export class ReasonForRefundComponent implements OnInit {
     }).subscribe(data => {
       this.isStandardRfREnabled = data.clientSettings.standardRFREnabled;
       this.clientId = data.clientSettings.clientId;
-      this.adminService.getRFR(this.clientId, this.pageSettings.pagesNumber, this.pageSettings.pageSize).subscribe(value => {
-        this.store.dispatch(new GetRFR(value.reasonCodes as Array<CustomRfRSettings>));
-      });
-      this.adminService.getRFRI18N(this.clientId, this.pageSettings.pagesNumber, this.pageSettings.pageSize).subscribe(value => {
-        this.store.dispatch(new GetRFRI18N(value.reasonCodesI18N as Array<CustomRfRI18N>));
-      });
+      this.updateTables();
     }, error => {
       console.error(error);
     })
@@ -64,7 +62,33 @@ export class ReasonForRefundComponent implements OnInit {
     let menu = new ActionMenuComponent();
     let actionMenu = [];
     let editButton = new ActionButton();
-    editButton.label = "edit";
+    let addLanguageButton = new ActionButton();
+    let deleteButton = new ActionButton();
+    editButton.label = "Edit";
+    addLanguageButton.label = "Add Language";
+    deleteButton.label = "Delete";
+    addLanguageButton.data = data;
+    addLanguageButton.action = (data) => {
+      return this.createAddLanguageOverlay(data);
+    };
+    editButton.action = (data) => {
+      console.log("Edited data");
+      return;
+    };
+    deleteButton.action = (data) => {
+      console.log("Data deleted");
+      return;
+    };
+    actionMenu.push(editButton, addLanguageButton, deleteButton);
+    menu.buttons.push(editButton, addLanguageButton, deleteButton);
+    return menu;
+  };
+
+  generateI18ActionMenu(data) {
+    let menu = new ActionMenuComponent();
+    let actionMenu = [];
+    let editButton = new ActionButton();
+    editButton.label = "Edit";
     editButton.data = data;
     editButton.action = (data) => {
       console.log("calling it");
@@ -91,11 +115,12 @@ export class ReasonForRefundComponent implements OnInit {
     const portal = new ComponentPortal(AddCustomRefundReasonComponent, this.viewContainerRef);
     const compRef: ComponentRef<AddCustomRefundReasonComponent> = this.overlayRef.attach(portal);
     let instance = compRef.instance;
+    instance.data = data;
     instance.closeOverlay.asObservable().subscribe(value => this.closeOverlay());
     instance.addCustomRfRSettings.asObservable().subscribe(value => {
       return console.log(JSON.stringify(value));
     });
-    instance.editLanguage = true;
+    instance.editMode = true;
   }
 
   setupReasonCodeColDef() {
@@ -103,10 +128,10 @@ export class ReasonForRefundComponent implements OnInit {
       {key: "reasonCode", className: "data_grid_left_align"},
       {key: "sortOrder", className: "data_grid_center_align"},
       {key: "reasonForRefund", className: "data_grid_center_align"},
-      {key: "noOfDocs", className: "data_grid_center_align"},
+      {key: "numOfDocument", className: "data_grid_center_align"},
       {
-        cellElement: (data) => {
-          return this.generateActionMenu(data);
+        cellElement: (data, rowData) => {
+          return this.generateActionMenu(rowData);
         }, className: "data_grid_center_align"
       }];
   }
@@ -120,7 +145,7 @@ export class ReasonForRefundComponent implements OnInit {
       {key: "hint", className: "data_grid_center_align"},
       {
         cellElement: (cellData, rowData) => {
-          return this.generateActionMenu(rowData);
+          return this.generateI18ActionMenu(rowData);
         }, className: "data_grid_center_align"
       }];
   }
@@ -153,12 +178,7 @@ export class ReasonForRefundComponent implements OnInit {
     console.log(JSON.stringify(customRfRSetting));
     this.adminService.addCustomRfR(customRfRSetting).subscribe(response => {
       if (response.success) {
-        this.adminService.getRFR(this.clientId, this.pageSettings.pagesNumber, this.pageSettings.pageSize).subscribe(value => {
-          this.store.dispatch(new GetRFR(value.reasonCodes as Array<CustomRfRSettings>));
-        });
-        this.adminService.getRFRI18N(this.clientId, this.pageSettings.pagesNumber, this.pageSettings.pageSize).subscribe(value => {
-          this.store.dispatch(new GetRFRI18N(value.reasonCodesI18N as Array<CustomRfRI18N>));
-        });
+        this.updateTables();
         this.overlayRef.dispose();
       }
     })
@@ -167,6 +187,31 @@ export class ReasonForRefundComponent implements OnInit {
   toggleRfR() {
     this.adminService.toggleRfR(this.clientId).subscribe(value => {
       this.isStandardRfREnabled = value.data.isStandardRFREnabled;
+      this.updateTables();
     });
+  }
+
+  updateReasonCodeTable() {
+    this.adminService.getRFR(this.clientId, this.reasonCodePageSettings.currentPage, this.reasonCodePageSettings.pageSize).subscribe(value => {
+      this.reasonCodes.next(value.list);
+    });
+  }
+  updateReasonCodeI18NTable(){
+    this.adminService.getRFRI18N(this.clientId, this.reasonCodeI18NPageSettings.currentPage, this.reasonCodeI18NPageSettings.pageSize).subscribe(value => {
+      this.reasonCodesI18N.next(value.list);
+    });
+  }
+  updateTables(){
+    this.updateReasonCodeTable();
+    this.updateReasonCodeI18NTable();
+  }
+
+  private updateRfRI18N(data: CustomRfRI18N) {
+    data.clientId = this.clientId;
+    data.sortOrder = null;
+    this.adminService.updateRfRI18NForClient(data).subscribe(value => {
+      this.updateTables();
+      this.overlayRef.dispose();
+    })
   }
 }

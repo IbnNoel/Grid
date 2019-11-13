@@ -41,11 +41,12 @@ import {AddLanguageCustomRfrChildComponent} from './components/administrator/rea
 import {ActionMenuComponent} from './components/controls/action-menu/action-menu.component';
 import { AddCustomRefundSettingComponent } from './components/administrator/reason-for-refund/custom/add-custom-refund-setting/add-custom-refund-setting.component';
 import { RefundHandlingComponent } from './components/administrator/refund-handling/refund-handling.component';
+import { EditRfRI18NComponent } from './components/administrator/reason-for-refund/custom/edit-rf-ri18-n/edit-rf-ri18-n.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent, RefundsComponent, CreateRefundsComponent, ManageRefundsComponent, AdministratorComponent, ClientSettingsComponent, DirectRejectRequestComponent, OperationButtonsComponent, DataTableComponent, GpfiModalComponent, LoadingDirective, ReasonForRefundComponent, AddCustomRefundReasonComponent, AddLanguageCustomRfrComponent, AddLanguageCustomRfrChildComponent, ActionMenuComponent, AddCustomRefundSettingComponent, RefundHandlingComponent
+    AppComponent, RefundsComponent, CreateRefundsComponent, ManageRefundsComponent, AdministratorComponent, ClientSettingsComponent, DirectRejectRequestComponent, OperationButtonsComponent, DataTableComponent, GpfiModalComponent, LoadingDirective, ReasonForRefundComponent, AddCustomRefundReasonComponent, AddLanguageCustomRfrComponent, AddLanguageCustomRfrChildComponent, ActionMenuComponent, AddCustomRefundSettingComponent, RefundHandlingComponent,EditRfRI18NComponent
   ],
   imports: [
     BrowserModule,
@@ -71,7 +72,7 @@ import { RefundHandlingComponent } from './components/administrator/refund-handl
   providers: [WINDOW_PROVIDERS, Gp2Service, AuthGuardService, AuthService, RefundService, AdministratorService, RoleAuthGuard, LoaderService, LoaderInterceptor,
     {provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true}],
-  entryComponents: [AddLanguageCustomRfrChildComponent, ActionMenuComponent],
+  entryComponents: [AddLanguageCustomRfrChildComponent, ActionMenuComponent,EditRfRI18NComponent],
   bootstrap: [AppComponent]
 
 })

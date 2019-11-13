@@ -51,4 +51,4 @@ export class AddCustomRfRSettingsAction implements Action {
   }
 }
 
-export type AdminAction = GetAdminSettingAction | SaveClientSettingsAction | SaveRefundRequestSettingAction | AddCustomRfRSettingsAction;
+export type AdminAction = GetAdminSettingAction | SaveClientSettingsAction | SaveRefundRequestSettingAction | AddCustomRfRSettingsAction | GetRFR|GetRFRI18N;
