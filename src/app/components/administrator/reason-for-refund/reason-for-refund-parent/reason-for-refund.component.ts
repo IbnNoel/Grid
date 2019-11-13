@@ -1,5 +1,5 @@
-import {Component, ComponentRef, OnInit, ViewContainerRef} from '@angular/core';
-import {AddCustomRfR, AdministratorService, ClientSettings, CustomRfRI18N, CustomRfRSettings} from "../../../../core/administrator.service";
+import {Component, ComponentFactoryResolver, ComponentRef, EventEmitter, OnInit, ViewContainerRef} from '@angular/core';
+import {AddCustomRfR, AdministratorService, ClientSettings, CustomRfRI18N, CustomRfRSettings, DeleteI18NRfR} from "../../../../core/administrator.service";
 import {createSelector, select, Store} from "@ngrx/store";
 import {State} from "../../../../reducers";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -29,6 +29,10 @@ export class ReasonForRefundComponent implements OnInit {
   clientId: number;
   isStandardRfREnabled: boolean;
   reasonCodes = new BehaviorSubject<Array<CustomRfRSettings>>([]);
+  expandReasonCodeEvent = new BehaviorSubject<any>({});
+  collapseReasonCodeEvent = new BehaviorSubject<any>({});
+  expandReasonCodeI18NEvent = new BehaviorSubject<any>({});
+  collapseReasonCodeI18NEvent = new BehaviorSubject<any>({});
   reasonCodesI18N = new BehaviorSubject<Array<CustomRfRI18N>>([]);
   reasonCodePageSettings = new PageSettings(() => {
     this.updateReasonCodeTable();
@@ -37,7 +41,7 @@ export class ReasonForRefundComponent implements OnInit {
     this.updateReasonCodeI18NTable();
   });
 
-  constructor(private adminService: AdministratorService, private store: Store<State>, private router: Router, private route: ActivatedRoute, private overlay: Overlay, private viewContainerRef: ViewContainerRef) {
+  constructor(private adminService: AdministratorService, private store: Store<State>, private router: Router, private route: ActivatedRoute, private overlay: Overlay, private viewContainerRef: ViewContainerRef, private CFR: ComponentFactoryResolver) {
     this.setupReasonCodeColDef();
     this.setupReasonCodeI18NColDef();
   }
@@ -58,69 +62,46 @@ export class ReasonForRefundComponent implements OnInit {
     })
   }
 
-  generateActionMenu(data) {
+  generateActionMenu(cellData, rowData, row) {
     let menu = new ActionMenuComponent();
-    let actionMenu = [];
     let editButton = new ActionButton();
-    let addLanguageButton = new ActionButton();
+    editButton.label = "edit";
+    editButton.data = rowData;
+    editButton.action = (data) => {
+      this.tes.emit({row: row, data: data});
+      this.expandReasonCodeI18NEvent.next({row: row, data: data});
+    };
     let deleteButton = new ActionButton();
-    editButton.label = "Edit";
-    addLanguageButton.label = "Add Language";
-    deleteButton.label = "Delete";
-    addLanguageButton.data = data;
-    addLanguageButton.action = (data) => {
-      return this.createAddLanguageOverlay(data);
-    };
-    editButton.action = (data) => {
-      console.log("Edited data");
-      return;
-    };
-    deleteButton.action = (data) => {
-      console.log("Data deleted");
-      return;
-    };
-    actionMenu.push(editButton, addLanguageButton, deleteButton);
-    menu.buttons.push(editButton, addLanguageButton, deleteButton);
-    return menu;
-  };
-
-  generateI18ActionMenu(data) {
-    let menu = new ActionMenuComponent();
-    let actionMenu = [];
-    let editButton = new ActionButton();
-    editButton.label = "Edit";
-    editButton.data = data;
-    editButton.action = (data) => {
-      console.log("calling it");
-      console.log(JSON.stringify(data));
-      return this.createAddLanguageOverlay(data);
-    };
-    actionMenu.push(editButton);
-    menu.buttons.push(editButton);
+    deleteButton.label = "delete";
+    deleteButton.data = rowData;
+    deleteButton.action = (data => {
+      this.deleteI18N(data);
+    });
+    menu.buttons.push(editButton, deleteButton);
     return menu;
   };
 
   createAddLanguageOverlay(data) {
-    let config = new OverlayConfig();
+    /* let config = new OverlayConfig();
 
-    config.positionStrategy = this.overlay.position()
-      .global().centerHorizontally().centerVertically();
+     config.positionStrategy = this.overlay.position()
+       .global().centerHorizontally().centerVertically();
 
-    config.hasBackdrop = true;
+     config.hasBackdrop = true;
 
-    this.overlayRef = this.overlay.create(config);
-    this.overlayRef.backdropClick().subscribe(() => {
-      this.overlayRef.dispose();
-    });
-    const portal = new ComponentPortal(AddCustomRefundReasonComponent, this.viewContainerRef);
-    const compRef: ComponentRef<AddCustomRefundReasonComponent> = this.overlayRef.attach(portal);
-    let instance = compRef.instance;
+     this.overlayRef = this.overlay.create(config);
+     this.overlayRef.backdropClick().subscribe(() => {
+       this.overlayRef.dispose();
+     });*/
+    const componentRef = this.CFR.resolveComponentFactory(EditRfRI18NComponent);
+    let instance1 = this.viewContainerRef.createComponent(componentRef);
+    // const portal = new ComponentPortal(EditRfRI18NComponent, this.viewContainerRef);
+    // const compRef: ComponentRef<EditRfRI18NComponent> = this.overlayRef.attach(portal);
+    let instance = instance1.instance;
     instance.data = data;
     instance.closeOverlay.asObservable().subscribe(value => this.closeOverlay());
-    instance.addCustomRfRSettings.asObservable().subscribe(value => {
-      return console.log(JSON.stringify(value));
-    });
-    instance.editMode = true;
+    instance.updateRfRI18N.asObservable().subscribe(value => this.updateRfRI18N(value));
+    return instance;
   }
 
   setupReasonCodeColDef() {
@@ -130,8 +111,8 @@ export class ReasonForRefundComponent implements OnInit {
       {key: "reasonForRefund", className: "data_grid_center_align"},
       {key: "numOfDocument", className: "data_grid_center_align"},
       {
-        cellElement: (data, rowData) => {
-          return this.generateActionMenu(rowData);
+        cellElement: (cellData, rowData, row) => {
+          return this.generateActionMenu(cellData, rowData, row);
         }, className: "data_grid_center_align"
       }];
   }
@@ -144,8 +125,8 @@ export class ReasonForRefundComponent implements OnInit {
       {key: "reasonForRefund", className: "data_grid_center_align"},
       {key: "hint", className: "data_grid_center_align"},
       {
-        cellElement: (cellData, rowData) => {
-          return this.generateI18ActionMenu(rowData);
+        cellElement: (cellData, rowData, row) => {
+          return this.generateActionMenu(cellData, rowData, row);
         }, className: "data_grid_center_align"
       }];
   }
@@ -196,12 +177,25 @@ export class ReasonForRefundComponent implements OnInit {
       this.reasonCodes.next(value.list);
     });
   }
-  updateReasonCodeI18NTable(){
+
+  updateReasonCodeI18NTable() {
     this.adminService.getRFRI18N(this.clientId, this.reasonCodeI18NPageSettings.currentPage, this.reasonCodeI18NPageSettings.pageSize).subscribe(value => {
       this.reasonCodesI18N.next(value.list);
     });
   }
-  updateTables(){
+
+  expandReasonCodeI18N() {
+    return (data) => {
+      const componentResolve = this.CFR.resolveComponentFactory(EditRfRI18NComponent);
+      let component = this.viewContainerRef.createComponent(componentResolve);
+      component.instance.data = data;
+      component.instance.updateRfRI18N.asObservable().subscribe(value => this.updateRfRI18N(value));
+      component.instance.closeOverlay.asObservable().subscribe(value => this.collapseReasonCodeI18NEvent.next({value}));
+      return component.location.nativeElement;
+    };
+  }
+
+  updateTables() {
     this.updateReasonCodeTable();
     this.updateReasonCodeI18NTable();
   }
@@ -210,8 +204,25 @@ export class ReasonForRefundComponent implements OnInit {
     data.clientId = this.clientId;
     data.sortOrder = null;
     this.adminService.updateRfRI18NForClient(data).subscribe(value => {
+      this.collapseReasonCodeI18NEvent.next({});
       this.updateTables();
-      this.overlayRef.dispose();
+
     })
+  }
+
+  collapseReasonCodeI18N() {
+    this.collapseReasonCodeI18NEvent.next({});
+  }
+
+  private deleteI18N(data: CustomRfRI18N) {
+    let deleteI18NRfR=new DeleteI18NRfR();
+    deleteI18NRfR.locale=data.locale;
+    deleteI18NRfR.reasonCode=data.reasonCode;
+    deleteI18NRfR.clientId = this.clientId;
+    this.adminService.deleteRfRI18N(Object.assign(deleteI18NRfR, data)).subscribe(value => {
+      if (value.success) {
+        this.updateTables();
+      }
+    });
   }
 }

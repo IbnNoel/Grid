@@ -1,16 +1,13 @@
-import {Component, OnInit, AfterViewInit, ViewChild, ElementRef, Input, ComponentFactoryResolver, ViewContainerRef} from '@angular/core';
+import {AfterViewInit, Component, ComponentFactoryResolver, ElementRef, Input, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import * as $ from 'jquery';
 import * as _ from 'lodash';
 
 import 'datatables.net';
-import  'datatables.net-bs';
+import 'datatables.net-bs';
 
-import { Observable, of, from } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
-import { FUNCTION_TYPE } from '@angular/compiler/src/output/output_ast';
-import { _runtimeChecksFactory } from '@ngrx/store/src/runtime_checks';
-import { PageSettings, PagingHelper } from './classes/Paging';
-import { HandleColumnSettings, ColumnDefs } from './classes/Columns';
+import {Observable} from 'rxjs';
+import {PageSettings, PagingHelper} from './classes/Paging';
+import {ColumnDefs, HandleColumnSettings} from './classes/Columns';
 
 @Component({
   selector: 'app-data-table',
@@ -18,13 +15,16 @@ import { HandleColumnSettings, ColumnDefs } from './classes/Columns';
   styleUrls: ['./data-table.component.scss'],
 })
 export class DataTableComponent implements OnInit, AfterViewInit {
-  @ViewChild("table", {static:true} ) tableHtml: ElementRef;
+  @ViewChild("table", {static: true}) tableHtml: ElementRef;
   @ViewChild('table', {static: true, read: ViewContainerRef}) VCR: ViewContainerRef;
 
+  @Input() expandEvent?: Observable<any>;
+  @Input() collapseEvent?: Observable<any>;
   @Input() Data: Observable<Array<any>>;
   @Input() Columns: Array<ColumnDefs>;
   @Input() PageSettings: PageSettings;
-
+  @Input() detailRow?: boolean;
+  @Input() detailRowCallback?: any;
   dataTableApi: DataTables.Api;
   dataTableSettings: DataTables.Settings;
   columnSettings: DataTables.ColumnSettings
@@ -32,13 +32,30 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   pagingHelper: PagingHelper;
   pageChangeData: Observable<any>;
 
-  constructor(private CFR: ComponentFactoryResolver) {}
+
+  constructor(private CFR: ComponentFactoryResolver) {
+  }
 
   ngAfterViewInit(): void {
     this.dataTableApi = $(this.tableHtml.nativeElement).DataTable(this.constructTableSettings());
     this.initPaging();
 
-    this.Data.subscribe( data => {
+    if (this.detailRow) {
+      this.expandEvent.subscribe(value => {
+        if (Object.keys(value).length > 0) {
+          const row = this.dataTableApi.row(value.row);
+          $("table tr .expanded").parent().remove();
+            let parentDiv = $("<div class='expanded'></div>");
+            parentDiv.append(this.detailRowCallback(value.data))
+            row.child(parentDiv).show();
+        };
+      });
+      this.collapseEvent.subscribe(value => {
+        $("table tr .expanded").parent().remove();
+      });
+    }
+
+    this.Data.subscribe(data => {
       this.initTable(data);
     });
   }
@@ -46,11 +63,11 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   constructTableSettings = () => {
     let columnSettings = this.constructColumnSettings();
     console.log(columnSettings);
-    let dataTableSettings:DataTables.Settings  = {
+    let dataTableSettings: DataTables.Settings = {
       columns: columnSettings,
-      info:false,
-      ordering:false,
-      searching:false,
+      info: false,
+      ordering: false,
+      searching: false,
       language: {
         lengthMenu: "_MENU_"
       },
@@ -62,37 +79,37 @@ export class DataTableComponent implements OnInit, AfterViewInit {
     return dataTableSettings;
   }
 
-  initTable(data){
-    if(this.PageSettings){
+  initTable(data) {
+    if (this.PageSettings) {
       this.pagingHelper.initPaging(() => {
         this.createTable(data);
         /*  if (!update || !ctrl.detailRow) {
               table.draw(false);
          }*/
       })
-    }else{
+    } else {
       this.createTable(data);
-     /*  if (!update || !ctrl.detailRow) {
-              table.draw();
-     }*/
+      /*  if (!update || !ctrl.detailRow) {
+               table.draw();
+      }*/
     }
 
   }
 
-  initPaging(){
-    if(this.PageSettings){
+  initPaging() {
+    if (this.PageSettings) {
       this.pagingHelper = new PagingHelper(this.dataTableApi, this.PageSettings);
     }
   }
 
-  createTable(data){
+  createTable(data) {
     this.dataTableApi.clear();
     this.dataTableApi.rows.add(data);
     this.dataTableApi.draw();
   }
 
-  private constructColumnSettings(): Array<DataTables.ColumnSettings>{
-      return _.map(this.Columns, (setting) =>  new HandleColumnSettings(setting,this.VCR,this.CFR).getDataTablesColumns());
+  private constructColumnSettings(): Array<DataTables.ColumnSettings> {
+    return _.map(this.Columns, (setting) => new HandleColumnSettings(setting, this.VCR, this.CFR).getDataTablesColumns());
   }
 
   ngOnInit() {
