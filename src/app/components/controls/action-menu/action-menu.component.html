@@ -1,8 +1,9 @@
-<div>
-  <mat-menu #menuItem="matMenu">
-    <button mat-menu-item *ngFor="let b of buttons" (click)="b._performAction(b.data)">{{b.label}}</button>
-  </mat-menu>
-  <button mat-icon-button [matMenuTriggerFor]="menuItem" class="mat-icon-button">
-    <mat-icon>more_vert</mat-icon>
-  </button>
-</div>
+<div class="btn-group">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="
+    padding-top: 9px;">
+        <span class="glyphicon glyphicon-option-horizontal" aria-hidden="true" style="font-size: large;"></span>
+    </button>
+    <ul class="dropdown-menu">
+      <li mat-menu-item *ngFor="let b of buttons"><a (click)="b._performAction(b.data)">{{b.label}}</a></li>
+    </ul>
+  </div>
