@@ -30,6 +30,8 @@ export class AddLanguageCustomRfrChildComponent implements OnInit {
   }
 
   ngOnInit() {
+
+
     this.languages$.subscribe(value => {
       value.forEach(locale => {
         let button = new ActionButton();
@@ -44,12 +46,5 @@ export class AddLanguageCustomRfrChildComponent implements OnInit {
     if(this.data){
       this.customRfRI18N=this.data;
     }
-    /*this.store.pipe(
-      take(1),
-      select(
-        createSelector((state) => state.adminSettings,
-          (adminSettings) => adminSettings.customRfRI18N))).subscribe(value => {
-      this.customRfRI18N = value.find(x => (x.locale == this.data.locale && x.reasonCode==this.data.reasonCode));
-    });*/
   }
 }
