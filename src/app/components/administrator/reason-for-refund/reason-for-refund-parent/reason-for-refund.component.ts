@@ -76,7 +76,7 @@ export class ReasonForRefundComponent implements OnInit {
     deleteButton.label = "delete";
     deleteButton.data = rowData;
     deleteButton.action = (data => {
-      this.deleteRfR(data);
+      this.deleteI18N(data);
     });
     menu.buttons.push(editButton, deleteButton);
     return menu;
@@ -94,7 +94,7 @@ export class ReasonForRefundComponent implements OnInit {
     deleteButton.label = "delete";
     deleteButton.data = rowData;
     deleteButton.action = (data => {
-      this.deleteI18N(data);
+      this.deleteRfR(data);
     });
     let addLanguage = new ActionButton();
     addLanguage.label = "addLanguage";
@@ -182,16 +182,14 @@ export class ReasonForRefundComponent implements OnInit {
   saveCustomRfRSettings(customRfRSetting) {
     console.log(JSON.stringify(customRfRSetting));
     this.adminService.addCustomRfR(customRfRSetting).subscribe(response => {
-      if (response.success) {
         this.updateTables();
         this.overlayRef.dispose();
-      }
     })
   }
 
   toggleRfR() {
     this.adminService.toggleRfR(this.clientId).subscribe(value => {
-      this.isStandardRfREnabled = value.data.isStandardRFREnabled;
+      this.isStandardRfREnabled = value.isStandardRFREnabled;
       this.updateTables();
     });
   }
@@ -240,9 +238,7 @@ export class ReasonForRefundComponent implements OnInit {
     deleteI18NRfR.reasonCode = data.reasonCode;
     deleteI18NRfR.clientId = this.clientId;
     this.adminService.deleteRfRI18N(Object.assign(deleteI18NRfR, data)).subscribe(value => {
-      if (value.success) {
         this.updateTables();
-      }
     });
   }
 
@@ -264,10 +260,8 @@ export class ReasonForRefundComponent implements OnInit {
     request.clientId = this.clientId;
     request.reasonCode = data.reasonCode;
     this.adminService.addLanguages(request).subscribe(value => {
-      if (value.success) {
         this.updateTables();
         this.closeOverlay();
-      }
     });
 
   }
@@ -275,10 +269,8 @@ export class ReasonForRefundComponent implements OnInit {
   private updateRefundSetting(request: CustomRfRSettings) {
     request.clientId = this.clientId;
     this.adminService.updateRfRForClient(request).subscribe(value => {
-      if (value.success) {
         this.updateTables();
         this.collapseReasonCodeEvent.next({});
-      }
     })
   }
 
