@@ -88,6 +88,7 @@ export class AdministratorComponent implements OnInit {
       industrySegments: this.adminService.getIndustrySegments(),
       refundHandling: this.adminService.getRefundHandling(clientId)
      }).subscribe(data => {
+       debugger;
        this.clientName = data.clientSettings.name;
        this.clientId = clientId;
        this.store.dispatch(new GetAdminSettingAction(data as AdminSettings));

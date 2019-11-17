@@ -23,7 +23,8 @@ export class AdministratorService {
   private readonly GET_RFR = `${this.ROUTE_URL}/client/reasonForRefunds`;
   private readonly GET_RFR_I18N = `${this.ROUTE_URL}/client/reasonForRefunds/I18N`;
   private readonly TOGGLE_RFR = `${this.ROUTE_URL}/client/reasonForRefunds/configure/`;
-  private readonly UPDATE_REFUND_HANDLING = `${this.ROUTE_URL}/configure/updateRefundHandling`;
+  private readonly GET_REFUND_HANDLING = `${this.ROUTE_URL}/getRefundHandling/`;
+  private readonly SET_REFUND_HANDLING = `${this.ROUTE_URL}/configure/updateRefundHandling`;
   private readonly UPDATE_RFR_I18N = `${this.ROUTE_URL}/client/reasonForRefunds/updateRFRI18N`;
   private readonly UPDATE_RFR = `${this.ROUTE_URL}/client/reasonForRefunds/updateRFR`;
   private readonly DELETE_RFR_I18N = `${this.ROUTE_URL}/client/reasonForRefunds/deleteRFRI18N`;
@@ -105,18 +106,11 @@ export class AdministratorService {
   }
 
   getRefundHandling(id){
-     let obj = {
-       data:{
-        clientId:id,
-        directRejectionCard:true,
-        directRejectionNonCard:true,
-        nonDirectRejection:true
-      },
-      success:true
-    }
+    return this.httpClient.get<ApiResponse<RefundHandling>>(this.GET_REFUND_HANDLING + id).pipe(this.apiResponseMap);
+  }
 
-    return of(obj).pipe(this.apiResponseMap);
-    //return this.httpClient.get<ApiResponse<RefundHandling>>(this.UPDATE_REFUND_HANDLING + id).pipe(this.apiResponseMap);
+  setRefundHandling(refundHandling){
+    return this.httpClient.put<ApiResponse<RefundHandling>>(this.SET_REFUND_HANDLING, refundHandling);
   }
 
   /*getClients(name : string, pageNo, size){
@@ -176,6 +170,12 @@ export interface RefundRequestSettings {
   reasonForRefundVisible: boolean;
   refundAmountMandatory: boolean;
   refundAmountVisible: boolean;
+  refundRequestInfoList: Array<
+    {
+      locale: string,
+      text: string
+    }
+  >;
 }
 
 export class CustomRfRSettings {

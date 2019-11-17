@@ -32,6 +32,8 @@ export function adminSettingsReducer(state = new AdminSettingsState(), action: A
       return {...state, customRfrSettings: action.payload};
     case RefundActionTypes.RETRIEVE_RFR_I18N:
       return {...state, customRfRI18N: action.payload}
+    case RefundActionTypes.SAVE_REFUND_HANDLING:
+      return {...state, refundHandling: action.payload};
     default:
       return state;
   }

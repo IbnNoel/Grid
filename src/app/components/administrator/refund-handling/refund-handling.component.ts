@@ -4,6 +4,7 @@ import { RefundHandling, AdministratorService } from 'src/app/core/administrator
 import { Store, select, createSelector } from '@ngrx/store';
 import { State } from 'src/app/reducers';
 import { take } from 'rxjs/operators';
+import { SaveRefundHandlingSettingAction } from 'src/app/actions/refundAction';
 
 @Component({
   selector: 'app-refund-handling',
@@ -21,8 +22,13 @@ export class RefundHandlingComponent implements OnInit {
   ngOnInit() {
   }
 
-  onSave(){
-    //this.adminService
+  onSave(onEmit){
+    this.adminService.setRefundHandling(this.refundHandling).subscribe(response =>{
+      if(response.success){
+        this.store.dispatch(new SaveRefundHandlingSettingAction(response.data));
+        onEmit();
+      }
+    })
   }
 
   setRefundHandlingState(){

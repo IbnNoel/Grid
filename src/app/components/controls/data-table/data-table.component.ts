@@ -16,15 +16,17 @@ import {ColumnDefs, HandleColumnSettings} from './classes/Columns';
 })
 export class DataTableComponent implements OnInit, AfterViewInit {
   @ViewChild("table", {static: true}) tableHtml: ElementRef;
-  @ViewChild('table', {static: true, read: ViewContainerRef}) VCR: ViewContainerRef;
 
+  @ViewChild('table', {static: true, read: ViewContainerRef}) VCR: ViewContainerRef;
+  @Input() detailRow?: boolean;
+  @Input() detailRowCallback?: any;
   @Input() expandEvent?: Observable<any>;
   @Input() collapseEvent?: Observable<any>;
+
   @Input() Data: Observable<Array<any>>;
   @Input() Columns: Array<ColumnDefs>;
   @Input() PageSettings: PageSettings;
-  @Input() detailRow?: boolean;
-  @Input() detailRowCallback?: any;
+
   dataTableApi: DataTables.Api;
   dataTableSettings: DataTables.Settings;
   columnSettings: DataTables.ColumnSettings
