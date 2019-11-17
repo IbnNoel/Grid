@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Store, select, createSelector } from '@ngrx/store';
 import { State } from 'src/app/reducers';
-import { take, throwIfEmpty } from 'rxjs/operators';
+import { take, throwIfEmpty, switchMap, tap } from 'rxjs/operators';
 import { RefundRequestSettings, AdministratorService } from 'src/app/core/administrator.service';
 import { SaveRefundRequestSettingAction } from 'src/app/actions/refundAction';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { ActionButton } from '../../controls/action-menu/action-menu.component';
 import * as _ from 'lodash';
 
@@ -16,8 +16,8 @@ import * as _ from 'lodash';
 export class DirectRejectRequestComponent implements OnInit {
 
   refundRequestSettings: RefundRequestSettings;
-  languages$: Observable<Array<String>>;
-  actionButtons: Array<ActionButton> = [];
+  languages$: Observable<Array<string>>;
+  actionButtons: Array<ActionButton>;
   infoTextList: Array<{ locale : string, text: string }> = [];
 
   readonly defaultLangauge = "en";
@@ -27,25 +27,30 @@ export class DirectRejectRequestComponent implements OnInit {
   ngOnInit() {
     this.languages$ = this.adminService.getLanguageList();
     this.setSavedState();
-    this.setActionBtns();
-    this.setDefaultValue();
   }
 
   setSavedState(){
-    this.store.pipe(
-      take(1),
-      select(createSelector((state) => state.adminSettings,
-        (adminSettings) => adminSettings.refundRequestSettings)))
-          .subscribe((response) => {
-            this.refundRequestSettings = Object.assign({},response) as RefundRequestSettings;
-      });
+    forkJoin({
+      rrSettings: this.store.pipe(
+        take(1),
+        select(createSelector((state) => state.adminSettings,
+          (adminSettings) => adminSettings.refundRequestSettings))),
+        lang: this.languages$
+      },
+    ).subscribe((response) => {
+      this.refundRequestSettings = _.cloneDeep(response.rrSettings) as RefundRequestSettings;
+      this.setDefaultValue();
+      this.setActionBtns(response.lang);
+
+    })
   }
 
-  setActionBtns(){
-    this.languages$.subscribe(value => {
-      value.forEach(locale => {
-        this.addActionButton(locale);
-      });
+  setActionBtns(languages){
+    this.actionButtons = [];
+    languages.forEach(locale => {
+      if( !_.find(this.refundRequestSettings.refundRequestInfoList, {'locale' : locale })){
+          this.addActionButton(locale);
+      }
     });
   }
 
@@ -60,10 +65,18 @@ export class DirectRejectRequestComponent implements OnInit {
   }
 
   addInformationalText(locale){
-    this.refundRequestSettings.refundRequestInfoList.push({locale:locale, text:""});
+    this.refundRequestSettings.refundRequestInfoList.push({locale: locale, text: ""});
+    this.removeActionButtonItem(locale);
+  }
+
+  removeActionButtonItem(locale){
     this.actionButtons  = _.remove(this.actionButtons, (btn)=> {
-        return btn.label != locale;
-    });
+      return btn.label != locale;
+  });
+  }
+
+  disableActionButton(){
+    return this.actionButtons.length == 0;
   }
 
   setDefaultValue(){

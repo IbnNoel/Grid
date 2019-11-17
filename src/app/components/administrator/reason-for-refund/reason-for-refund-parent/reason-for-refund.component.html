@@ -1,6 +1,6 @@
 <div class="row form-group" *ngIf="isStandardRfREnabled">
   <div class="col-md-6">
-    <h5>Current 'Reason for Refund' is standard</h5>
+    <h5 class='subHeader'>Current 'Reason for Refund' is standard</h5>
   </div>
   <div class="col-md-6">
     <button class="btn btn-default pull-right" (click)="toggleRfR()" type="button">Maintain custom refund reason</button>
@@ -8,7 +8,7 @@
 </div>
 <div class="row form-group" *ngIf="!isStandardRfREnabled">
   <div class="col-md-9">
-    <h5>Current 'Reason for Refund' is custom</h5>
+    <h5 class='subHeader'>Current 'Reason for Refund' is custom</h5>
   </div>
   <div class="col-md-3 pull-right">
     <div class="col-md-6">
