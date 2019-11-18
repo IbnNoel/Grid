@@ -15,6 +15,8 @@ export class AdministratorService {
   private readonly ROUTE_URL = '/refund-service/admin';
   private readonly GET_CLIENT_URL = `${this.ROUTE_URL}/clientSettings/`;
   private readonly GET_INDUSTRY_SEGMENT_URL = `${this.ROUTE_URL}/industrySegments`;
+  private readonly GET_PAYMENT_TYPE_AND_CURRENCIES_URL = `${this.ROUTE_URL}/directRejection/currencies`;
+  private readonly GET_CLIENT_SELECTED_PAYMENT_TYPE_AND_CURRENCY_URL = `${this.ROUTE_URL}/directRejections/client/currencies`;
   private readonly SET_CLIENT_URL = `${this.ROUTE_URL}/configure/clientSettings`;
   private readonly ADD_RFR = `${this.ROUTE_URL}/client/reasonForRefunds/addRFR`;
   private readonly GET_REFUND_URL = `${this.ROUTE_URL}/getRefundRequestSettings/`;
@@ -47,6 +49,11 @@ export class AdministratorService {
     return this.httpClient.get<ApiResponse<ClientSettings>>(this.GET_CLIENT_URL + id).pipe(map(response => response.data));
   }
 
+  getPaymentTypes() {
+    // tslint:disable-next-line:ban-type
+    return this.httpClient.get<ApiResponse<Map<string, Array<string>>>>(this.GET_PAYMENT_TYPE_AND_CURRENCIES_URL).pipe(this.apiResponseMap);
+  }
+
   getRFR(id, pageNo, size) {
     const params = new HttpParams().set('clientId', id)
       .set('page', pageNo).set('size', size);
@@ -61,6 +68,12 @@ export class AdministratorService {
 
   getIndustrySegments() {
     return this.httpClient.get<ApiResponse<Array<IndustrySegment>>>(this.GET_INDUSTRY_SEGMENT_URL).pipe(this.apiResponseMap);
+  }
+
+  getClientSelectedPymntTypeAndCurr(id, pageNo, size) {
+    const params = new HttpParams().set('clientId', id)
+      .set('page', pageNo).set('size', size);
+    return this.httpClient.get<ApiResponse<PagedResponse<CustomRfRSettings>>>(this.GET_RFR, {params}).pipe(this.apiResponseMap);
   }
 
   getLanguageList() {
@@ -136,6 +149,20 @@ export interface IndustrySegment {
   description: string;
 }
 
+export interface PaymentTypeAndCurrencies {
+  paymentTypeId: string;
+  currencyList: Array<string>;
+}
+
+export interface SelectedPaymentTypeAndCurrencies {
+  selectedPymtTypeList: Array<string>;
+  selectedCurrencyList: Array<string>;
+}
+
+export class Currencies {
+  currency: string;
+}
+
 export interface ClientSettings {
   clientId?: number;
   cctClientId?: string;
@@ -156,6 +183,7 @@ export interface RefundHandling{
   directRejectionCard: boolean;
   directRejectionNonCard: boolean;
   nonDirectRejection: boolean;
+  /*paymentTypeId: string;*/
 }
 
 export interface AdminSettings {
@@ -163,9 +191,9 @@ export interface AdminSettings {
   clientSettings: ClientSettings;
   refundRequestSettings: RefundRequestSettings;
   customRfrSettings: Array<CustomRfRSettings>;
-  customRfRI18N:Array<CustomRfRI18N>;
+  customRfRI18N: Array<CustomRfRI18N>;
   industrySegments: Array<IndustrySegment>;
-  refundHandling: RefundHandling
+  refundHandling: RefundHandling;
 }
 
 export interface RefundRequestSettings {
