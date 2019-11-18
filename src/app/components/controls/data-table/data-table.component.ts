@@ -76,7 +76,7 @@ export class DataTableComponent implements OnInit, AfterViewInit {
       paging: !!(this.PageSettings),
       dom: (this.PageSettings) ? "<'responsive-tables p20'<'container-fluid'<'row gpfiPageLengthControl' <'clearfix'> l><'row't><'row'p>>>" :
         "<'responsive-tables p20'<'container-fluid'<'row't>>>",
-      lengthMenu: [[10, 20, 30, 50], ["showTenPerPage", "showTwentyPerPage", "showThirtyPerPage", "showFiftyPerPage"]]
+      lengthMenu: [[10, 20, 30, 50], ["Show 10 per page", "Show 20 per page", "Show 30 per page", "Show 50 per page"]]
     }
     return dataTableSettings;
   }

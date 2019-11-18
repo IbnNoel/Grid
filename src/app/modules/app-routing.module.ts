@@ -21,7 +21,7 @@ const routes: Routes = [
         path: 'admin',
         component: AdministratorComponent,
         canActivate: [AuthGuardService, RoleAuthGuard],
-        data: {roles: ["ManageRefundPortal"]},
+        data: {roles: ["ManageRefundPortal"], redirectTo:'refunds/create'},
         children: [{
           path: 'clientSettings',
           component: ClientSettingsComponent

@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Gp2Service} from './gp2.service';
-import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree} from '@angular/router';
-import {combineLatest, Observable} from 'rxjs';
-import {filter, first, flatMap, map} from 'rxjs/operators';
+import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree, Router} from '@angular/router';
+import {combineLatest, Observable, of} from 'rxjs';
+import {filter, first, flatMap, map, tap} from 'rxjs/operators';
 import * as _ from 'lodash';
 import {HttpClient, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 
@@ -73,12 +73,18 @@ export class AuthGuardService implements CanActivate {
 
 @Injectable()
 export class RoleAuthGuard implements CanActivate {
-   constructor(private authService: AuthService) { }
+   constructor(private authService: AuthService, private router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot){ 
     let roles = route.data.roles as Array<string>;
     
-    return this.authService.hasPrivleges(roles);
+    return of(this.authService.hasPrivleges(roles)).pipe(
+      tap(val => {
+          if(route.data.redirectTo && !val){
+            this.router.navigate([route.data.redirectTo]);
+          }
+      })
+    )
   }
 }
 
