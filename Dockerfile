@@ -1,4 +1,4 @@
-FROM node:10.13-alpine
+FROM node:10.17-alpine
 WORKDIR /opt/
 COPY package.json package-lock.json /opt/
 RUN cd /opt/ && ls -l
