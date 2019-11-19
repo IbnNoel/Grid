@@ -42,7 +42,12 @@ import {ActionMenuComponent} from './components/controls/action-menu/action-menu
 import { AddCustomRefundSettingComponent } from './components/administrator/reason-for-refund/custom/add-custom-refund-setting/add-custom-refund-setting.component';
 import { RefundHandlingComponent } from './components/administrator/refund-handling/refund-handling.component';
 import { EditRfRI18NComponent } from './components/administrator/reason-for-refund/custom/edit-rf-ri18-n/edit-rf-ri18-n.component';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {CustomTranslationsLoader} from './core/translations.service';
 
+export function CustomTranslationsFactory(gp2Service: Gp2Service) {
+  return new CustomTranslationsLoader(gp2Service);
+}
 
 @NgModule({
   declarations: [
@@ -50,6 +55,9 @@ import { EditRfRI18NComponent } from './components/administrator/reason-for-refu
   ],
   imports: [
     BrowserModule,
+    TranslateModule.forRoot({
+      loader: {provide: TranslateLoader, useFactory: CustomTranslationsFactory, deps: [Gp2Service]}
+    }),
     AppRoutingModule,
     HttpClientModule,
     FormsModule,

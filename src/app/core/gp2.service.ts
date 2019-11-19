@@ -14,6 +14,7 @@ export class Gp2Service {
   readonly token$ = new BehaviorSubject<string>(null);
   readonly apiUri$ = new BehaviorSubject<string>(null);
   readonly authInfo$ = new BehaviorSubject<AuthInfo>(null);
+  readonly translations$ = new BehaviorSubject<any>(null);
 
   constructor(@Inject(WINDOW) private window: Window) {
     this.windowId = window.location.hash.substr(1);
@@ -42,13 +43,15 @@ export class Gp2Service {
         switch (evt.data.message) {
           case 'TOKEN_UPDATED':
             this.token$.next(evt.data.token);
-            // console.log(evt.data);
             break;
           case 'API_URI_UPDATED':
             this.apiUri$.next(evt.data.uri);
             break;
-          case 'PROFILE_UPDATED':
           case 'TRANSLATIONS_UPDATED':
+            console.log(evt.data.translations);
+            this.translations$.next(evt.data.translations);
+            break;
+          case 'PROFILE_UPDATED':
             break;
         }
       }
@@ -60,6 +63,10 @@ export class Gp2Service {
     );
     window.parent.postMessage(
       {message: 'GET_API_URI', id: this.windowId},
+      '*'
+    );
+    window.parent.postMessage(
+      {message: 'GET_TRANSLATIONS', id: this.windowId},
       '*'
     );
   }
