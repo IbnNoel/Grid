@@ -47,7 +47,7 @@ export class DataTableComponent implements OnInit, AfterViewInit {
         if (Object.keys(value).length > 0) {
           const row = this.dataTableApi.row(value.row);
           $("table tr .expanded").parent().remove();
-            let parentDiv = $("<div class='expanded well'></div>");
+            let parentDiv = $("<div class='expanded'></div>");
             parentDiv.append(this.detailRowCallback(value.data))
             row.child(parentDiv).show();
         };
