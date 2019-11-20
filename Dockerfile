@@ -26,5 +26,5 @@ COPY . .
 EXPOSE 4200
 RUN ng build
 #ENTRYPOINT ["/tmp/defender", "rasp", "node", "./server/server.js"]
-ENTRYPOINT ["node", "./server/server.js"]
+ENTRYPOINT ["node", "./server.js"]
 
