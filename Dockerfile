@@ -1,19 +1,21 @@
-FROM node:10.13-alpine
+FROM node:10.13.0-alpine
 WORKDIR /opt/
 COPY package.json package-lock.json /opt/
 RUN cd /opt/ && ls -l
-RUN npm install
+RUN npm set strict-ssl false
+RUN npm config set registry "http://registry.npmjs.org/"
+RUN npm --proxy  http://internal-wu-ece-proxy-vip-160106591.us-east-1.elb.amazonaws.com:8080 install --verbose
 ENV PATH /opt/node_modules/.bin:$PATH
 RUN cd /opt/node_modules && ls -l
 COPY . /opt/
 COPY . .
-#RUN wget -c https://wubsdev.s3.amazonaws.com/twistlock/twistlock_defender_rasp.tar.gz 
+#RUN wget -c https://wubsdev.s3.amazonaws.com/twistlock/twistlock_defender_rasp.tar.gz
 
 
 #ENTRYPOINT [ "node", "./server/server.js" ]
 
 # Twistlock RASP Defender
-#RUN tar -zxf twistlock_defender_rasp.tar.gz 
+#RUN tar -zxf twistlock_defender_rasp.tar.gz
 
 #ENV DEFENDER_TYPE="rasp"
 #ENV RASP_APP_ID="test-id"
