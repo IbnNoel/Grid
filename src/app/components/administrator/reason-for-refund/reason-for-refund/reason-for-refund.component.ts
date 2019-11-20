@@ -193,12 +193,14 @@ export class ReasonForRefundComponent implements OnInit {
 
   updateReasonCodeTable() {
     this.adminService.getRFR(this.clientId, this.reasonCodePageSettings.currentPage, this.reasonCodePageSettings.pageSize).subscribe(value => {
+      this.reasonCodePageSettings.setTotalRecords(value.totalElements);
       this.reasonCodes.next(value.list);
     });
   }
 
   updateReasonCodeI18NTable() {
     this.adminService.getRFRI18N(this.clientId, this.reasonCodeI18NPageSettings.currentPage, this.reasonCodeI18NPageSettings.pageSize).subscribe(value => {
+      this.reasonCodeI18NPageSettings.setTotalRecords(value.totalElements)
       this.reasonCodesI18N.next(value.list);
     });
   }
