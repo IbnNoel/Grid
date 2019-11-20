@@ -1,0 +1,70 @@
+<div class="row form-group" *ngIf="isStandardRfREnabled">
+  <div class="col-md-6">
+    <h5 class='subHeader'>Current 'Reason for Refund' is standard</h5>
+  </div>
+  <div class="col-md-6">
+    <button class="btn btn-default pull-right" (click)="toggleRfR()" type="button">Maintain custom refund reason</button>
+  </div>
+</div>
+<div class="row form-group" *ngIf="!isStandardRfREnabled">
+  <div class="col-md-6">
+    <h5 class='subHeader'>Current 'Reason for Refund' is custom</h5>
+  </div>
+  <div class="pull-right">
+    <div class="col-md-5">
+      <button class="btn btn-default " (click)="addCustomRfR()" type="button">Add custom refund reason</button>
+    </div>
+    <div class="col-md-5">
+      <button class="btn btn-default " (click)="toggleRfR()" type="button">Maintain standard refund reason</button>
+    </div>
+  </div>
+</div>
+<app-overlay name="addCustomRfROverlay" #addCustomRfROverlay *ngIf="customRfR" header="addCustomRfR">
+  <div class="row">
+    <app-refund-reason-setting [customRfRSetting]="customRfR"></app-refund-reason-setting>
+  </div>
+  <div class="row" *ngFor="let i18n of customRfR.reasonForRefundList">
+    <div class="col-md-11 row">
+      <app-refund-reason-language [languages]="languages" [customRfRI18N]="i18n"></app-refund-reason-language>
+    </div>
+    <div class="col-md-1">
+      <app-action-menu [buttons]="actionButtons"></app-action-menu>
+    </div>
+  </div>
+  <div>
+    <app-operation-buttons (onSave)="saveCustomRfRSettings()" (onCancel)="close(addCustomRfROverlay.name)"></app-operation-buttons>
+  </div>
+</app-overlay>
+<app-overlay name="addNewLanguageOverlay" #addNewLanguageOverlay *ngIf="customRfR" header="addLanguage">
+  <div class="row" *ngFor="let i18n of customRfR.reasonForRefundList">
+    <div class="col-md-11 row">
+      <app-refund-reason-language addNewLanguage="true" [languages]="languagesList" [customRfRI18N]="i18n"></app-refund-reason-language>
+    </div>
+    <div class="col-md-1">
+      <app-action-menu [buttons]="actionButtons"></app-action-menu>
+    </div>
+  </div>
+  <div>
+    <app-operation-buttons (onSave)="addNewLanguages()" (onCancel)="close(addNewLanguageOverlay.name)"></app-operation-buttons>
+  </div>
+</app-overlay>
+<div>
+  <app-data-table
+    [expandEvent]="expandReasonCodeEvent"
+    [collapseEvent]="collapseReasonCodeEvent"
+    [detailRow]="true"
+    [detailRowCallback]="expandReasonCode()"
+    [Columns]="reasonCodeColDef"
+    [Data]="reasonCodes"
+    [(PageSettings)]="reasonCodePageSettings"></app-data-table>
+</div>
+<div>
+  <app-data-table
+    [expandEvent]="expandReasonCodeI18NEvent"
+    [detailRowCallback]="expandReasonCodeI18N()"
+    [detailRow]="true"
+    [Columns]="reasonCodeI18NColDef"
+    [Data]="reasonCodesI18N"
+    [(PageSettings)]="reasonCodeI18NPageSettings"
+    [collapseEvent]="collapseReasonCodeI18NEvent"></app-data-table>
+</div>

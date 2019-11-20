@@ -1,21 +1,21 @@
-<div class="row">
+<div >
   <div class="form-group col-md-3">
     <div>
       <label class="control-label ">Language</label>
     </div>
     <div>
-      <select name="language" class="form-control wuselect col-md-3" [(ngModel)]="customRfRI18N.locale" required="true" *ngIf="!editMode">
-        <option value={{l}} *ngFor="let  l of languages$ | async">{{l}}</option>
+      <select name="language" class="form-control wuselect col-md-3" [(ngModel)]="customRfRI18N.locale" required="true" *ngIf="!editMode" [disabled]="!addNewLanguage">
+        <option value={{l}} *ngFor="let  l of languages ">{{l}}</option>
       </select>
       <label class="control-label " *ngIf="editMode">{{customRfRI18N.locale}}</label>
     </div>
   </div>
-  <div class="form-group col-md-3">
+  <div class="form-group col-md-4">
     <div>
       <label class="control-label  ">Reason for Refund</label>
     </div>
     <div>
-      <input type="text" name="reasonForRefund" [(ngModel)]="customRfRI18N.reasonForRefund" class="form-control col-md-3 "/>
+      <input type="text" name="reasonForRefund" [(ngModel)]="customRfRI18N.reasonForRefund" class="form-control col-md-4 "/>
     </div>
   </div>
   <div class="form-group col-md-5">
@@ -25,8 +25,5 @@
     <div>
       <textarea name="hint" [(ngModel)]="customRfRI18N.hint" class="form-control col-md-5 "></textarea>
     </div>
-  </div>
-  <div class="col-md-1" *ngIf="!editMode">
-    <app-action-menu [buttons]="actionButtons"></app-action-menu>
   </div>
 </div>
