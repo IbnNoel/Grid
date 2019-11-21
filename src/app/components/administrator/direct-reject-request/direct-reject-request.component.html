@@ -1,18 +1,29 @@
-<!--div class="row">
-  <div class="form-group" >
-        <div class="col-md-3">
-            <label>Refund request informational text</label>
+<h5 class='subHeader'>Refund Request Informational Text</h5>
+<div class="row" *ngFor="let infoText of refundRequestSettings.refundRequestInfoList">
+    <div>
+        <div class="form-group">
+            <div class="col-xs-6 col-sm-3  col-md-1">
+                <input class="form-control" value="{{infoText.locale}}" type="text" disabled/>
+            </div>
+            <div class="col-md-6"><textarea class="form-control" style="resize: none; width:100%;"  rows="4" [(ngModel)]="infoText.text"></textarea></div>
+            <div class="col-md-3">
+                <app-action-menu [disabled]="disableActionButton()" *ngIf= "ifDefault(infoText.locale)" [buttons]="actionButtons"></app-action-menu>
+                <button (click) ="removeFieldText(infoText.locale)"  *ngIf="!ifDefault(infoText.locale)"  style="
+                        background: none;
+                        border: none;
+                        padding: 0;"><span class="btn glyphicon glyphicon-remove"></span></button>
+            </div>
         </div>
-        <div class="col-md-6"><textarea style="resize: none; width:100%;"  rows="4"></textarea></div>
+
     </div>
-</div>-->
+</div>
 
 
 <ng-container *ngIf="refundRequestSettings as rf">
-    <h5>Field Handling</h5>
+    <h5 class='subHeader'>Field Handling</h5>
     <div class="row">
         <div class="form-group" >
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label class="control-label">Pledge Reference</label>
             </div>
             <div class="col-md-6 col-xs-12">
@@ -37,7 +48,7 @@
     </div>
     <div class="row">
         <div class="form-group" >
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label class="control-label">Requested refund amount</label>
             </div>
             <div class="col-md-6 col-xs-12">
@@ -62,7 +73,7 @@
     </div>
     <div class="row">
         <div class="form-group" >
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label class="control-label">Reason for refund</label>
             </div>
             <div class="col-md-6 col-xs-12">

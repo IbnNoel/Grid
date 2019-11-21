@@ -1,11 +1,12 @@
 import {Action} from '@ngrx/store';
 import {RefundView} from '../core/refund.service';
-import {AdminSettings, ClientSettings, CustomRfRI18N, CustomRfRSettings, RefundRequestSettings} from '../core/administrator.service';
+import {AdminSettings, ClientSettings, CustomRfRI18N, CustomRfRSettings, RefundRequestSettings, RefundHandling} from '../core/administrator.service';
 
 export enum RefundActionTypes {
   RETREIVE_ADMIN_SETTINGS = "[REFUND] Get admin settings",
   SAVE_REF_REQUEST_SETTINGS = "[REFUND] Save Refund Request settings",
   SAVE_CLIENT = "[REFUND] Save client setting",
+  SAVE_REFUND_HANDLING ="[REFUND] Save Refund Handling",
   ADD_CUSTOM_RFR_SETTING = "[REFUND] Save custom rfr settings",
   RETRIEVE_RFR = "[REFUND] Retrieve RFR",
   RETRIEVE_RFR_I18N = "[REFUND] Retrieve RFR I18N",
@@ -37,6 +38,13 @@ export class SaveClientSettingsAction implements Action {
   }
 }
 
+export class SaveRefundHandlingSettingAction implements Action {
+  readonly type = RefundActionTypes.SAVE_REFUND_HANDLING;
+
+  constructor(public payload: RefundHandling) {
+  }
+}
+
 export class SaveRefundRequestSettingAction implements Action {
   readonly type = RefundActionTypes.SAVE_REF_REQUEST_SETTINGS;
 
@@ -51,4 +59,4 @@ export class AddCustomRfRSettingsAction implements Action {
   }
 }
 
-export type AdminAction = GetAdminSettingAction | SaveClientSettingsAction | SaveRefundRequestSettingAction | AddCustomRfRSettingsAction | GetRFR|GetRFRI18N;
+export type AdminAction = GetAdminSettingAction | SaveClientSettingsAction | SaveRefundRequestSettingAction | AddCustomRfRSettingsAction | GetRFR | GetRFRI18N | SaveRefundHandlingSettingAction;

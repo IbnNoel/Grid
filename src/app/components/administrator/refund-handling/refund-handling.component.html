@@ -1,13 +1,13 @@
 <div class="row">
     <div class="col-md-12">
-        <mat-checkbox class="example-margin" [(ngModel)]="refundHandling.directRejectionCard">Enable 'direct rejection request' by card.</mat-checkbox>
+        <mat-checkbox class="example-margin control-label" [(ngModel)]="refundHandling.directRejectionCard">Enable 'direct rejection request' by card.</mat-checkbox>
     </div>
     <div class="col-md-12">
-        <mat-checkbox class="example-margin" [(ngModel)]="refundHandling.directRejectionNonCard">Enable 'non-direct rejection request' by other than card.</mat-checkbox>
+        <mat-checkbox class="example-margin control-label" [(ngModel)]="refundHandling.directRejectionNonCard">Enable 'non-direct rejection request' by other than card.</mat-checkbox>
     </div>
     <div class="col-md-12">
-        <mat-checkbox class="example-margin" [(ngModel)]="refundHandling.nonDirectRejection">Enable 'non-direct rejection request'</mat-checkbox>
-    </div>
+            <mat-checkbox class="example-margin control-label" [(ngModel)]="refundHandling.nonDirectRejection">Enable 'non-direct rejection request'</mat-checkbox>
+        </div>
 </div>
 <div [hidden]="refundHandling.directRejectionNonCard == false">
   <div class="row">

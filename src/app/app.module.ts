@@ -13,11 +13,10 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {RefundService} from './core/refund.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {StoreModule} from '@ngrx/store';
-import {reducers, metaReducers} from './reducers';
+import {metaReducers, reducers} from './reducers';
 import {AdministratorComponent} from './components/administrator/administrator.component';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 // Todo:- create a seperate module for style libaries
-import {MatCheckboxModule} from '@angular/material/checkbox';
 import {WidgetsModule} from './modules/widgets.module';
 import {ClientSettingsComponent} from './components/administrator/client-settings/client-settings.component';
 import {DirectRejectRequestComponent} from './components/administrator/direct-reject-request/direct-reject-request.component';
@@ -29,27 +28,34 @@ import {DataTableComponent} from './components/controls/data-table/data-table.co
 import {GpfiModalComponent} from './components/controls/gpfi-modal/gpfi-modal.component';
 import {LoadingDirective} from './directives/loading.directive';
 import {LoaderInterceptor, LoaderService} from './core/loader.service';
-import {ReasonForRefundComponent} from './components/administrator/reason-for-refund/reason-for-refund-parent/reason-for-refund.component';
-import {AddCustomRefundReasonComponent} from './components/administrator/reason-for-refund/custom/add-custom-refund-reason/add-custom-refund-reason.component';
+import {ReasonForRefundComponent} from './components/administrator/reason-for-refund/reason-for-refund/reason-for-refund.component';
 import {OverlayModule} from '@angular/cdk/overlay';
 import {PlatformModule} from '@angular/cdk/platform';
 import {PortalModule} from '@angular/cdk/portal';
-import {AddLanguageCustomRfrComponent} from './components/administrator/reason-for-refund/custom/add-language-custom-rfr/add-language-custom-rfr.component';
 import {MatMenuModule} from "@angular/material/menu";
 import {MatIconModule} from "@angular/material/icon";
-import {AddLanguageCustomRfrChildComponent} from './components/administrator/reason-for-refund/custom/add-language-custom-rfr-child/add-language-custom-rfr-child.component';
+import {RefundReasonLanguageComponent} from './components/administrator/reason-for-refund/refund-reason-language/refund-reason-language.component';
 import {ActionMenuComponent} from './components/controls/action-menu/action-menu.component';
-import { AddCustomRefundSettingComponent } from './components/administrator/reason-for-refund/custom/add-custom-refund-setting/add-custom-refund-setting.component';
-import { RefundHandlingComponent } from './components/administrator/refund-handling/refund-handling.component';
-import { EditRfRI18NComponent } from './components/administrator/reason-for-refund/custom/edit-rf-ri18-n/edit-rf-ri18-n.component';
+import {RefundReasonSettingComponent} from './components/administrator/reason-for-refund/refund-reason-setting/refund-reason-setting.component';
+import {RefundHandlingComponent} from './components/administrator/refund-handling/refund-handling.component';
+import {EditRfRI18NComponent} from './components/administrator/reason-for-refund/custom/edit-rf-ri18-n/edit-rf-ri18-n.component';
+import {OverlayComponent} from './components/controls/overlay/overlay.component';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {CustomTranslationsLoader} from './core/translations.service';
 
+export function CustomTranslationsFactory(gp2Service: Gp2Service) {
+  return new CustomTranslationsLoader(gp2Service);
+}
 
 @NgModule({
   declarations: [
-    AppComponent, RefundsComponent, CreateRefundsComponent, ManageRefundsComponent, AdministratorComponent, ClientSettingsComponent, DirectRejectRequestComponent, OperationButtonsComponent, DataTableComponent, GpfiModalComponent, LoadingDirective, ReasonForRefundComponent, AddCustomRefundReasonComponent, AddLanguageCustomRfrComponent, AddLanguageCustomRfrChildComponent, ActionMenuComponent, AddCustomRefundSettingComponent, RefundHandlingComponent,EditRfRI18NComponent
+    AppComponent, RefundsComponent, CreateRefundsComponent, ManageRefundsComponent, AdministratorComponent, ClientSettingsComponent, DirectRejectRequestComponent, OperationButtonsComponent, DataTableComponent, GpfiModalComponent, LoadingDirective, ReasonForRefundComponent,   RefundReasonLanguageComponent, ActionMenuComponent, RefundReasonSettingComponent, RefundHandlingComponent, EditRfRI18NComponent, OverlayComponent
   ],
   imports: [
     BrowserModule,
+    TranslateModule.forRoot({
+      loader: {provide: TranslateLoader, useFactory: CustomTranslationsFactory, deps: [Gp2Service]}
+    }),
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
@@ -73,7 +79,7 @@ import { EditRfRI18NComponent } from './components/administrator/reason-for-refu
   providers: [WINDOW_PROVIDERS, Gp2Service, AuthGuardService, AuthService, RefundService, AdministratorService, RoleAuthGuard, LoaderService, LoaderInterceptor,
     {provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true}],
-  entryComponents: [AddLanguageCustomRfrChildComponent, ActionMenuComponent,EditRfRI18NComponent,AddLanguageCustomRfrComponent,AddCustomRefundSettingComponent],
+  entryComponents: [RefundReasonLanguageComponent, ActionMenuComponent, EditRfRI18NComponent,  RefundReasonSettingComponent],
   bootstrap: [AppComponent]
 
 })

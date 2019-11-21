@@ -16,15 +16,17 @@ import {ColumnDefs, HandleColumnSettings} from './classes/Columns';
 })
 export class DataTableComponent implements OnInit, AfterViewInit {
   @ViewChild("table", {static: true}) tableHtml: ElementRef;
-  @ViewChild('table', {static: true, read: ViewContainerRef}) VCR: ViewContainerRef;
 
+  @ViewChild('table', {static: true, read: ViewContainerRef}) VCR: ViewContainerRef;
+  @Input() detailRow?: boolean;
+  @Input() detailRowCallback?: any;
   @Input() expandEvent?: Observable<any>;
   @Input() collapseEvent?: Observable<any>;
+
   @Input() Data: Observable<Array<any>>;
   @Input() Columns: Array<ColumnDefs>;
   @Input() PageSettings: PageSettings;
-  @Input() detailRow?: boolean;
-  @Input() detailRowCallback?: any;
+
   dataTableApi: DataTables.Api;
   dataTableSettings: DataTables.Settings;
   columnSettings: DataTables.ColumnSettings
@@ -74,7 +76,7 @@ export class DataTableComponent implements OnInit, AfterViewInit {
       paging: !!(this.PageSettings),
       dom: (this.PageSettings) ? "<'responsive-tables p20'<'container-fluid'<'row gpfiPageLengthControl' <'clearfix'> l><'row't><'row'p>>>" :
         "<'responsive-tables p20'<'container-fluid'<'row't>>>",
-      lengthMenu: [[10, 20, 30, 50], ["showTenPerPage", "showTwentyPerPage", "showThirtyPerPage", "showFiftyPerPage"]]
+      lengthMenu: [[10, 20, 30, 50], ["Show 10 per page", "Show 20 per page", "Show 30 per page", "Show 50 per page"]]
     }
     return dataTableSettings;
   }

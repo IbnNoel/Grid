@@ -7,6 +7,7 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class ActionMenuComponent implements OnInit {
   @Input() buttons: Array<ActionButton> = [];
+  @Input() disabled?: boolean;
 
   constructor() {
   }

@@ -7,6 +7,8 @@ import {
 } from 'src/app/core/administrator.service';
 import { Store, select, createSelector } from '@ngrx/store';
 import { State } from 'src/app/reducers';
+import { take } from 'rxjs/operators';
+import { SaveRefundHandlingSettingAction } from 'src/app/actions/refundAction';
 import {map, take} from 'rxjs/operators';
 import {ColumnDefs, GPFIButton} from '../../controls/data-table/classes/Columns';
 import {PageSettings} from '../../controls/data-table/classes/Paging';
@@ -51,8 +53,13 @@ export class RefundHandlingComponent implements OnInit {
     });
   }
 
-  onSave(){
-    //this.adminService
+  onSave(onEmit){
+    this.adminService.setRefundHandling(this.refundHandling).subscribe(response =>{
+      if(response.success){
+        this.store.dispatch(new SaveRefundHandlingSettingAction(response.data));
+        onEmit();
+      }
+    })
   }
 
   setRefundHandlingState(){
