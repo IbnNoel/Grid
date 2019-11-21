@@ -33,7 +33,7 @@
       </select>
     </div>
     <div class="col-md-2">
-      <button type="button" class="btn btn-primary pull-right" (click)="addPymntTypeAndCurr(selectedData)">Add</button>
+      <button type="button" class="btn btn-primary pull-right" [disabled]="!selectedData.currency" (click)="addPymntTypeAndCurr(selectedData)">Add</button>
     </div>
     <app-data-table [Columns]="colDefinitions" [Data]="data" [(PageSettings)]="pageSettings"></app-data-table>
   </div>
