@@ -9,28 +9,34 @@
         <mat-checkbox class="example-margin" [(ngModel)]="refundHandling.nonDirectRejection">Enable 'non-direct rejection request'</mat-checkbox>
     </div>
 </div>
-<div class="row">
-  <hr/>
-  <div class="col-md-3">
-    <label class="control-label pull-right">Payment Type</label>
-  </div>
-  <div class="col-md-2">
-    <select class="wuselect form-control" [(ngModel)]="selectedPaymentType">
-      <option value={{paymentType.key}} *ngFor="let paymentType of pymntTypeCurrMap | async | keyvalue">
-        {{ paymentType.key }}
-      </option>
-    </select>
-    <!--{{ currencyList("Wire")| async | json}}-->
-  </div>
-  <div class="col-md-3">
-    <label class="control-label pull-right">Currency</label>
-  </div>
-  <div class="col-md-2">
-    <select class="wuselect form-control">
-      <option value={{currency}} *ngFor="let currency of pymntTypeCurrMap[selectedPaymentType] | async">
-        {{ currency }}
-      </option>
-    </select>
+<div [hidden]="refundHandling.directRejectionNonCard == false">
+  <div class="row">
+    <hr/>
+    <div class="col-md-3">
+      <label class="control-label pull-right">Payment Type</label>
+    </div>
+    <div class="col-md-2">
+      <select class="wuselect form-control" [(ngModel)]="selectedData.paymentTypeId">
+        <option value={{paymentType.key}} *ngFor="let paymentType of pymntTypeCurrMap | async | keyvalue">
+          {{ paymentType.key }}
+        </option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label class="control-label pull-right">Currency</label>
+    </div>
+    <div class="col-md-2">
+      <select class="wuselect form-control" [(ngModel)]="selectedData.currency" [disabled]="!selectedData.paymentTypeId">
+        <option value={{currency}} *ngFor="let currency of (pymntTypeCurrMap | async)[selectedData.paymentTypeId]">
+          {{ currency }}
+        </option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <button type="button" class="btn btn-primary pull-right" (click)="addPymntTypeAndCurr(selectedData)">Add</button>
+    </div>
+    <app-data-table [Columns]="colDefinitions" [Data]="data" [(PageSettings)]="pageSettings"></app-data-table>
   </div>
 </div>
+
 <app-operation-buttons (onCancel)="onCancel()" (onSave)="onSave($event)"></app-operation-buttons>
