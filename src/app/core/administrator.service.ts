@@ -4,6 +4,7 @@ import {ApiResponse} from './auth.guard.service';
 import {flatMap, map} from 'rxjs/operators';
 import {of, OperatorFunction, throwError} from 'rxjs';
 import {PagedResponse} from "./refund.service";
+import {settings} from "cluster";
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,12 @@ export class AdministratorService {
   private readonly ROUTE_URL = '/refund-service/admin';
   private readonly GET_CLIENT_URL = `${this.ROUTE_URL}/clientSettings/`;
   private readonly GET_INDUSTRY_SEGMENT_URL = `${this.ROUTE_URL}/industrySegments`;
+  private readonly GET_PAYMENT_TYPE_AND_CURRENCIES_URL = `${this.ROUTE_URL}/directRejection/currencies`;
+  private readonly GET_CLIENT_PYMNT_TYPE_CURR_URL = `${this.ROUTE_URL}/directRejections/client/currencies`;
   private readonly SET_CLIENT_URL = `${this.ROUTE_URL}/configure/clientSettings`;
   private readonly ADD_RFR = `${this.ROUTE_URL}/client/reasonForRefunds/addRFR`;
+  private readonly ADD_PYMT_TYPE_CURR = `${this.ROUTE_URL}/directRejections/client/add`;
+  private readonly REMOVE_PYMT_TYPE_CURR = `${this.ROUTE_URL}/directRejections/client/remove`;
   private readonly GET_REFUND_URL = `${this.ROUTE_URL}/getRefundRequestSettings/`;
   private readonly SET_REFUND_URL = `${this.ROUTE_URL}/configure/refundRequestSettings`;
   private readonly CONFIGURE_DEFAULT_URL = `${this.ROUTE_URL}/configure/default`;
@@ -48,6 +53,11 @@ export class AdministratorService {
     return this.httpClient.get<ApiResponse<ClientSettings>>(this.GET_CLIENT_URL + id).pipe(map(response => response.data));
   }
 
+  getPaymentTypes() {
+    // tslint:disable-next-line:ban-type
+    return this.httpClient.get<ApiResponse<Map<string, Array<string>>>>(this.GET_PAYMENT_TYPE_AND_CURRENCIES_URL).pipe(this.apiResponseMap);
+  }
+
   getRFR(id, pageNo, size) {
     const params = new HttpParams().set('clientId', id)
       .set('page', pageNo).set('size', size);
@@ -60,8 +70,20 @@ export class AdministratorService {
     return this.httpClient.get<ApiResponse<PagedResponse<CustomRfRI18N>>>(this.GET_RFR_I18N, {params}).pipe(this.apiResponseMap);
   }
 
+  getClientPymntTypeCurrList(id, pageNo, size) {
+    const params = new HttpParams().set('clientId', id)
+      .set('page', pageNo).set('size', size);
+    return this.httpClient.get<ApiResponse<PagedResponse<MethodDirectRejectionView>>>(this.GET_CLIENT_PYMNT_TYPE_CURR_URL, {params}).pipe(this.apiResponseMap);
+  }
+
   getIndustrySegments() {
     return this.httpClient.get<ApiResponse<Array<IndustrySegment>>>(this.GET_INDUSTRY_SEGMENT_URL).pipe(this.apiResponseMap);
+  }
+
+  getClientSelectedPymntTypeAndCurr(id, pageNo, size) {
+    const params = new HttpParams().set('clientId', id)
+      .set('page', pageNo).set('size', size);
+    return this.httpClient.get<ApiResponse<PagedResponse<CustomRfRSettings>>>(this.GET_RFR, {params}).pipe(this.apiResponseMap);
   }
 
   getLanguageList() {
@@ -74,6 +96,14 @@ export class AdministratorService {
 
   addCustomRfR(settings: CustomRfRSettings) {
     return this.httpClient.post<ApiResponse<AddCustomRfR>>(this.ADD_RFR, settings).pipe(this.apiResponseMap);
+  }
+
+  addPymntTypeAndCurr(config: AddOrRemovePymntTypeCurrency) {
+    return this.httpClient.post<ApiResponse<AddOrRemovePymntTypeCurrency>>(this.ADD_PYMT_TYPE_CURR, config).pipe(this.apiResponseMap);
+  }
+
+  removePymntTypeAndCurr(config: AddOrRemovePymntTypeCurrency) {
+    return this.httpClient.request('delete', this.REMOVE_PYMT_TYPE_CURR, {body: config}).pipe(this.apiResponseMap);
   }
 
   toggleRfR(clientId) {
@@ -141,6 +171,20 @@ export interface IndustrySegment {
   description: string;
 }
 
+export interface PaymentTypeAndCurrencies {
+  paymentTypeId: string;
+  currencyList: Array<string>;
+}
+
+export interface SelectedPaymentTypeAndCurrencies {
+  selectedPymtTypeList: Array<string>;
+  selectedCurrencyList: Array<string>;
+}
+
+export class Currencies {
+  currency: string;
+}
+
 export interface ClientSettings {
   clientId?: number;
   cctClientId?: string;
@@ -170,7 +214,8 @@ export interface AdminSettings {
   customRfrSettings: Array<CustomRfRSettings>;
   customRfRI18N: Array<CustomRfRI18N>;
   industrySegments: Array<IndustrySegment>;
-  refundHandling: RefundHandling
+  refundHandling: RefundHandling;
+  selectedData: AddOrRemovePymntTypeCurrency;
 }
 
 export interface RefundRequestSettings {
@@ -204,8 +249,19 @@ export interface CustomRfRI18N {
   sortOrder?: number;
 }
 
+export interface AddOrRemovePymntTypeCurrency {
+  clientId: number;
+  paymentTypeId: string;
+  currency: string;
+}
+
 export interface AddCustomRfR extends CustomRfRSettings {
   reasonForRefundList?: Array<CustomRfRI18N>;
+}
+
+export class MethodDirectRejectionView {
+  paymentTypeId: string;
+  currency: string;
 }
 
 export interface ToggleRfrResponse {

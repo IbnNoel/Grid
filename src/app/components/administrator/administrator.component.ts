@@ -68,12 +68,12 @@ export class AdministratorComponent implements OnInit {
 
   setUpColumnDefintions(){
     this.colDefinitions = [
-      {key:"name", className: "data_grid_left_align", header:"Name"}, 
-      {key:"cctClientId", className: "data_grid_center_align", header:"CCT Id"}, 
+      {key:"name", className: "data_grid_left_align", header:"Name"},
+      {key:"cctClientId", className: "data_grid_center_align", header:"CCT Id"},
       {key:"refundConfigured", className: "data_grid_center_align", header:"Refund Configured", formatter: (data) => {
         return data ? "Yes" : "No";
       }},
-      { cellElement: () => { 
+      { cellElement: () => {
         return new GPFIButton("CONFIGURE", (data) => { this.onClientClick(data.id,data); });
       }, className: "data_grid_center_align"
     }];
