@@ -250,7 +250,7 @@ export class ReasonForRefundComponent implements OnInit {
     };
   }
 
-  private addNewLanguages() {
+  addNewLanguages() {
     this.adminService.addLanguages(this.customRfR).subscribe(value => {
       this.updateTables();
       this.close("addNewLanguageOverlay");

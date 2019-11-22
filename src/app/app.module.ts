@@ -17,14 +17,12 @@ import {metaReducers, reducers} from './reducers';
 import {AdministratorComponent} from './components/administrator/administrator.component';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 // Todo:- create a seperate module for style libaries
-import {WidgetsModule} from './modules/widgets.module';
 import {ClientSettingsComponent} from './components/administrator/client-settings/client-settings.component';
 import {DirectRejectRequestComponent} from './components/administrator/direct-reject-request/direct-reject-request.component';
 import {OperationButtonsComponent} from './components/controls/operation-buttons/operation-buttons.component';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from '../environments/environment';
 import {AdministratorService} from './core/administrator.service';
-import {DataTableComponent} from './components/controls/data-table/data-table.component';
 import {GpfiModalComponent} from './components/controls/gpfi-modal/gpfi-modal.component';
 import {LoadingDirective} from './directives/loading.directive';
 import {LoaderInterceptor, LoaderService} from './core/loader.service';
@@ -42,6 +40,7 @@ import {EditRfRI18NComponent} from './components/administrator/reason-for-refund
 import {OverlayComponent} from './components/controls/overlay/overlay.component';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {CustomTranslationsLoader} from './core/translations.service';
+import {WidgetsModule} from './modules/dataTables.module';
 
 export function CustomTranslationsFactory(gp2Service: Gp2Service) {
   return new CustomTranslationsLoader(gp2Service);
@@ -49,7 +48,7 @@ export function CustomTranslationsFactory(gp2Service: Gp2Service) {
 
 @NgModule({
   declarations: [
-    AppComponent, RefundsComponent, CreateRefundsComponent, ManageRefundsComponent, AdministratorComponent, ClientSettingsComponent, DirectRejectRequestComponent, OperationButtonsComponent, DataTableComponent, GpfiModalComponent, LoadingDirective, ReasonForRefundComponent,   RefundReasonLanguageComponent, ActionMenuComponent, RefundReasonSettingComponent, RefundHandlingComponent, EditRfRI18NComponent, OverlayComponent
+    AppComponent, RefundsComponent, CreateRefundsComponent, ManageRefundsComponent, AdministratorComponent, ClientSettingsComponent, DirectRejectRequestComponent, OperationButtonsComponent, GpfiModalComponent, LoadingDirective, ReasonForRefundComponent,   RefundReasonLanguageComponent, ActionMenuComponent, RefundReasonSettingComponent, RefundHandlingComponent, EditRfRI18NComponent, OverlayComponent
   ],
   imports: [
     BrowserModule,
