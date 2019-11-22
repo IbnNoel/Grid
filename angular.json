@@ -39,7 +39,9 @@
               "src/lib/semantic.min.js",
               "node_modules/bootstrap3/dist/js/bootstrap.js",
               "node_modules/datatables.net/js/jquery.dataTables.js",
-              "node_modules/datatables.net-bs/js/dataTables.bootstrap.js"
+              "node_modules/datatables.net-bs/js/dataTables.bootstrap.js",
+              "node_modules/datatables.net-responsive/js/dataTables.responsive.js",
+              "node_modules/datatables.net-responsive-bs/js/responsive.bootstrap.js"
             ]
           },
           "configurations": {

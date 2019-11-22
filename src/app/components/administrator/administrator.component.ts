@@ -66,8 +66,21 @@ export class AdministratorComponent implements OnInit {
       })
   }
 
+  /*
+  cctClientId: "CCTClientId0"
+country: "USA"
+countrySegment: "USA"
+id: 0
+industrySegment: "EDUCATION"
+name: "ijijkk0"
+refundConfigured: true
+  */
+
   setUpColumnDefintions(){
     this.colDefinitions = [
+      {key:"country", className: "data_grid_left_align"},
+      {key:"countrySegment", className: "data_grid_left_align"},
+      {key:"id", className: "data_grid_left_align"},
       {key:"name", className: "data_grid_left_align", header:"Name"}, 
       {key:"cctClientId", className: "data_grid_center_align", header:"CCT Id"}, 
       {key:"refundConfigured", className: "data_grid_center_align", header:"Refund Configured", formatter: (data) => {
@@ -76,7 +89,21 @@ export class AdministratorComponent implements OnInit {
       { cellElement: () => { 
         return new GPFIButton("CONFIGURE", (data) => { this.onClientClick(data.id,data); });
       }, className: "data_grid_center_align"
-    }];
+    },
+    { cellElement: () => { 
+      return new GPFIButton("CONFIGURE", (data) => { this.onClientClick(data.id,data); });
+    }, className: "data_grid_center_align"
+  },
+  { cellElement: () => { 
+    return new GPFIButton("CONFIGURE", (data) => { this.onClientClick(data.id,data); });
+  }, className: "data_grid_center_align"
+}, { cellElement: () => { 
+  return new GPFIButton("CONFIGURE", (data) => { this.onClientClick(data.id,data); });
+}, className: "data_grid_center_align"
+}, { cellElement: () => { 
+  return new GPFIButton("CONFIGURE", (data) => { this.onClientClick(data.id,data); });
+}, className: "data_grid_center_align"
+}];
   }
 
   getAllAdminSettings(clientId,clientSettings?:ClientSettings){

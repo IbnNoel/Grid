@@ -33,6 +33,7 @@
     "datatables.net-fixedcolumns-bs": "^3.3.0",
     "datatables.net-fixedheader-bs": "^3.1.6",
     "datatables.net-keytable-bs": "^2.5.1",
+    "datatables.net-responsive": "^2.2.3",
     "datatables.net-responsive-bs": "^2.2.3",
     "datatables.net-rowgroup-bs": "^1.1.1",
     "datatables.net-rowreorder-bs": "^1.2.6",

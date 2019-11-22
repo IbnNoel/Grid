@@ -1,0 +1,20 @@
+@font-face {
+    font-family: 'chevrons-up';
+    src:  url('fonts/chevrons-up.eot?2zekdi');
+    src:  url('fonts/chevrons-up.eot?2zekdi#iefix') format('embedded-opentype'),
+    url('fonts/chevrons-up.ttf?2zekdi') format('truetype'),
+    url('fonts/chevrons-up.woff?2zekdi') format('woff'),
+    url('fonts/chevrons-up.svg?2zekdi#chevrons-up') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'chevrons-down';
+    src:  url('fonts/chevrons-down.eot?stypf');
+    src:  url('fonts/chevrons-down.eot?stypf#iefix') format('embedded-opentype'),
+    url('fonts/chevrons-down.ttf?stypf') format('truetype'),
+    url('fonts/chevrons-down.woff?stypf') format('woff'),
+    url('fonts/chevrons-down.svg?stypf#chevrons-down') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}

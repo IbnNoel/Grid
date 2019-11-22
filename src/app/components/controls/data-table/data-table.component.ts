@@ -5,9 +5,13 @@ import * as _ from 'lodash';
 import 'datatables.net';
 import 'datatables.net-bs';
 
-import {Observable} from 'rxjs';
+import 'datatables.net-responsive';
+import 'datatables.net-responsive-bs';
+
+import {Observable, BehaviorSubject} from 'rxjs';
 import {PageSettings, PagingHelper} from './classes/Paging';
 import {ColumnDefs, HandleColumnSettings} from './classes/Columns';
+import { ExpansionSettings, RenderedResponsiveCollapsedHelper, ExpansionSettingsHandler } from './classes/Expansion';
 
 @Component({
   selector: 'app-data-table',
@@ -18,14 +22,16 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   @ViewChild("table", {static: true}) tableHtml: ElementRef;
 
   @ViewChild('table', {static: true, read: ViewContainerRef}) VCR: ViewContainerRef;
-  @Input() detailRow?: boolean;
+  /*@Input() detailRow?: boolean;
   @Input() detailRowCallback?: any;
   @Input() expandEvent?: Observable<any>;
-  @Input() collapseEvent?: Observable<any>;
+  @Input() collapseEvent?: Observable<any>;*/
 
   @Input() Data: Observable<Array<any>>;
   @Input() Columns: Array<ColumnDefs>;
-  @Input() PageSettings: PageSettings;
+  @Input() PageSettings?: PageSettings;
+  @Input() ExpansionSettings? : ExpansionSettings;
+  @Input() CollapseOnRender?: boolean;
 
   dataTableApi: DataTables.Api;
   dataTableSettings: DataTables.Settings;
@@ -33,15 +39,35 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   columnDef: DataTables.ColumnDefsSettings;
   pagingHelper: PagingHelper;
   pageChangeData: Observable<any>;
+  tableSettings: DataTables.Settings;
+  expansionSettingsHandler : ExpansionSettingsHandler = new ExpansionSettingsHandler();
+  renderedResponsiveCollapsedHelper: RenderedResponsiveCollapsedHelper = new RenderedResponsiveCollapsedHelper();
+  
+  onGridInit$ = new BehaviorSubject<{api:DataTables.Api, tableDom:any}>(null);
 
 
   constructor(private CFR: ComponentFactoryResolver) {
   }
 
   ngAfterViewInit(): void {
-    this.dataTableApi = $(this.tableHtml.nativeElement).DataTable(this.constructTableSettings());
+    this.constructTableSettings();
+    this.initRenderOnCollapse();
+    console.log(this.tableSettings);
+    debugger;
+    this.dataTableApi = $(this.tableHtml.nativeElement).DataTable(this.tableSettings);
+    this.onGridInit$.next({api: this.dataTableApi, tableDom: this.tableHtml.nativeElement});
+
     this.initPaging();
 
+    this.Data.subscribe(data => {
+      this.initTable(data);
+    });
+
+    this.dataTableApi.on('draw',(param) => {
+      this.onGridInit$.next({api: this.dataTableApi, tableDom: this.tableHtml.nativeElement});
+    });
+
+    /*
     if (this.detailRow) {
       this.expandEvent.subscribe(value => {
         if (Object.keys(value).length > 0) {
@@ -55,16 +81,14 @@ export class DataTableComponent implements OnInit, AfterViewInit {
       this.collapseEvent.subscribe(value => {
         $("table tr .expanded").parent().remove();
       });
-    }
+    }*/
 
-    this.Data.subscribe(data => {
-      this.initTable(data);
-    });
+
   }
 
   constructTableSettings = () => {
     let columnSettings = this.constructColumnSettings();
-    console.log(columnSettings);
+
     let dataTableSettings: DataTables.Settings = {
       columns: columnSettings,
       info: false,
@@ -78,7 +102,7 @@ export class DataTableComponent implements OnInit, AfterViewInit {
         "<'responsive-tables p20'<'container-fluid'<'row't>>>",
       lengthMenu: [[10, 20, 30, 50], ["Show 10 per page", "Show 20 per page", "Show 30 per page", "Show 50 per page"]]
     }
-    return dataTableSettings;
+    this.tableSettings = dataTableSettings;
   }
 
   initTable(data) {
@@ -104,6 +128,16 @@ export class DataTableComponent implements OnInit, AfterViewInit {
     }
   }
 
+  initRenderOnCollapse(){
+    if(this.CollapseOnRender){
+      this.renderedResponsiveCollapsedHelper.setupExpansionSettings(this.tableSettings,this.expansionSettingsHandler, this.onGridInit$);
+    }
+  }
+
+  onGridInit = (func : (tblSettings : DataTables.Api) => void) => {
+    //this.dataTableApi.on
+  }
+
   createTable(data) {
     this.dataTableApi.clear();
     this.dataTableApi.rows.add(data);
@@ -111,7 +145,9 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   }
 
   private constructColumnSettings(): Array<DataTables.ColumnSettings> {
-    return _.map(this.Columns, (setting) => new HandleColumnSettings(setting, this.VCR, this.CFR).getDataTablesColumns());
+    
+    return _.map(this.Columns, (setting) => { 
+      return new HandleColumnSettings(setting, this).getDataTablesColumns()});
   }
 
   ngOnInit() {

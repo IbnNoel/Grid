@@ -56,3 +56,43 @@ tbody tr:not(.child):nth-child(even){
 tbody tr:not(.child):nth-child(even) td{
     color:#333333;
 }
+
+
+.down-arrow {
+    background-image: none;
+    background: #f8f8f8;
+    padding-left: 30px
+}
+
+.down-arrow:before{
+    content: "\e900";
+    position: relative;
+    left: -14px;
+    top: 2px;
+    font-family: 'chevrons-up';
+    font-size:10px;
+}
+.gpfiExpand {
+    width: 35px;
+    padding-top: 7px !important;
+    padding-bottom: 7px !important;
+}
+.btn.collapsed:before {
+    content: "\e900";
+    position: relative;
+    left: -14px;
+    top: 2px;
+    font-family: 'chevrons-down' !important;
+}
+.gpfiExpand.collapsed:before {
+    position: static;
+    margin-left: -3.5px;
+}
+/* 007_4 */
+.down-arrow:focus,
+.down-arrow,
+.down-arrow.collapsed,
+.down-arrow:hover{
+    background-color: #f8f8f8;
+    color:#bcbdbe;
+}

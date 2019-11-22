@@ -1,20 +1,44 @@
 import {ActionButton, ActionMenuComponent} from "../../action-menu/action-menu.component";
 import {ComponentFactoryResolver, ComponentRef, ViewContainerRef} from "@angular/core";
+import { DataTableComponent } from '../data-table.component';
+import { RenderedResponsiveCollapsedHelper } from './Expansion';
 
 export class HandleColumnSettings {
 
   private colSettings: DataTables.ColumnSettings = {
     orderable: false
   };
+  columnDefinition:ColumnDefs;
+  isCollapsedOnRender: boolean;
+  renderedResponseCollapsedHelper: RenderedResponsiveCollapsedHelper;
 
-  constructor(setting: ColumnDefs, protected _viewContainerRef?: ViewContainerRef, protected componentFactory?: ComponentFactoryResolver) {
+  constructor(setting: ColumnDefs, dtComponent: DataTableComponent) {
     this.colSettings.className = "key_" + setting.key;
     this.colSettings.title = setting.key;
+    this.columnDefinition = setting;
+    this.renderedResponseCollapsedHelper = dtComponent.renderedResponsiveCollapsedHelper;
 
     Object.entries(setting).forEach(([key, value]) => {
       if (value && this[key + "_Func"])
         this[key + "_Func"](value)
     });
+
+    this.isCollapsedOnRender = dtComponent.CollapseOnRender;
+    this.setCollapseRenderSettings();
+  }
+
+  setCollapseRenderSettings(){
+    if(this.isCollapsedOnRender){
+      if(this.columnDefinition.breakpoint){
+        this.colSettings.className += " " + this.columnDefinition.breakpoint;
+      }else{
+        this.colSettings.className += " min-narrowDesktop";
+        if(this.columnDefinition.responsivePriority){
+          this.renderedResponseCollapsedHelper.isResponsivePriortySet = true;
+          this.colSettings.className += " max-desktop";
+        }
+      }
+    }
   }
 
   getDataTablesColumns() {
@@ -48,10 +72,10 @@ export class HandleColumnSettings {
         });
         $(cell).append(elementValue.Html);
       } else if (elementValue instanceof ActionMenuComponent) {
-        let componentFactory = this.componentFactory.resolveComponentFactory(ActionMenuComponent);
+        /*let componentFactory = this.componentFactory.resolveComponentFactory(ActionMenuComponent);
         let componentRef: ComponentRef<ActionMenuComponent> = this._viewContainerRef.createComponent(componentFactory);
         componentRef.instance.buttons=elementValue.buttons;
-        $(cell).append(componentRef.location.nativeElement);
+        $(cell).append(componentRef.location.nativeElement);*/
 
       }
     };
@@ -76,18 +100,18 @@ export class HandleColumnSettings {
 
   collapseGrid_Func() {
   }
-
   width_Func() {
   }
-
   hideCollapsed_Func() {
   }
-
   detailColumn_Func() {
   }
-
   calculateTotal_Func() {
     // totalCalculateColumns[colElement.key] = "";
+  }
+
+  responsivePriority_Func(){
+
   }
 }
 
@@ -126,6 +150,16 @@ export interface ColumnDefs {
   width?: number;
   hideCollapsed?: boolean;
   detailColumn?: any;
+  /* 
+  * Used to determine which columns should remain on screen when grid collapses in responsive mode.
+  */
+  responsivePriority?:boolean;
+  /*
+  * TODO:- Set up enum of break points
+  * Manully set the breakpoint at which the column should be view on screen !
+  */
+  breakpoint?: string;
+
 }
 
 type FunctionCellElement = (cellData?: any, rowData?: any, row?: number, col?: number) => HTMLButtonElement | HTMLElement | GPFIButton | ActionMenuComponent | string;

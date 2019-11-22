@@ -21,7 +21,7 @@
             </div>
         </form>
         </div>
-        <app-data-table [Columns]="colDefinitions" [Data]="data" [(PageSettings)]="pageSettings"></app-data-table>
+        <app-data-table [CollapseOnRender]="true" [Columns]="colDefinitions" [Data]="data" [(PageSettings)]="pageSettings"></app-data-table>
         <div class="row">
             <div class="col-xs-12">
                 <button class="btn btn-default pull-left" (click)="onCancel()" type="button">Cancel</button>
