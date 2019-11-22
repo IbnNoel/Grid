@@ -56,10 +56,8 @@ export class AdministratorComponent implements OnInit {
     this.clientId = null;
   }
 
-  onClientClick(clientId, clientSettings:ClientSettings){
-    clientSettings.industryTemplateId = clientSettings.industrySegment;
-    clientSettings.clientId = clientId;
-    this.adminService.setDefaultSettings(clientSettings).subscribe(resp => {
+  onClientClick(clientId){
+    this.adminService.setDefaultSettings(clientId).subscribe(resp => {
         this.getAllAdminSettings(clientId, resp as ClientSettings);
       }, error =>{
         console.log(error);
@@ -74,7 +72,7 @@ export class AdministratorComponent implements OnInit {
         return data ? "Yes" : "No";
       }},
       { cellElement: () => {
-        return new GPFIButton("CONFIGURE", (data) => { this.onClientClick(data.id,data); });
+        return new GPFIButton("CONFIGURE", (data) => { this.onClientClick(data.clientId); });
       }, className: "data_grid_center_align"
     }];
   }

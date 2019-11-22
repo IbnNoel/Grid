@@ -24,7 +24,7 @@ export class AdministratorService {
   private readonly REMOVE_PYMT_TYPE_CURR = `${this.ROUTE_URL}/directRejections/client/remove`;
   private readonly GET_REFUND_URL = `${this.ROUTE_URL}/getRefundRequestSettings/`;
   private readonly SET_REFUND_URL = `${this.ROUTE_URL}/configure/refundRequestSettings`;
-  private readonly CONFIGURE_DEFAULT_URL = `${this.ROUTE_URL}/configure/default`;
+  private readonly CONFIGURE_DEFAULT_URL = `${this.ROUTE_URL}/configure/default/`;
   private readonly GET_RFR = `${this.ROUTE_URL}/client/reasonForRefunds`;
   private readonly GET_RFR_I18N = `${this.ROUTE_URL}/client/reasonForRefunds/I18N`;
   private readonly TOGGLE_RFR = `${this.ROUTE_URL}/client/reasonForRefunds/configure/`;
@@ -134,8 +134,8 @@ export class AdministratorService {
     return this.httpClient.put<ApiResponse<RefundRequestSettings>>(this.SET_REFUND_URL, settings);
   }
 
-  setDefaultSettings(settings: ClientSettings) {
-    return this.httpClient.post<ApiResponse<ClientSettings>>(this.CONFIGURE_DEFAULT_URL, settings).pipe(this.apiResponseMap);
+  setDefaultSettings(clientId) {
+    return this.httpClient.post<ApiResponse<ClientSettings>>(this.CONFIGURE_DEFAULT_URL + clientId, "").pipe(this.apiResponseMap);
   }
 
   getRefundHandling(id) {
