@@ -25,6 +25,6 @@ COPY . .
 #Replace with current enty point
 EXPOSE 4200 4201
 RUN ng build
-CMD [ "npm", "run", "start" ]
+CMD [ "npm","start" ]
 #ENTRYPOINT ["/tmp/defender", "rasp", "node", "./server/server.js"]
 #ENTRYPOINT ["node", "./server.js"]
