@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ComponentRef, ComponentFactoryResolver } from '@angular/core';
 import { AdministratorService, AdminSettings, ClientSettings } from 'src/app/core/administrator.service';
 import { forkJoin, Observable, of, from, BehaviorSubject } from 'rxjs';
 import { Store } from '@ngrx/store'
@@ -11,6 +11,8 @@ import {} from 'jquery';
 import {} from 'bootstrap';
 import { PageSettings } from '../controls/data-table/classes/Paging';
 import { ColumnDefs, GPFIButton } from '../controls/data-table/classes/Columns';
+import { ExpansionSettings } from '../controls/data-table/classes/Expansion';
+import { ActionMenuComponent, ActionButton } from '../controls/action-menu/action-menu.component';
 
 @Component({
   selector: 'app-administrator',
@@ -30,10 +32,29 @@ export class AdministratorComponent implements OnInit {
   pageSettings = new PageSettings(() => {
     this.onSearch();
   });
+  expansionSetting:ExpansionSettings;
 
   constructor(private adminService : AdministratorService, private store: Store<State>, private router: Router,
-    private route: ActivatedRoute, private clientService: ClientSettingsService) {
+    private route: ActivatedRoute, private clientService: ClientSettingsService, private CFR: ComponentFactoryResolver) {
       this.setUpColumnDefintions();
+
+      this.expansionSetting = new ExpansionSettings(true, (viewContainer, data, row)=> {
+        return new Promise((resolve) => {
+        let componentFactory = CFR.resolveComponentFactory(ActionMenuComponent);
+        let componentRef: ComponentRef<ActionMenuComponent> = viewContainer.createComponent(componentFactory);
+        let ac = new ActionButton();
+        ac.label = "test1";
+        ac.action = () => { 
+           this.expansionSetting.collapseGrid(row);
+        };
+        
+        componentRef.instance.buttons = [ac];
+        resolve(componentRef);
+      })
+
+    })
+
+
   }
 
   ngOnInit() {
@@ -93,16 +114,16 @@ refundConfigured: true
     { cellElement: () => { 
       return new GPFIButton("CONFIGURE", (data) => { this.onClientClick(data.id,data); });
     }, className: "data_grid_center_align"
-  },
-  { cellElement: () => { 
+    },
+    { cellElement: () => { 
+      return new GPFIButton("CONFIGURE", (data) => { this.onClientClick(data.id,data); });
+    }, className: "data_grid_center_align"
+    }, { cellElement: () => { 
     return new GPFIButton("CONFIGURE", (data) => { this.onClientClick(data.id,data); });
-  }, className: "data_grid_center_align"
-}, { cellElement: () => { 
-  return new GPFIButton("CONFIGURE", (data) => { this.onClientClick(data.id,data); });
-}, className: "data_grid_center_align"
-}, { cellElement: () => { 
-  return new GPFIButton("CONFIGURE", (data) => { this.onClientClick(data.id,data); });
-}, className: "data_grid_center_align"
+    }, className: "data_grid_center_align"
+    }, { cellElement: () => { 
+    return new GPFIButton("CONFIGURE", (data) => { this.onClientClick(data.id,data); });
+    }, className: "data_grid_center_align"
 }];
   }
 

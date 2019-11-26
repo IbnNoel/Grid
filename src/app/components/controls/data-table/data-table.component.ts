@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ComponentFactoryResolver, ElementRef, Input, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {AfterViewInit, Component, ComponentFactoryResolver, ElementRef, Input, OnInit, ViewChild, ViewContainerRef, QueryList, ViewChildren} from '@angular/core';
 import * as $ from 'jquery';
 import * as _ from 'lodash';
 
@@ -11,7 +11,8 @@ import 'datatables.net-responsive-bs';
 import {Observable, BehaviorSubject} from 'rxjs';
 import {PageSettings, PagingHelper} from './classes/Paging';
 import {ColumnDefs, HandleColumnSettings} from './classes/Columns';
-import { ExpansionSettings, RenderedResponsiveCollapsedHelper, ExpansionSettingsHandler } from './classes/Expansion';
+import { ExpansionSettings, ExpansionSettingsHandler } from './classes/Expansion';
+import { RenderedResponsiveCollapsedHelper } from './classes/CollapsedResponsive';
 
 @Component({
   selector: 'app-data-table',
@@ -20,12 +21,9 @@ import { ExpansionSettings, RenderedResponsiveCollapsedHelper, ExpansionSettings
 })
 export class DataTableComponent implements OnInit, AfterViewInit {
   @ViewChild("table", {static: true}) tableHtml: ElementRef;
-
   @ViewChild('table', {static: true, read: ViewContainerRef}) VCR: ViewContainerRef;
-  /*@Input() detailRow?: boolean;
-  @Input() detailRowCallback?: any;
-  @Input() expandEvent?: Observable<any>;
-  @Input() collapseEvent?: Observable<any>;*/
+  @ViewChildren('tableBody') tableBodyChildren: QueryList<ViewContainerRef>
+
 
   @Input() Data: Observable<Array<any>>;
   @Input() Columns: Array<ColumnDefs>;
@@ -40,20 +38,23 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   pagingHelper: PagingHelper;
   pageChangeData: Observable<any>;
   tableSettings: DataTables.Settings;
-  expansionSettingsHandler : ExpansionSettingsHandler = new ExpansionSettingsHandler();
+  expansionSettingsHandler : ExpansionSettingsHandler = new ExpansionSettingsHandler();;
   renderedResponsiveCollapsedHelper: RenderedResponsiveCollapsedHelper = new RenderedResponsiveCollapsedHelper();
   
   onGridInit$ = new BehaviorSubject<{api:DataTables.Api, tableDom:any}>(null);
+  //onGrindRendered = new BehaviorSubject<any>(null);
 
 
-  constructor(private CFR: ComponentFactoryResolver) {
+  constructor() {
   }
 
   ngAfterViewInit(): void {
+  
+   
     this.constructTableSettings();
     this.initRenderOnCollapse();
-    console.log(this.tableSettings);
-    debugger;
+    this.initExpansionHandler();
+
     this.dataTableApi = $(this.tableHtml.nativeElement).DataTable(this.tableSettings);
     this.onGridInit$.next({api: this.dataTableApi, tableDom: this.tableHtml.nativeElement});
 
@@ -64,32 +65,15 @@ export class DataTableComponent implements OnInit, AfterViewInit {
     });
 
     this.dataTableApi.on('draw',(param) => {
-      this.onGridInit$.next({api: this.dataTableApi, tableDom: this.tableHtml.nativeElement});
+      /** Todo :- create a generic event function with speck enum valuesa */
+      //this.onGridInit$.next({api: this.dataTableApi, tableDom: this.tableHtml.nativeElement});
     });
-
-    /*
-    if (this.detailRow) {
-      this.expandEvent.subscribe(value => {
-        if (Object.keys(value).length > 0) {
-          const row = this.dataTableApi.row(value.row);
-          $("table tr .expanded").parent().remove();
-            let parentDiv = $("<div class='expanded'></div>");
-            parentDiv.append(this.detailRowCallback(value.data))
-            row.child(parentDiv).show();
-        };
-      });
-      this.collapseEvent.subscribe(value => {
-        $("table tr .expanded").parent().remove();
-      });
-    }*/
-
-
   }
 
   constructTableSettings = () => {
     let columnSettings = this.constructColumnSettings();
 
-    let dataTableSettings: DataTables.Settings = {
+    this.tableSettings = {
       columns: columnSettings,
       info: false,
       ordering: false,
@@ -102,10 +86,9 @@ export class DataTableComponent implements OnInit, AfterViewInit {
         "<'responsive-tables p20'<'container-fluid'<'row't>>>",
       lengthMenu: [[10, 20, 30, 50], ["Show 10 per page", "Show 20 per page", "Show 30 per page", "Show 50 per page"]]
     }
-    this.tableSettings = dataTableSettings;
   }
 
-  initTable(data) {
+  private initTable(data) {
     if (this.PageSettings) {
       this.pagingHelper.initPaging(() => {
         this.createTable(data);
@@ -119,29 +102,33 @@ export class DataTableComponent implements OnInit, AfterViewInit {
                table.draw();
       }*/
     }
-
   }
 
-  initPaging() {
+  private initPaging() {
     if (this.PageSettings) {
       this.pagingHelper = new PagingHelper(this.dataTableApi, this.PageSettings);
     }
   }
 
-  initRenderOnCollapse(){
+  private initRenderOnCollapse(){
     if(this.CollapseOnRender){
-      this.renderedResponsiveCollapsedHelper.setupExpansionSettings(this.tableSettings,this.expansionSettingsHandler, this.onGridInit$);
+      this.renderedResponsiveCollapsedHelper.init(this);
     }
   }
 
-  onGridInit = (func : (tblSettings : DataTables.Api) => void) => {
-    //this.dataTableApi.on
-  }
-
-  createTable(data) {
+  private createTable(data) {
     this.dataTableApi.clear();
     this.dataTableApi.rows.add(data);
     this.dataTableApi.draw();
+  }
+
+  private initExpansionHandler(){
+    if(this.CollapseOnRender || this.ExpansionSettings){
+      this.expansionSettingsHandler.init(this);
+      if(this.ExpansionSettings){
+        this.ExpansionSettings._expansionSettingHandler = this.expansionSettingsHandler;
+      }
+    } 
   }
 
   private constructColumnSettings(): Array<DataTables.ColumnSettings> {

@@ -1,7 +1,7 @@
 import {ActionButton, ActionMenuComponent} from "../../action-menu/action-menu.component";
 import {ComponentFactoryResolver, ComponentRef, ViewContainerRef} from "@angular/core";
 import { DataTableComponent } from '../data-table.component';
-import { RenderedResponsiveCollapsedHelper } from './Expansion';
+import { RenderedResponsiveCollapsedHelper } from './CollapsedResponsive';
 
 export class HandleColumnSettings {
 
@@ -74,9 +74,8 @@ export class HandleColumnSettings {
       } else if (elementValue instanceof ActionMenuComponent) {
         /*let componentFactory = this.componentFactory.resolveComponentFactory(ActionMenuComponent);
         let componentRef: ComponentRef<ActionMenuComponent> = this._viewContainerRef.createComponent(componentFactory);
-        componentRef.instance.buttons=elementValue.buttons;
+        componentRef.instance.buttons = elementValue.buttons;
         $(cell).append(componentRef.location.nativeElement);*/
-
       }
     };
     this.colSettings.className += " gpfi_tbl_customCell";
@@ -97,7 +96,6 @@ export class HandleColumnSettings {
 
   sortable_Func() {
   }
-
   collapseGrid_Func() {
   }
   width_Func() {
@@ -108,10 +106,6 @@ export class HandleColumnSettings {
   }
   calculateTotal_Func() {
     // totalCalculateColumns[colElement.key] = "";
-  }
-
-  responsivePriority_Func(){
-
   }
 }
 
