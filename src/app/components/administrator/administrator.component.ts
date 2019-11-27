@@ -112,7 +112,7 @@ refundConfigured: true
       }, className: "data_grid_center_align"
     },
     { cellElement: () => { 
-      return new GPFIButton("CONFIGURE", (data) => { this.onClientClick(data.id,data); });
+      return new GPFIButton("CONFIGURE", (rowData, row) => { this.expansionSetting.expandGrid({ propertyName: "id", id:rowData.id }) });
     }, className: "data_grid_center_align"
     },
     { cellElement: () => { 

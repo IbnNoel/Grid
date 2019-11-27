@@ -26,16 +26,14 @@ export class ExpansionSettingsHandler{
             }
         })
     }
-    expandGrid(rowInfo: {id: number, propertyName: string} | DataTables.RowMethods):void {
-        let row = this.getDataTableRowObject(rowInfo);
-
-        this._expansionSettings.DetailRowCallback(this._viewContainer, row.data(), row).then((expansionHtml) => {
+    expandGrid(rowInfo : DataTables.RowMethods):void {
+        this._expansionSettings.DetailRowCallback(this._viewContainer, rowInfo.data(), rowInfo).then((expansionHtml) => {
             let html: any = expansionHtml;
             if(expansionHtml instanceof ComponentRef){
-                this._componentMap.set(row.index(),expansionHtml);
+                this._componentMap.set(rowInfo.index(),expansionHtml);
                 html = expansionHtml.location.nativeElement;
             }
-            this.renderDetailHtml(row,html);
+            this.renderDetailHtml(rowInfo,html);
         });
     }
 
@@ -65,15 +63,14 @@ export class ExpansionSettingsHandler{
         tr.next().find('td').attr("colspan", "100%");
     }
 
-    collapseGrid(rowInfo:any){
-        let row = this.getDataTableRowObject(rowInfo);
-        var rowIndex = row.index();
+    collapseGrid(rowInfo: DataTables.RowMethods){
+        var rowIndex = rowInfo.index();
 
         if(this._componentMap.get(rowIndex)){
             this._componentMap.get(rowIndex).destroy();
             this._componentMap.delete(rowIndex);
         }
-        row.child.hide();
+        rowInfo.child.hide();
     }
 
     set expandCallback(callback){
@@ -95,6 +92,19 @@ export class ExpansionSettingsHandler{
         });
     }
 
+    getDataTableRowObject(rowInfo){
+        let row: DataTables.RowMethods;
+
+        if("propertyName" in rowInfo){
+            row = this._tableApi.row(function (idx, data, node) {
+                return data[(rowInfo as any).propertyName] == rowInfo.id;
+            })
+        }else{
+            row = rowInfo as DataTables.RowMethods;
+        }
+        return row;
+    }
+
     private getClassNameByPrefix(dom, prefix) {
         var keyClass = $(dom).attr("class").split(" ").filter(function (str, i) {
             return str.substring(0, prefix.length) == prefix;
@@ -106,20 +116,6 @@ export class ExpansionSettingsHandler{
         } else {
             return null;
         }
-    }
-
-    private getDataTableRowObject(rowInfo){
-        let row: DataTables.RowMethods;
-
-        if("propertyName" in rowInfo){
-            row = this._tableApi.rows(function (idx, data, node) {
-                return data[(rowInfo as any).propertyName] == rowInfo.id;
-            })[0]; 
-        }else{
-            row = rowInfo as DataTables.RowMethods;
-        }
-
-        return row;
     }
 
     /**
@@ -166,17 +162,34 @@ export class ExpansionSettings{
         return this._showExpandedCallback;
     }
 
-    expandGrid(rowInfo?: {id: number, propertyName: string} | DataTables.RowMethods){
-        this.handler.expandGrid(rowInfo);
+    expandGrid(rowInfo: {id: number, propertyName: string} | DataTables.RowMethods){
+        let row = this.handler.getDataTableRowObject(rowInfo);
+        if (row.length > 0) {
+            if (this.noExpansionBtn(row)) {
+                this.handler.expandGrid(row);
+            } else {
+                $(row.node()).find(".gpfiExpand.collapsed").click();
+            }
+        }
     }
     /**
      * Add new overloaded params
      * @param row 
      */
     collapseGrid(rowInfo?: {id: number, propertyName: string} | DataTables.RowMethods){
-        this.handler.collapseGrid(rowInfo);
+        let row = this.handler.getDataTableRowObject(rowInfo);
+        if (this.noExpansionBtn(row)) {
+            this.handler.collapseGrid(row);
+        }else{
+            $(row.node()).find(".gpfiExpand:not(.collapsed)").click();
+        }
     }
 
+    
+    private noExpansionBtn(row){
+        return $(row.node()).find(".gpfiExpand").length == 0;
+    }
+    
     get DetailRowCallback(){
         return this._detailRowCallback;
     }

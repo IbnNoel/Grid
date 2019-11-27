@@ -58,12 +58,6 @@ tbody tr:not(.child):nth-child(even) td{
 }
 
 
-.down-arrow {
-    background-image: none;
-    background: #f8f8f8;
-    padding-left: 30px
-}
-
 .down-arrow:before{
     content: "\e900";
     position: relative;
@@ -72,11 +66,12 @@ tbody tr:not(.child):nth-child(even) td{
     font-family: 'chevrons-up';
     font-size:10px;
 }
-.gpfiExpand {
+.gpfiExpand.gpfiExpand {
     width: 35px;
     padding-top: 7px !important;
     padding-bottom: 7px !important;
 }
+
 .btn.collapsed:before {
     content: "\e900";
     position: relative;
@@ -84,15 +79,47 @@ tbody tr:not(.child):nth-child(even) td{
     top: 2px;
     font-family: 'chevrons-down' !important;
 }
-.gpfiExpand.collapsed:before {
-    position: static;
+.gpfiExpand:before {
+    position: static !important;
     margin-left: -3.5px;
+}
+.gpfiExpansionCol {
+    width: 1% !important
+}
+.gpfiExpansionCol .gpfiExpand {
+    margin: 0 !important
 }
 /* 007_4 */
 .down-arrow:focus,
-.down-arrow,
+.down-arrow.gpfiExpand,
 .down-arrow.collapsed,
 .down-arrow:hover{
     background-color: #f8f8f8;
     color:#bcbdbe;
+}
+
+table.collapsed {
+    background-color: white;
+    background: 0
+}
+
+table.detailItems {
+    width: 100%
+}
+
+.detailItems td {
+    border-top: 0 !important;
+    padding: 5px;
+    text-align: left;
+    box-sizing: content-box
+}
+
+.detailItems .dtr-title {
+    font-weight: bold;
+    width: 50%
+}
+
+.detailItems tr {
+    border-top: 0 !important;
+    border-bottom: 1px solid #ddd
 }

@@ -68,7 +68,7 @@ export class HandleColumnSettings {
       if (elementValue instanceof GPFIButton) {
         var button = elementValue as GPFIButton;
         button.Html.click(rowData, (e) => {
-          button.OnClick(rowData);
+          button.OnClick(rowData, row);
         });
         $(cell).append(elementValue.Html);
       } else if (elementValue instanceof ActionMenuComponent) {
@@ -172,8 +172,8 @@ export class GPFIButton {
     return this.html;
   }
 
-  OnClick(rowData) {
-    return this.onClick(rowData);
+  OnClick(rowData,row) {
+    return this.onClick(rowData, row);
   }
 
 }
