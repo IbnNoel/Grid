@@ -50,21 +50,15 @@
 </app-overlay>
 <div>
   <app-data-table
-    [expandEvent]="expandReasonCodeEvent"
-    [collapseEvent]="collapseReasonCodeEvent"
-    [detailRow]="true"
-    [detailRowCallback]="expandReasonCode()"
+    [(ExpansionSettings)]="reasonCodeExpansionSettings"
     [Columns]="reasonCodeColDef"
     [Data]="reasonCodes"
     [(PageSettings)]="reasonCodePageSettings"></app-data-table>
 </div>
 <div>
   <app-data-table
-    [expandEvent]="expandReasonCodeI18NEvent"
-    [detailRowCallback]="expandReasonCodeI18N()"
-    [detailRow]="true"
+    [(ExpansionSettings)]="reasonCodeI18ExpansionSettings"
     [Columns]="reasonCodeI18NColDef"
     [Data]="reasonCodesI18N"
-    [(PageSettings)]="reasonCodeI18NPageSettings"
-    [collapseEvent]="collapseReasonCodeI18NEvent"></app-data-table>
+    [(PageSettings)]="reasonCodeI18NPageSettings"></app-data-table>
 </div>

@@ -162,7 +162,7 @@ export class ExpansionSettings{
         return this._showExpandedCallback;
     }
 
-    expandGrid(rowInfo: {id: number, propertyName: string} | DataTables.RowMethods){
+    ExpandGrid(rowInfo: {id, propertyName: string} | DataTables.RowMethods){
         let row = this.handler.getDataTableRowObject(rowInfo);
         if (row.length > 0) {
             if (this.noExpansionBtn(row)) {
@@ -176,7 +176,7 @@ export class ExpansionSettings{
      * Add new overloaded params
      * @param row 
      */
-    collapseGrid(rowInfo?: {id: number, propertyName: string} | DataTables.RowMethods){
+    CollapseGrid(rowInfo?: {id, propertyName: string} | DataTables.RowMethods){
         let row = this.handler.getDataTableRowObject(rowInfo);
         if (this.noExpansionBtn(row)) {
             this.handler.collapseGrid(row);
