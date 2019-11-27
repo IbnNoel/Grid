@@ -22,8 +22,6 @@ import { RenderedResponsiveCollapsedHelper } from './classes/CollapsedResponsive
 export class DataTableComponent implements OnInit, AfterViewInit {
   @ViewChild("table", {static: true}) tableHtml: ElementRef;
   @ViewChild('table', {static: true, read: ViewContainerRef}) VCR: ViewContainerRef;
-  @ViewChildren('tableBody') tableBodyChildren: QueryList<ViewContainerRef>
-
 
   @Input() Data: Observable<Array<any>>;
   @Input() Columns: Array<ColumnDefs>;
@@ -40,17 +38,12 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   tableSettings: DataTables.Settings;
   expansionSettingsHandler : ExpansionSettingsHandler = new ExpansionSettingsHandler();;
   renderedResponsiveCollapsedHelper: RenderedResponsiveCollapsedHelper = new RenderedResponsiveCollapsedHelper();
-  
   onGridInit$ = new BehaviorSubject<{api:DataTables.Api, tableDom:any}>(null);
-  //onGrindRendered = new BehaviorSubject<any>(null);
-
 
   constructor() {
   }
 
   ngAfterViewInit(): void {
-  
-   
     this.constructTableSettings();
     this.initRenderOnCollapse();
     this.initExpansionHandler();
@@ -132,7 +125,6 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   }
 
   private constructColumnSettings(): Array<DataTables.ColumnSettings> {
-    
     return _.map(this.Columns, (setting) => { 
       return new HandleColumnSettings(setting, this).getDataTablesColumns()});
   }

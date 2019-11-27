@@ -26,6 +26,7 @@ export class ExpansionSettingsHandler{
             }
         })
     }
+
     expandGrid(rowInfo : DataTables.RowMethods):void {
         this._expansionSettings.DetailRowCallback(this._viewContainer, rowInfo.data(), rowInfo).then((expansionHtml) => {
             let html: any = expansionHtml;
@@ -131,7 +132,6 @@ export class ExpansionSettingsHandler{
 }
 
 export class ExpansionSettings{
-
     private handler : ExpansionSettingsHandler;
     private _detailRow : boolean;
     private _showExpandedCallback: (rowData : any) => boolean;
@@ -185,7 +185,6 @@ export class ExpansionSettings{
         }
     }
 
-    
     private noExpansionBtn(row){
         return $(row.node()).find(".gpfiExpand").length == 0;
     }
