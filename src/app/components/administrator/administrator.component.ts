@@ -32,29 +32,10 @@ export class AdministratorComponent implements OnInit {
   pageSettings = new PageSettings(() => {
     this.onSearch();
   });
-  expansionSetting:ExpansionSettings;
 
   constructor(private adminService : AdministratorService, private store: Store<State>, private router: Router,
     private route: ActivatedRoute, private clientService: ClientSettingsService, private CFR: ComponentFactoryResolver) {
       this.setUpColumnDefintions();
-
-      this.expansionSetting = new ExpansionSettings(true, (viewContainer, data, row)=> {
-        return new Promise((resolve) => {
-        let componentFactory = CFR.resolveComponentFactory(ActionMenuComponent);
-        let componentRef: ComponentRef<ActionMenuComponent> = viewContainer.createComponent(componentFactory);
-        let ac = new ActionButton();
-        ac.label = "test1";
-        ac.action = () => { 
-           this.expansionSetting.collapseGrid(row);
-        };
-        
-        componentRef.instance.buttons = [ac];
-        resolve(componentRef);
-      })
-
-    })
-
-
   }
 
   ngOnInit() {
@@ -87,16 +68,6 @@ export class AdministratorComponent implements OnInit {
       })
   }
 
-  /*
-  cctClientId: "CCTClientId0"
-country: "USA"
-countrySegment: "USA"
-id: 0
-industrySegment: "EDUCATION"
-name: "ijijkk0"
-refundConfigured: true
-  */
-
   setUpColumnDefintions(){
     this.colDefinitions = [
       {key:"country", className: "data_grid_left_align"},
@@ -110,21 +81,7 @@ refundConfigured: true
       { cellElement: () => { 
         return new GPFIButton("CONFIGURE", (data) => { this.onClientClick(data.id,data); });
       }, className: "data_grid_center_align"
-    },
-    { cellElement: () => { 
-      return new GPFIButton("CONFIGURE", (rowData, row) => { this.expansionSetting.expandGrid({ propertyName: "id", id:rowData.id }) });
-    }, className: "data_grid_center_align"
-    },
-    { cellElement: () => { 
-      return new GPFIButton("CONFIGURE", (data) => { this.onClientClick(data.id,data); });
-    }, className: "data_grid_center_align"
-    }, { cellElement: () => { 
-    return new GPFIButton("CONFIGURE", (data) => { this.onClientClick(data.id,data); });
-    }, className: "data_grid_center_align"
-    }, { cellElement: () => { 
-    return new GPFIButton("CONFIGURE", (data) => { this.onClientClick(data.id,data); });
-    }, className: "data_grid_center_align"
-}];
+    }];
   }
 
   getAllAdminSettings(clientId,clientSettings?:ClientSettings){
