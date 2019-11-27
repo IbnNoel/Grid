@@ -40,7 +40,9 @@ import {EditRfRI18NComponent} from './components/administrator/reason-for-refund
 import {OverlayComponent} from './components/controls/overlay/overlay.component';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {CustomTranslationsLoader} from './core/translations.service';
-import {WidgetsModule} from './modules/dataTables.module';
+import { WidgetsModule } from './modules/widgets.module';
+import { DataTableModule } from './modules/dataTables.module';
+
 
 export function CustomTranslationsFactory(gp2Service: Gp2Service) {
   return new CustomTranslationsLoader(gp2Service);
@@ -73,7 +75,8 @@ export function CustomTranslationsFactory(gp2Service: Gp2Service) {
     PortalModule,
     MatMenuModule,
     MatIconModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DataTableModule
   ],
   providers: [WINDOW_PROVIDERS, Gp2Service, AuthGuardService, AuthService, RefundService, AdministratorService, RoleAuthGuard, LoaderService, LoaderInterceptor,
     {provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true},

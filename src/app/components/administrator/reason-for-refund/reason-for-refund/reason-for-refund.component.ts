@@ -40,8 +40,8 @@ export class ReasonForRefundComponent implements OnInit {
     this.updateReasonCodeI18NTable();
   });
   private addCustomRfRForm: FormGroup;
-  private reasonCodeExpansionSettings: ExpansionSettings;
-  private reasonCodeI18ExpansionSettings: ExpansionSettings;
+  reasonCodeExpansionSettings: ExpansionSettings;
+  reasonCodeI18ExpansionSettings: ExpansionSettings;
 
   constructor(private adminService: AdministratorService, private store: Store<State>, private router: Router, private route: ActivatedRoute, private viewContainerRef: ViewContainerRef, private CFR: ComponentFactoryResolver) {   
     

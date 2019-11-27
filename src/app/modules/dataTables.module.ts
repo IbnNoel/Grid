@@ -9,4 +9,4 @@ import {MatCheckboxModule} from '@angular/material';
     DataTableComponent, MatCheckboxModule
   ]
 })
-export class WidgetsModule { }
+export class DataTableModule { }
