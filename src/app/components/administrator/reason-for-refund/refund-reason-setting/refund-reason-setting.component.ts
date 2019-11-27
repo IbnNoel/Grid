@@ -1,12 +1,12 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {CustomRfRSettings} from "../../../../../core/administrator.service";
+import {CustomRfRSettings} from "../../../../core/administrator.service";
 
 @Component({
-  selector: 'app-add-custom-refund-setting',
-  templateUrl: './add-custom-refund-setting.component.html',
-  styleUrls: ['./add-custom-refund-setting.component.scss']
+  selector: 'app-refund-reason-setting',
+  templateUrl: './refund-reason-setting.component.html',
+  styleUrls: ['./refund-reason-setting.component.scss']
 })
-export class AddCustomRefundSettingComponent implements OnInit {
+export class RefundReasonSettingComponent implements OnInit {
 
   @Input() customRfRSetting: CustomRfRSettings;
   editMode: boolean;

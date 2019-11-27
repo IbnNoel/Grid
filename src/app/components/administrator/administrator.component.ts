@@ -58,10 +58,8 @@ export class AdministratorComponent implements OnInit {
     this.clientId = null;
   }
 
-  onClientClick(clientId, clientSettings:ClientSettings){
-    clientSettings.industryTemplateId = clientSettings.industrySegment;
-    clientSettings.clientId = clientId;
-    this.adminService.setDefaultSettings(clientSettings).subscribe(resp => {
+  onClientClick(clientId){
+    this.adminService.setDefaultSettings(clientId).subscribe(resp => {
         this.getAllAdminSettings(clientId, resp as ClientSettings);
       }, error =>{
         console.log(error);
@@ -70,16 +68,13 @@ export class AdministratorComponent implements OnInit {
 
   setUpColumnDefintions(){
     this.colDefinitions = [
-      {key:"country", className: "data_grid_left_align"},
-      {key:"countrySegment", className: "data_grid_left_align"},
-      {key:"id", className: "data_grid_left_align"},
-      {key:"name", className: "data_grid_left_align", header:"Name"}, 
-      {key:"cctClientId", className: "data_grid_center_align", header:"CCT Id"}, 
+      {key:"name", className: "data_grid_left_align", header:"Name"},
+      {key:"cctClientId", className: "data_grid_center_align", header:"CCT Id"},
       {key:"refundConfigured", className: "data_grid_center_align", header:"Refund Configured", formatter: (data) => {
         return data ? "Yes" : "No";
       }},
-      { cellElement: () => { 
-        return new GPFIButton("CONFIGURE", (data) => { this.onClientClick(data.id,data); });
+      { cellElement: () => {
+        return new GPFIButton("CONFIGURE", (data) => { this.onClientClick(data.clientId); });
       }, className: "data_grid_center_align"
     }];
   }

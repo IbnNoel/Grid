@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddLanguageCustomRfrChildComponent } from './add-language-custom-rfr-child.component';
+import { RefundReasonLanguageComponent } from './refund-reason-language.component';
 
 describe('AddLanguageCustomRfrChildComponent', () => {
-  let component: AddLanguageCustomRfrChildComponent;
-  let fixture: ComponentFixture<AddLanguageCustomRfrChildComponent>;
+  let component: RefundReasonLanguageComponent;
+  let fixture: ComponentFixture<RefundReasonLanguageComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddLanguageCustomRfrChildComponent ]
+      declarations: [ RefundReasonLanguageComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddLanguageCustomRfrChildComponent);
+    fixture = TestBed.createComponent(RefundReasonLanguageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

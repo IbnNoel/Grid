@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { Store, select, createSelector } from '@ngrx/store';
-import { State } from 'src/app/reducers';
-import { take, throwIfEmpty, switchMap, tap } from 'rxjs/operators';
-import { RefundRequestSettings, AdministratorService } from 'src/app/core/administrator.service';
-import { SaveRefundRequestSettingAction } from 'src/app/actions/refundAction';
-import { Observable, forkJoin } from 'rxjs';
-import { ActionButton } from '../../controls/action-menu/action-menu.component';
+import {Component, OnInit} from '@angular/core';
+import {Store, select, createSelector} from '@ngrx/store';
+import {State} from 'src/app/reducers';
+import {take, throwIfEmpty, switchMap, tap} from 'rxjs/operators';
+import {RefundRequestSettings, AdministratorService} from 'src/app/core/administrator.service';
+import {SaveRefundRequestSettingAction} from 'src/app/actions/refundAction';
+import {Observable, forkJoin} from 'rxjs';
+import {ActionButton} from '../../controls/action-menu/action-menu.component';
 import * as _ from 'lodash';
 
 @Component({
@@ -18,23 +18,23 @@ export class DirectRejectRequestComponent implements OnInit {
   refundRequestSettings: RefundRequestSettings;
   languages$: Observable<Array<string>>;
   actionButtons: Array<ActionButton>;
-  infoTextList: Array<{ locale : string, text: string }> = [];
+  infoTextList: Array<{ locale: string, text: string }> = [];
 
-  readonly defaultLangauge = "en";
 
-  constructor(private store: Store<State>, private adminService: AdministratorService ) { }
+  constructor(private store: Store<State>, private adminService: AdministratorService) {
+  }
 
   ngOnInit() {
     this.languages$ = this.adminService.getLanguageList();
     this.setSavedState();
   }
 
-  setSavedState(){
+  setSavedState() {
     forkJoin({
-      rrSettings: this.store.pipe(
-        take(1),
-        select(createSelector((state) => state.adminSettings,
-          (adminSettings) => adminSettings.refundRequestSettings))),
+        rrSettings: this.store.pipe(
+          take(1),
+          select(createSelector((state) => state.adminSettings,
+            (adminSettings) => adminSettings.refundRequestSettings))),
         lang: this.languages$
       },
     ).subscribe((response) => {
@@ -45,16 +45,16 @@ export class DirectRejectRequestComponent implements OnInit {
     })
   }
 
-  setActionBtns(languages){
+  setActionBtns(languages) {
     this.actionButtons = [];
     languages.forEach(locale => {
-      if( !_.find(this.refundRequestSettings.refundRequestInfoList, {'locale' : locale })){
-          this.addActionButton(locale);
+      if (!_.find(this.refundRequestSettings.refundRequestInfoList, {'locale': locale})) {
+        this.addActionButton(locale);
       }
     });
   }
 
-  addActionButton(locale){
+  addActionButton(locale) {
     let button = new ActionButton();
     button.label = locale;
     button.data = locale;
@@ -64,50 +64,50 @@ export class DirectRejectRequestComponent implements OnInit {
     this.actionButtons.push(button);
   }
 
-  addInformationalText(locale){
+  addInformationalText(locale) {
     this.refundRequestSettings.refundRequestInfoList.push({locale: locale, text: ""});
     this.removeActionButtonItem(locale);
   }
 
-  removeActionButtonItem(locale){
-    this.actionButtons  = _.remove(this.actionButtons, (btn)=> {
+  removeActionButtonItem(locale) {
+    this.actionButtons = _.remove(this.actionButtons, (btn) => {
       return btn.label != locale;
-  });
+    });
   }
 
-  disableActionButton(){
+  disableActionButton() {
     return this.actionButtons.length == 0;
   }
 
-  setDefaultValue(){
-    if(this.refundRequestSettings.refundRequestInfoList.length == 0){
+  setDefaultValue() {
+    if (this.refundRequestSettings.refundRequestInfoList.length == 0) {
       this.refundRequestSettings.refundRequestInfoList = [];
-      this.addInformationalText(this.defaultLangauge);
+      this.addInformationalText(this.adminService.getDefaultLanguage());
     }
   }
 
-  ifDefault(locale){
-    return locale == this.defaultLangauge;
+  ifDefault(locale) {
+    return this.adminService.isDefaultLanguage(locale);
   }
 
-  removeFieldText(locale){
-    this.refundRequestSettings.refundRequestInfoList = _.remove(this.refundRequestSettings.refundRequestInfoList, (fieldText)=> {
+  removeFieldText(locale) {
+    this.refundRequestSettings.refundRequestInfoList = _.remove(this.refundRequestSettings.refundRequestInfoList, (fieldText) => {
       return fieldText.locale != locale;
     });
     this.addActionButton(locale);
     // sort the action buttons in alphabetical order
   }
 
-  onSave(onEmit){
-    this.adminService.setRefundRequestSettings(this.refundRequestSettings).subscribe(response =>{
-      if(response.success){
+  onSave(onEmit) {
+    this.adminService.setRefundRequestSettings(this.refundRequestSettings).subscribe(response => {
+      if (response.success) {
         this.store.dispatch(new SaveRefundRequestSettingAction(response.data));
         onEmit();
       }
     })
   }
 
-  onCancel(){
+  onCancel() {
     this.setSavedState();
   }
 
