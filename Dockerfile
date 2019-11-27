@@ -25,6 +25,7 @@ COPY . .
 #Replace with current enty point
 EXPOSE 4200 4201
 RUN npm run build:prod
-CMD [ "npm","start" ]
+CMD [ "node", "server.js" ]
+#CMD [ "npm","start" ]
 #ENTRYPOINT ["/tmp/defender", "rasp", "node", "./server/server.js"]
-ENTRYPOINT ["node", "./server.js"]
+#ENTRYPOINT ["node", "./server.js"]
