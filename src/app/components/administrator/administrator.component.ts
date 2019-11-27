@@ -34,7 +34,7 @@ export class AdministratorComponent implements OnInit {
   });
 
   constructor(private adminService : AdministratorService, private store: Store<State>, private router: Router,
-    private route: ActivatedRoute, private clientService: ClientSettingsService, private CFR: ComponentFactoryResolver) {
+    private route: ActivatedRoute, private clientService: ClientSettingsService) {
       this.setUpColumnDefintions();
   }
 

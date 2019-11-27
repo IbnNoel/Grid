@@ -40,7 +40,7 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   renderedResponsiveCollapsedHelper: RenderedResponsiveCollapsedHelper = new RenderedResponsiveCollapsedHelper();
   onGridInit$ = new BehaviorSubject<{api:DataTables.Api, tableDom:any}>(null);
 
-  constructor() {
+  constructor(public CFR: ComponentFactoryResolver){
   }
 
   ngAfterViewInit(): void {

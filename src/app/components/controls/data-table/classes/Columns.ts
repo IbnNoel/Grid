@@ -11,12 +11,16 @@ export class HandleColumnSettings {
   columnDefinition:ColumnDefs;
   isCollapsedOnRender: boolean;
   renderedResponseCollapsedHelper: RenderedResponsiveCollapsedHelper;
+  componentFactory: ComponentFactoryResolver;
+  viewContainerRef: ViewContainerRef;
 
   constructor(setting: ColumnDefs, dtComponent: DataTableComponent) {
     this.colSettings.className = "key_" + setting.key;
     this.colSettings.title = setting.key;
     this.columnDefinition = setting;
     this.renderedResponseCollapsedHelper = dtComponent.renderedResponsiveCollapsedHelper;
+    this.componentFactory = dtComponent.CFR;
+    this.viewContainerRef = dtComponent.VCR;
 
     Object.entries(setting).forEach(([key, value]) => {
       if (value && this[key + "_Func"])
@@ -72,10 +76,10 @@ export class HandleColumnSettings {
         });
         $(cell).append(elementValue.Html);
       } else if (elementValue instanceof ActionMenuComponent) {
-        /*let componentFactory = this.componentFactory.resolveComponentFactory(ActionMenuComponent);
-        let componentRef: ComponentRef<ActionMenuComponent> = this._viewContainerRef.createComponent(componentFactory);
+        let componentFactory = this.componentFactory.resolveComponentFactory(ActionMenuComponent);
+        let componentRef: ComponentRef<ActionMenuComponent> = this.viewContainerRef.createComponent(componentFactory);
         componentRef.instance.buttons = elementValue.buttons;
-        $(cell).append(componentRef.location.nativeElement);*/
+        $(cell).append(componentRef.location.nativeElement);
       }
     };
     this.colSettings.className += " gpfi_tbl_customCell";
