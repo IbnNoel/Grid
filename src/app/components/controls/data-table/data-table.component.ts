@@ -13,6 +13,7 @@ import {PageSettings, PagingHelper} from './classes/Paging';
 import {ColumnDefs, HandleColumnSettings} from './classes/Columns';
 import { ExpansionSettings, ExpansionSettingsHandler } from './classes/Expansion';
 import { RenderedResponsiveCollapsedHelper } from './classes/CollapsedResponsive';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-data-table',
@@ -39,8 +40,10 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   expansionSettingsHandler : ExpansionSettingsHandler = new ExpansionSettingsHandler();;
   renderedResponsiveCollapsedHelper: RenderedResponsiveCollapsedHelper = new RenderedResponsiveCollapsedHelper();
   onGridInit$ = new BehaviorSubject<{api:DataTables.Api, tableDom:any}>(null);
+  translateService: TranslateService;
 
-  constructor(public CFR: ComponentFactoryResolver) {
+  constructor(public CFR: ComponentFactoryResolver, translate: TranslateService) {
+    this.translateService = translate;
   }
 
   ngAfterViewInit(): void {

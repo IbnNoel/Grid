@@ -2,6 +2,7 @@ import {ActionButton, ActionMenuComponent} from "../../action-menu/action-menu.c
 import {ComponentFactoryResolver, ComponentRef, ViewContainerRef} from "@angular/core";
 import { DataTableComponent } from '../data-table.component';
 import { RenderedResponsiveCollapsedHelper } from './CollapsedResponsive';
+import { TranslateService } from '@ngx-translate/core';
 
 export class HandleColumnSettings {
 
@@ -13,6 +14,7 @@ export class HandleColumnSettings {
   renderedResponseCollapsedHelper: RenderedResponsiveCollapsedHelper;
   componentFactory: ComponentFactoryResolver;
   viewContainerRef: ViewContainerRef;
+  translateService: TranslateService;
 
   constructor(setting: ColumnDefs, dtComponent: DataTableComponent) {
     this.colSettings.className = "key_" + setting.key;
@@ -21,6 +23,7 @@ export class HandleColumnSettings {
     this.renderedResponseCollapsedHelper = dtComponent.renderedResponsiveCollapsedHelper;
     this.componentFactory = dtComponent.CFR;
     this.viewContainerRef = dtComponent.VCR;
+    this.translateService = dtComponent.translateService;
 
     Object.entries(setting).forEach(([key, value]) => {
       if (value && this[key + "_Func"])
@@ -52,7 +55,9 @@ export class HandleColumnSettings {
   header_Func(header: string) {
     this.colSettings.className += " head_" + header.replace(" ", "_");
     this.colSettings.className = this.colSettings.className.replace("/", "_");
-    this.colSettings.title = header;
+    this.translateService.get(header +'.label').subscribe((res: string) => {
+      this.colSettings.title = res;
+    });
   }
 
   key_Func(key: string) {
@@ -179,56 +184,5 @@ export class GPFIButton {
   OnClick(rowData,row) {
     return this.onClick(rowData, row);
   }
-
 }
-/*export class DataGridActionButton{
-  private html: JQuery<HTMLElement>;
-  private onClick: any;
-  private buttons:Array<ActionButton>=[];
-  btnHtml =
-    '<div class="btn-group">' +
-    '<button class="btn btn-primary dropdown-toggle gpfiActionBtn" data-toggle="dropdown" aria-expanded="false">' +
-    '<span class="caret"></span>' +
-    '</button>' +
-    ' <ul class="dropdown-menu dropdown-menu-right">' + '</ul>' +
-    '</div>';
-  constructor(name, onClick, buttons,cssClass?) {
-    let classes = cssClass || "btn-default";
-    this.html = $(this.btnHtml);
-    this.onClick = onClick;
-    this.buttons=buttons;
-  }
-   jqBtn = $(this.btnHtml);
- test(){
-this.buttons.forEach(function () {
-
-})
-  }
-  for ( i = 0; i < this.buttons.length; i++) {
-  var link = $("<a>" + btns[i].name + "</a>");
-  var li = $("<li></li>");
-  var btnFunc = new btnClick(btns[i].onClick, cellData, td, row);
-  link.click(btnFunc);
-  li.append(link);
-  jqBtn.find(".dropdown-menu").append(li);
-}
-
-function btnClick(btnClickFunc, data, td, row) {
-  var func = btnClickFunc;
-  var _data = data, _td = td, _row = row;
-  return function () {
-    func(_data, _td, _row);
-  }
-}
-
-return jqBtn;
-
-  get Html() {
-    return this.html;
-  }
-
-  OnClick(rowData) {
-    return this.onClick(rowData);
-  }
-}*/
 
