@@ -115,6 +115,11 @@ import { ExpansionSettingsHandler } from './Expansion';
     onExpandedColumnRender = (tableApi, rowIndex, rowColumns) => {
         this._numberOfColumns = 0;
         var index = rowIndex[0];
+
+        let isClosed = $(tableApi.row(index).node()).find(".gpfiExpand").hasClass("collapsed");
+        if(isClosed){
+            return false;
+        }
         let responsiveCellRows = this.constructExcessColumnsHolder(tableApi, index, rowColumns);
         let columnTable = $("<table class='detailItems table tblBreakWords'/>").append(responsiveCellRows);
         let currentRow =  $(tableApi.row(index).node());
@@ -156,7 +161,13 @@ import { ExpansionSettingsHandler } from './Expansion';
      * SUB TABLE THAT IS DISPLAYED ON AN GRID EXPANSION!!!!!
      */
     private constructExcessColumnsHolder(tableApi, rowIndex, rowColumns){
-        let renderedColHolder = $.map(rowColumns, (col, columnIdx) => {
+
+        // an additional cell is added to the columns to consider the dynamic expansion btn, which appears in expansion!
+        /*if(!this._isDetailRowEnabled){
+            rowColumns.unshift({expanCell : true});
+        }*/
+        let renderedColHolder = $.map(rowColumns, (col) => {
+            let columnIdx = col.columnIndex;
             // is this column the one that contains the expansion button?
             let isExpansionCol = $(tableApi.column(columnIdx).header()).hasClass("control");
             // has the custom 'hide collapsed' class been assigned to this column from outside of dataTable 
@@ -176,9 +187,10 @@ import { ExpansionSettingsHandler } from './Expansion';
                     }
                 }
                 // get any cells including custom sells such as html elements.
-                let customCellHtml = $(tableApi.cells(rowIndex, columnIdx).nodes()).children();
+                let customCellHtml = jQuery(tableApi.cells(rowIndex, columnIdx).nodes()).children();
+
                 let reRenderedControl = this.invokeControlResponsiveEvent(customCellHtml, tableApi.row(rowIndex).data());
-                let cellHtml = (customCellHtml.length > 0) ? reRenderedControl || customCellHtml.clone(true,true) : col.data;
+                let cellHtml = (customCellHtml.length > 0) ? reRenderedControl || customCellHtml.clone(true, true) : col.data;
 
                 // build the html to hold the hidden columns!
                 return this.buildColumnContainerHtml(columnIdx, rowIndex, col, cellHtml);
