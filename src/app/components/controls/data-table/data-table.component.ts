@@ -28,7 +28,7 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   @Input() Columns: Array<ColumnDefs>;
   @Input() PageSettings?: PageSettings;
   @Input() ExpansionSettings? : ExpansionSettings;
-  @Input() CollapseOnRender?: boolean;
+  @Input() CollapseOnRender?: boolean = true;
 
   dataTableApi: DataTables.Api;
   dataTableSettings: DataTables.Settings;
