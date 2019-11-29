@@ -12,12 +12,18 @@ export class EditRfRI18NComponent implements OnInit {
   @Input() data: CustomRfRI18N;
   @Output() closeOverlay: any = new EventEmitter(true);
   @Output() updateRfRI18N: any = new EventEmitter(true);
+  @Output() resetToStandard: any = new EventEmitter(true);
   i18nForm: FormGroup;
+  isStandardRfREnabled: boolean;
 
   constructor() {
   }
 
   ngOnInit() {
+  }
+
+  onResetToStandard($event: any) {
+    this.resetToStandard.emit(this.data);
   }
 
   onCancel() {

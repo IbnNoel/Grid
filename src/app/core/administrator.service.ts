@@ -35,6 +35,7 @@ export class AdministratorService {
   private readonly DELETE_RFR_I18N = `${this.ROUTE_URL}/client/reasonForRefunds/deleteRFRI18N`;
   private readonly DELETE_RFR = `${this.ROUTE_URL}/client/reasonForRefunds/deleteRFR`;
   private readonly ADD_RFR_I18N = `${this.ROUTE_URL}/client/reasonForRefunds/addRFRI18N`;
+  private readonly RESET_TO_STANDARD = `${this.ROUTE_URL}/client/reasonForRefunds/resetToStandard`;
 
 
   private apiResponseMap: OperatorFunction<ApiResponse<any>, any> = flatMap(response => {
@@ -144,6 +145,10 @@ export class AdministratorService {
 
   setRefundHandling(refundHandling) {
     return this.httpClient.put<ApiResponse<RefundHandling>>(this.SET_REFUND_HANDLING, refundHandling);
+  }
+
+  resetToStandard(data) {
+    return this.httpClient.request("delete", this.RESET_TO_STANDARD, {body: data}).pipe(this.apiResponseMap);
   }
 
   /*getClients(name : string, pageNo, size){
@@ -265,7 +270,7 @@ export class MethodDirectRejectionView {
 }
 
 export interface ToggleRfrResponse {
-  isStandardRFREnabled: boolean;
+  isCustomRfr: boolean;
 }
 
 export interface DeleteI18NRfR {

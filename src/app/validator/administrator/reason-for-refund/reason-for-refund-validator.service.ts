@@ -11,34 +11,21 @@ export class ReasonForRefundValidatorService {
   constructor(private fb: FormBuilder, private adminService: AdministratorService) {
   }
 
- /* reasonForRefundValidator() {
-    return _.cloneDeep(this.fb.group({
-      reasonCode: new FormControl('', [Validators.required, Validators.maxLength(6)]),
-      sortOrder: new FormControl('', [
-        Validators.pattern("[1-9]\\d{0,3}")
-      ]),
-      numOfDocument: new FormControl('', [
-        Validators.pattern("[1-9]\\d{0,1}")
-      ]),
-      reasonForRefundList: this.fb.array([this.reasonForRefundI18NValidator()])
-    }));
-  }*/
-
   reasonForRefundSettingValidator() {
     return _.cloneDeep(this.fb.group({
       reasonCode: new FormControl('', [Validators.required, Validators.maxLength(6)]),
       sortOrder: new FormControl('', [
-        Validators.pattern("[0-9]\\d{0,3}")
+        Validators.pattern("[0-9]\\d{0,2}")
       ]),
       numOfDocument: new FormControl('', [
-        Validators.pattern("[0-9]\\d{0,1}")
+        Validators.pattern("[0-9]\\d{0,0}")
       ])
     }));
   }
 
   reasonForRefundI18NValidator(disable?) {
     return _.cloneDeep(this.fb.group({
-      locale: new FormControl({value:'',disabled:disable}, Validators.required),
+      locale: new FormControl({value: '', disabled: disable}, Validators.required),
       hint: new FormControl('', Validators.maxLength(255)),
       reasonForRefund: new FormControl('', [Validators.maxLength(80)])
     }, {

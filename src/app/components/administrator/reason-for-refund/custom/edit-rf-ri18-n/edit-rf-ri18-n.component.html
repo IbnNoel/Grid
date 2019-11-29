@@ -1,8 +1,22 @@
 <div class="container-fluid">
-  <div >
+  <div class="row">
     <app-refund-reason-language [formName]="i18nForm" [customRfRI18N]="data" [editMode]="true"></app-refund-reason-language>
   </div>
-  <app-operation-buttons (onCancel)="onCancel()" (onSave)="onSave($event)"></app-operation-buttons>
+  <div class="row">
+    <hr/>
+    <div class="pull-left col-md-10">
+      <button class="btn btn-default" (click)="onCancel()" type="button" translate="cancel"></button>
+    </div>
+    <div class="pull-right col-md-2">
+      <div class="col-md-6">
+        <button class="btn btn-default" (click)="onResetToStandard($event)" *ngIf="isStandardRfREnabled" type="button"
+                translate="resetToStandard"></button>
+      </div>
+      <div class="col-md-6">
+        <button class="btn btn-primary" (click)="onSave($event)" type="button" translate="save"></button>
+      </div>
+    </div>
+  </div>
 </div>
 
 
