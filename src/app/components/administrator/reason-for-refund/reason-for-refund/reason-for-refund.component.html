@@ -1,52 +1,63 @@
 <div class="row form-group" *ngIf="isStandardRfREnabled">
   <div class="col-md-6">
-    <h5 class='subHeader'>Current 'Reason for Refund' is standard</h5>
+    <h5 class='subHeader' translate="rfrStandard"></h5>
   </div>
   <div class="col-md-6">
-    <button class="btn btn-default pull-right" (click)="toggleRfR()" type="button">Maintain custom refund reason</button>
+    <button class="btn btn-default pull-right" (click)="toggleRfR()" type="button" translate="maintainCustomRfr"></button>
   </div>
 </div>
 <div class="row form-group" *ngIf="!isStandardRfREnabled">
   <div class="col-md-6">
-    <h5 class='subHeader'>Current 'Reason for Refund' is custom</h5>
+    <h5 class='subHeader' translate="rfrCustom"></h5>
   </div>
   <div class="pull-right">
     <div class="col-md-5">
-      <button class="btn btn-default " (click)="addCustomRfR()" type="button">Add custom refund reason</button>
+      <button class="btn btn-default " (click)="addCustomRfR()" type="button" translate="addCustomRfr"></button>
     </div>
     <div class="col-md-5">
-      <button class="btn btn-default " (click)="toggleRfR()" type="button">Maintain standard refund reason</button>
+      <button class="btn btn-default " (click)="toggleRfR()" type="button" translate="maintainStandardRfr"></button>
     </div>
   </div>
 </div>
-<app-overlay name="addCustomRfROverlay" #addCustomRfROverlay *ngIf="customRfR" header="addCustomRfR">
-  <div class="row">
-    <app-refund-reason-setting [customRfRSetting]="customRfR"></app-refund-reason-setting>
-  </div>
-  <div class="row" *ngFor="let i18n of customRfR.reasonForRefundList">
-    <div class="col-md-11 row">
-      <app-refund-reason-language [languages]="languages" [customRfRI18N]="i18n"></app-refund-reason-language>
+<app-confirmation-box [confirmationAction]="confirmationAction" #confirmationBox></app-confirmation-box>
+<app-overlay name="addCustomRfROverlay" #addCustomRfROverlay header="addCustomRfR" (load)="errorMessage=null">
+  <form [formGroup]="addCustomRfRForm">
+    <div class="alert alert-danger" *ngIf="errorMessage">
+      {{errorMessage | translate}}
     </div>
-    <div class="col-md-1">
-      <app-action-menu [buttons]="actionButtons"></app-action-menu>
+    <div class="row">
+      <app-refund-reason-setting [customRfRSetting]="customRfR" [formName]="addCustomRfRForm.get('refundSetting')"></app-refund-reason-setting>
     </div>
-  </div>
-  <div>
-    <app-operation-buttons (onSave)="saveCustomRfRSettings()" (onCancel)="close(addCustomRfROverlay.name)"></app-operation-buttons>
-  </div>
+    <div class="row" *ngFor="let i18n of customRfR.reasonForRefundList;let i18nIndex=index">
+      <div class="col-md-11 row">
+        <app-refund-reason-language [formName]="i18nForm(i18nIndex,true)" [languages]="languages" [customRfRI18N]="i18n"></app-refund-reason-language>
+      </div>
+      <div class="col-md-1">
+        <app-action-menu [buttons]="actionButtons"></app-action-menu>
+      </div>
+    </div>
+    <div>
+      <app-operation-buttons (onSave)="saveCustomRfRSettings()" (onCancel)="closeAddCustomOverlay(addCustomRfROverlay.name)"></app-operation-buttons>
+    </div>
+  </form>
 </app-overlay>
-<app-overlay name="addNewLanguageOverlay" #addNewLanguageOverlay *ngIf="customRfR" header="addLanguage">
-  <div class="row" *ngFor="let i18n of customRfR.reasonForRefundList">
-    <div class="col-md-11 row">
-      <app-refund-reason-language addNewLanguage="true" [languages]="languagesList" [customRfRI18N]="i18n"></app-refund-reason-language>
+<app-overlay name="addNewLanguageOverlay" #addNewLanguageOverlay header="addLanguage" (load)="errorMessage=null">
+  <form [formGroup]="addLanguageForm">
+    <div class="alert alert-danger" *ngIf="errorMessage">
+      {{errorMessage | translate}}
     </div>
-    <div class="col-md-1">
-      <app-action-menu [buttons]="actionButtons"></app-action-menu>
+    <div class="row" *ngFor="let i18n of customRfR.reasonForRefundList;let i18nIndex=index">
+      <div class="col-md-11 row">
+        <app-refund-reason-language [formName]="i18nForm(i18nIndex,false)" addNewLanguage="true" [languages]="languagesList" [customRfRI18N]="i18n"></app-refund-reason-language>
+      </div>
+      <div class="col-md-1">
+        <app-action-menu [buttons]="actionButtons"></app-action-menu>
+      </div>
     </div>
-  </div>
-  <div>
-    <app-operation-buttons (onSave)="addNewLanguages()" (onCancel)="close(addNewLanguageOverlay.name)"></app-operation-buttons>
-  </div>
+    <div>
+      <app-operation-buttons (onSave)="addNewLanguages()" (onCancel)="closeLanguageOverlay(addNewLanguageOverlay.name)"></app-operation-buttons>
+    </div>
+  </form>
 </app-overlay>
 <div>
   <app-data-table

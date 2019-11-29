@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {CustomRfRI18N} from "../../../../../core/administrator.service";
+import {FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-edit-rf-ri18-n',
@@ -11,6 +12,7 @@ export class EditRfRI18NComponent implements OnInit {
   @Input() data: CustomRfRI18N;
   @Output() closeOverlay: any = new EventEmitter(true);
   @Output() updateRfRI18N: any = new EventEmitter(true);
+  i18nForm: FormGroup;
 
   constructor() {
   }

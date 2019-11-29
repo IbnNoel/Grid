@@ -4,6 +4,6 @@
         <span class="glyphicon glyphicon-option-horizontal" aria-hidden="true" style="font-size: large;"></span>
     </button>
     <ul class="dropdown-menu">
-      <li mat-menu-item *ngFor="let b of buttons"><a (click)="b._performAction(b.data)">{{b.label}}</a></li>
+      <li mat-menu-item *ngFor="let b of buttons"><a (click)="b._performAction(b.data)">{{b.label | translate}}</a></li>
     </ul>
   </div>

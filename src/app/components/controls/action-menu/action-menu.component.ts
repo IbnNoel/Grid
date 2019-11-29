@@ -13,7 +13,6 @@ export class ActionMenuComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(JSON.stringify(this.buttons));
   }
 
 }
@@ -24,7 +23,6 @@ export class ActionButton {
   action: (data?) => void;
 
   _performAction(data?) {
-    console.log("calling it" + data);
     this.action(data);
   }
 }
