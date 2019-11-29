@@ -95,8 +95,9 @@ export class ExpansionSettingsHandler{
 
     getDataTableRowObject(rowInfo){
         let row: DataTables.RowMethods;
-
-        if("propertyName" in rowInfo){
+        if(!isNaN(rowInfo)){
+            row = this._tableApi.row(rowInfo);
+        }else if("propertyName" in rowInfo){
             row = this._tableApi.row(function (idx, data, node) {
                 return data[(rowInfo as any).propertyName] == rowInfo.id;
             })
@@ -162,7 +163,7 @@ export class ExpansionSettings{
         return this._showExpandedCallback;
     }
 
-    ExpandGrid(rowInfo: {id, propertyName: string} | DataTables.RowMethods){
+    ExpandGrid(rowInfo: {id, propertyName: string} | DataTables.RowMethods | number){
         let row = this.handler.getDataTableRowObject(rowInfo);
         if (row.length > 0) {
             if (this.noExpansionBtn(row)) {
@@ -176,7 +177,7 @@ export class ExpansionSettings{
      * Add new overloaded params
      * @param row 
      */
-    CollapseGrid(rowInfo?: {id, propertyName: string} | DataTables.RowMethods){
+    CollapseGrid(rowInfo?: {id, propertyName: string} | DataTables.RowMethods | number){
         let row = this.handler.getDataTableRowObject(rowInfo);
         if (this.noExpansionBtn(row)) {
             this.handler.collapseGrid(row);
