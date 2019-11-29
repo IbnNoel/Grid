@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div >
-    <app-refund-reason-language [customRfRI18N]="data" [editMode]="true"></app-refund-reason-language>
+    <app-refund-reason-language [formName]="i18nForm" [customRfRI18N]="data" [editMode]="true"></app-refund-reason-language>
   </div>
   <app-operation-buttons (onCancel)="onCancel()" (onSave)="onSave($event)"></app-operation-buttons>
 </div>

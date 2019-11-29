@@ -1,29 +1,38 @@
-<div >
-  <div class="form-group col-md-3">
+<div [formGroup]="formName">
+  <div class="form-group col-md-3 required">
     <div>
-      <label class="control-label ">Language</label>
+      <label class="control-label " translate="language"></label>
     </div>
     <div>
-      <select name="language" class="form-control wuselect col-md-3" [(ngModel)]="customRfRI18N.locale" required="true" *ngIf="!editMode" [disabled]="!addNewLanguage">
+      <select name="language" class="form-control wuselect col-md-3" formControlName="locale" *ngIf="!editMode">
         <option value={{l}} *ngFor="let  l of languages ">{{l}}</option>
       </select>
       <label class="control-label " *ngIf="editMode">{{customRfRI18N.locale}}</label>
     </div>
+    <div *ngIf="(formName.controls.locale.touched) && formName.controls.locale.errors">
+      <div *ngIf="formName.controls.locale.invalid" class="alert alert-danger" translate="languageRequired"></div>
+    </div>
   </div>
-  <div class="form-group col-md-4">
+  <div class="form-group col-md-4 " [ngClass]="class">
     <div>
-      <label class="control-label  ">Reason for Refund</label>
+      <label class="control-label" [ngClass]="class" translate="reasonForRefund"></label>
     </div>
     <div>
-      <input type="text" name="reasonForRefund" [(ngModel)]="customRfRI18N.reasonForRefund" class="form-control col-md-4 "/>
+      <input type="text" name="reasonForRefund" formControlName="reasonForRefund" class="form-control col-md-4 "/>
+    </div>
+    <div *ngIf="(formName.controls.reasonForRefund.touched) && formName.controls.reasonForRefund.errors">
+      <div *ngIf="formName.controls.reasonForRefund.errors.requiredForDefaultLanguage" class="alert alert-danger" translate="reasonForRefundRequiredForDefaultLocale"></div>
     </div>
   </div>
   <div class="form-group col-md-5">
     <div>
-      <label class="control-label ">Hint</label>
+      <label class="control-label " translate="hint"></label>
     </div>
     <div>
-      <textarea name="hint" [(ngModel)]="customRfRI18N.hint" class="form-control col-md-5 "></textarea>
+      <textarea name="hint" formControlName="hint" class="form-control col-md-5 "></textarea>
+    </div>
+    <div *ngIf="(formName.controls.hint.touched) && formName.controls.hint.errors">
+      <div *ngIf="formName.controls.hint.invalid" class="alert-danger alert" translate="hintInvalid"></div>
     </div>
   </div>
 </div>

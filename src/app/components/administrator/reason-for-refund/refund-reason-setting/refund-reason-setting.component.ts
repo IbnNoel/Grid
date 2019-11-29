@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {CustomRfRSettings} from "../../../../core/administrator.service";
+import {AbstractControl, FormGroup, FormGroupName} from "@angular/forms";
 
 @Component({
   selector: 'app-refund-reason-setting',
@@ -8,6 +9,7 @@ import {CustomRfRSettings} from "../../../../core/administrator.service";
 })
 export class RefundReasonSettingComponent implements OnInit {
 
+  @Input() formName: FormGroup;
   @Input() customRfRSetting: CustomRfRSettings;
   editMode: boolean;
   gridWidth: String;
@@ -19,6 +21,16 @@ export class RefundReasonSettingComponent implements OnInit {
 
   ngOnInit() {
     this.gridWidth = this.editMode ? "col-md-3" : "col-md-4";
+    this.updateForm();
+  }
+
+  updateForm() {
+    this.formName.patchValue({
+      reasonCode: this.customRfRSetting.reasonCode,
+      reasonForRefund: this.customRfRSetting.reasonForRefund,
+      sortOrder: this.customRfRSetting.sortOrder,
+      numOfDocument: this.customRfRSetting.numOfDocument
+    });
   }
 
   onCancel() {

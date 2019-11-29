@@ -197,7 +197,7 @@ export interface ClientSettings {
   refundConfigured?: boolean;
   refundPortalDomain?: string;
   securityChallengeEnabled?: boolean;
-  standardRFREnabled?: boolean
+  customRfr?: boolean
 }
 
 export interface RefundHandling {

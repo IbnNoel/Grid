@@ -1,16 +1,20 @@
-<div >
-  <div class="form-group" [ngClass]="gridWidth">
+<div [formGroup]="formName">
+  <div class="form-group required" [ngClass]="gridWidth">
     <div>
-      <label class="control-label">Reason Code</label>
+      <label class="control-label" translate="reasonCode"></label>
     </div>
     <div>
-      <input type="text" name="reasonCode" class="form-control" [(ngModel)]="customRfRSetting.reasonCode" maxlength="40" required="true" *ngIf="!editMode"/>
+      <input type="text" name="reasonCode" class="form-control" formControlName="reasonCode" *ngIf="!editMode"/>
       <label class="control-label" *ngIf="editMode">{{customRfRSetting.reasonCode}}</label>
     </div>
+    <div *ngIf="(formName.controls.reasonCode.touched) && formName.controls.reasonCode.errors">
+      <div *ngIf="formName.controls.reasonCode.invalid" class="alert alert-danger" translate="reasonCodeRequired"></div>
+    </div>
+
   </div>
   <div class="form-group" [ngClass]="gridWidth" *ngIf="editMode">
     <div>
-      <label class="control-label">Reason for refund</label>
+      <label class="control-label" translate="reasonForRefund"></label>
     </div>
     <div>
       <label class="control-label">{{customRfRSetting.reasonForRefund}}</label>
@@ -18,18 +22,24 @@
   </div>
   <div class=" form-group" [ngClass]="gridWidth">
     <div>
-      <label class="control-label">Sort order</label>
+      <label class="control-label" translate="sortOrder"></label>
     </div>
     <div>
-      <input type="number" name="sortOrder" [(ngModel)]="customRfRSetting.sortOrder" class="form-control" pattern="[0-9]"/>
+      <input type="number" name="sortOrder" formControlName="sortOrder" class="form-control" />
+    </div>
+    <div *ngIf="( formName.controls.sortOrder.touched) && formName.controls.sortOrder.errors">
+      <div *ngIf="formName.controls.sortOrder.invalid" class="alert alert-danger" translate="sortOrderInvalid"></div>
     </div>
   </div>
   <div class=" form-group" [ngClass]="gridWidth">
     <div>
-      <label class="control-label">No of documents</label>
+      <label class="control-label" translate="numOfDocument"></label>
     </div>
     <div>
-      <input type="number" name="numOfDocument" [(ngModel)]="customRfRSetting.numOfDocument" class="form-control" pattern="[0-9]"/>
+      <input type="number" name="numOfDocument" formControlName="numOfDocument" class="form-control" />
+    </div>
+    <div *ngIf="(formName.controls.numOfDocument.touched) && formName.controls.numOfDocument.errors">
+      <div *ngIf="formName.controls.numOfDocument.invalid" class="alert-danger alert" translate="numOfDocumentInvalid"></div>
     </div>
   </div>
 </div>

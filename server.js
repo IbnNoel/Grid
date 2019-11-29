@@ -9,7 +9,7 @@ const _context = "/refunds-ui";
 
 const app = express();
 
-router.all((req, res) => {
+router.all('*', (req, res) => {
   res.status(200).sendFile('/', {root: _app_folder});
 });
 
