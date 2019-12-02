@@ -102,7 +102,7 @@ export class DataTableComponent implements OnInit, AfterViewInit {
 
   private initPaging() {
     if (this.PageSettings) {
-      this.pagingHelper = new PagingHelper(this.dataTableApi, this.PageSettings);
+      this.pagingHelper = new PagingHelper(this);
     }
   }
 

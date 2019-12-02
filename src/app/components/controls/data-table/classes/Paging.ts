@@ -1,6 +1,11 @@
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of, from } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { DataTableComponent } from '../data-table.component';
+import { TranslateService } from '@ngx-translate/core';
+import { switchMap, map, combineAll, toArray } from 'rxjs/operators';
+import * as _ from 'lodash';
 
-  export class PageSettings{
+ export class PageSettings{
     private _pageSize = 10;
     private _totalRecords = 0;
     private _currentPage = 1;
@@ -47,10 +52,13 @@ import { BehaviorSubject, Observable } from 'rxjs';
     private _tableApi : any;
     private _tableHolder : JQuery<any>;
     private _pagingSettings : PageSettings;
+    private _translate: TranslateService;
     
-    constructor(tableApi, pagingSettings){
-      this._tableApi = tableApi;
-      this._pagingSettings = pagingSettings;
+    constructor(dtComponent: DataTableComponent){
+      this._tableApi = dtComponent.dataTableApi;
+      this._pagingSettings = dtComponent.PageSettings;
+      this._translate = dtComponent.translateService;
+
       this.init();
     }
 
@@ -63,15 +71,18 @@ import { BehaviorSubject, Observable } from 'rxjs';
     }
 
     private init(){
-      let LENGTHNAMES = ["showTenPerPage", "showTwentyPerPage", "showThirtyPerPage", "showFiftyPerPage"];
-      let lengthSelect = this.getLengthElement();
-      lengthSelect.addClass("wuselect pr40").removeClass("input-sm");
-      /*lengthSelect.find("option").each(function (i) {
-        // TODO: translate _LENGTHNAMES
-        $(this).html(LENGTHNAMES[i]);
-      });*/
-      this.setUpEvent();
-      this.getDataTablesHolder().removeClass("dataTables_length").addClass("tables_length text-right dtLength ");
+      from(["showTenPerPage", "showTwentyPerPage", "showThirtyPerPage", "showFiftyPerPage"]).pipe(
+        switchMap((val) => this._translate.get(val)),
+        toArray()
+      ).subscribe((LENGTHNAMES)=>{
+        let lengthSelect = this.getLengthElement();
+        lengthSelect.addClass("wuselect pr40").removeClass("input-sm");
+        lengthSelect.find("option").each(function (i) {
+          $(this).html(LENGTHNAMES[i]);
+        });
+        this.setUpEvent();
+        this.getDataTablesHolder().removeClass("dataTables_length").addClass("tables_length text-right dtLength ");
+      });
     }
 
     private setUpEvent(){
@@ -95,11 +106,11 @@ import { BehaviorSubject, Observable } from 'rxjs';
     private _startingPageNumberBtn = 1;
     private _lengthControl: PageLengthControl;
 
-    constructor(tableApi, pageSettings){
-      this._tableApi = tableApi;
-      this._pagingSettings = pageSettings;
+    constructor(dtComponent: DataTableComponent){
+      this._tableApi = dtComponent.dataTableApi;
+      this._pagingSettings = dtComponent.PageSettings;
       this.getPageHolder().addClass("gpfiPagination");
-      this._lengthControl = new PageLengthControl(tableApi, pageSettings);
+      this._lengthControl = new PageLengthControl(dtComponent);
     }
 
     renderButtons(){

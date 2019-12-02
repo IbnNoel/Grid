@@ -55,7 +55,7 @@ export class HandleColumnSettings {
   header_Func(header: string) {
     this.colSettings.className += " head_" + header.replace(" ", "_");
     this.colSettings.className = this.colSettings.className.replace("/", "_");
-    this.translateService.get(header +'.label').subscribe((res: string) => {
+    this.translateService.get(header).subscribe((res: string) => {
       this.colSettings.title = res;
     });
   }
