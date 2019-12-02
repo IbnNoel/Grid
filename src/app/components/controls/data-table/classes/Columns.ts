@@ -94,6 +94,12 @@ export class HandleColumnSettings {
   }
 
   translate_Func() {
+    this.colSettings.defaultContent = "";
+    this.colSettings.createdCell = (cell, cellData) => {
+      this.translateService.get(cellData).subscribe((res: string) => {
+        $(cell).html(res);
+      });
+    }
   }
 
   formatter_Func(func: (any) => string) {
