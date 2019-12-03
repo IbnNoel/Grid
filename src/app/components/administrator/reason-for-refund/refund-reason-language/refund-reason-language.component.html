@@ -1,13 +1,13 @@
 <div [formGroup]="formName">
-  <div class="form-group col-md-3 required">
+  <div class="form-group col-md-4 required">
     <div>
       <label class="control-label " translate="language"></label>
     </div>
     <div>
       <select name="language" class="form-control wuselect col-md-3" formControlName="locale" *ngIf="!editMode">
-        <option value={{l}} *ngFor="let  l of languages ">{{l}}</option>
+        <option value={{l}} *ngFor="let  l of languages ">{{l | translate}}</option>
       </select>
-      <label class="control-label " *ngIf="editMode">{{customRfRI18N.locale}}</label>
+      <label class="control-label " *ngIf="editMode">{{customRfRI18N.locale | translate}}</label>
     </div>
     <div *ngIf="(formName.controls.locale.touched) && formName.controls.locale.errors">
       <div *ngIf="formName.controls.locale.invalid" class="alert alert-danger" translate="languageRequired"></div>
@@ -24,12 +24,12 @@
       <div *ngIf="formName.controls.reasonForRefund.errors.requiredForDefaultLanguage" class="alert alert-danger" translate="reasonForRefundRequiredForDefaultLocale"></div>
     </div>
   </div>
-  <div class="form-group col-md-5">
+  <div class="form-group col-md-4">
     <div>
       <label class="control-label " translate="hint"></label>
     </div>
     <div>
-      <textarea name="hint" formControlName="hint" class="form-control col-md-5 "></textarea>
+      <textarea name="hint" formControlName="hint" class="form-control col-md-5 " style="width: 100%"></textarea>
     </div>
     <div *ngIf="(formName.controls.hint.touched) && formName.controls.hint.errors">
       <div *ngIf="formName.controls.hint.invalid" class="alert-danger alert" translate="hintInvalid"></div>
