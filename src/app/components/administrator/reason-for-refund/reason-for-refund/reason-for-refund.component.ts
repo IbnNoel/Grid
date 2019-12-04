@@ -25,8 +25,8 @@ import {RefdataService} from "../../../../core/refdata.service";
 })
 export class ReasonForRefundComponent implements OnInit {
   @ViewChild("confirmationBox", {static: true}) confirmationBox: ConfirmationBoxComponent = new ConfirmationBoxComponent();
-  languages: Array<String>;
-  languagesList: Array<String>;
+  languages: Array<string>;
+  languagesList: Array<string>;
   customRfR: AddCustomRfR;
   reasonCodeColDef: Array<ColumnDefs>;
   reasonCodeI18NColDef: Array<ColumnDefs>;
@@ -363,7 +363,7 @@ export class ReasonForRefundComponent implements OnInit {
     this.confirmationBox.show();
   }
 
-  private addLanguage(locale: String, disable: boolean) {
+  private addLanguage(locale: string, disable: boolean) {
     if (!_.find(this.customRfR.reasonForRefundList, {locale: locale})) {
       this.customRfR.reasonForRefundList.push({locale: locale});
       this.i18nArray.push(this.validator.reasonForRefundI18NValidator(disable));

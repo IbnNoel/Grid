@@ -218,18 +218,18 @@ export interface RefundRequestSettings {
 
 export interface CustomRfRSettings {
   clientId: number;
-  reasonCode?: String;
+  reasonCode?: string;
   sortOrder?: number;
   numOfDocument?: number;
-  reasonForRefund?: String;
+  reasonForRefund?: string;
 }
 
 export interface CustomRfRI18N {
   clientId?: number;
-  locale: String;
-  hint?: String;
-  reasonForRefund?: String;
-  reasonCode?: String;
+  locale: string;
+  hint?: string;
+  reasonForRefund?: string;
+  reasonCode?: string;
   sortOrder?: number;
 }
 
