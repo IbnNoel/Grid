@@ -2,13 +2,14 @@ import {Injectable} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import * as _ from 'lodash';
 import {AdministratorService} from "../../../core/administrator.service";
+import {RefdataService} from "../../../core/refdata.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReasonForRefundValidatorService {
 
-  constructor(private fb: FormBuilder, private adminService: AdministratorService) {
+  constructor(private fb: FormBuilder, private refdataService: RefdataService) {
   }
 
   reasonForRefundSettingValidator() {
@@ -29,7 +30,7 @@ export class ReasonForRefundValidatorService {
       hint: new FormControl('', Validators.maxLength(255)),
       reasonForRefund: new FormControl('', [Validators.maxLength(80)])
     }, {
-      validator: RequiredForDefaultLanguage("reasonForRefund", "locale", this.adminService.getDefaultLanguage())
+      validator: RequiredForDefaultLanguage("reasonForRefund", "locale", this.refdataService.getDefaultLanguage())
     }))
   }
 }

@@ -15,7 +15,6 @@ export class AdministratorService {
   // TODO:- Mangage these URL strings possibly put in global api dependency
   private readonly ROUTE_URL = '/refund-service/admin';
   private readonly GET_CLIENT_URL = `${this.ROUTE_URL}/clientSettings/`;
-  private readonly GET_INDUSTRY_SEGMENT_URL = `${this.ROUTE_URL}/industrySegments`;
   private readonly GET_PAYMENT_TYPE_AND_CURRENCIES_URL = `${this.ROUTE_URL}/directRejection/currencies`;
   private readonly GET_CLIENT_PYMNT_TYPE_CURR_URL = `${this.ROUTE_URL}/directRejections/client/currencies`;
   private readonly SET_CLIENT_URL = `${this.ROUTE_URL}/configure/clientSettings`;
@@ -77,18 +76,11 @@ export class AdministratorService {
     return this.httpClient.get<ApiResponse<PagedResponse<MethodDirectRejectionView>>>(this.GET_CLIENT_PYMNT_TYPE_CURR_URL, {params}).pipe(this.apiResponseMap);
   }
 
-  getIndustrySegments() {
-    return this.httpClient.get<ApiResponse<Array<IndustrySegment>>>(this.GET_INDUSTRY_SEGMENT_URL).pipe(this.apiResponseMap);
-  }
 
   getClientSelectedPymntTypeAndCurr(id, pageNo, size) {
     const params = new HttpParams().set('clientId', id)
       .set('page', pageNo).set('size', size);
     return this.httpClient.get<ApiResponse<PagedResponse<CustomRfRSettings>>>(this.GET_RFR, {params}).pipe(this.apiResponseMap);
-  }
-
-  getLanguageList() {
-    return of(Array.of("en_GB", "hi", "jp"));
   }
 
   setClientSettings(settings: ClientSettings) {
@@ -161,20 +153,8 @@ export class AdministratorService {
   addLanguages(value: AddCustomRfR) {
     return this.httpClient.post(this.ADD_RFR_I18N, value);
   }
-
-  isDefaultLanguage(locale: String) {
-    return locale == this.DEFAULT_LANGUAGE;
-  }
-
-  getDefaultLanguage() {
-    return this.DEFAULT_LANGUAGE;
-  }
 }
 
-export interface IndustrySegment {
-  templateId: number;
-  description: string;
-}
 
 export interface PaymentTypeAndCurrencies {
   paymentTypeId: string;
@@ -218,7 +198,6 @@ export interface AdminSettings {
   refundRequestSettings: RefundRequestSettings;
   customRfrSettings: Array<CustomRfRSettings>;
   customRfRI18N: Array<CustomRfRI18N>;
-  industrySegments: Array<IndustrySegment>;
   refundHandling: RefundHandling;
   selectedData: AddOrRemovePymntTypeCurrency;
 }

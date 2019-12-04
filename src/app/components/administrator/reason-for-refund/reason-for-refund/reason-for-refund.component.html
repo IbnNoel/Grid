@@ -10,14 +10,13 @@
   <div class="col-md-6">
     <h5 class='subHeader' translate="rfrCustom"></h5>
   </div>
-  <div class="pull-right">
-    <div class="col-md-5">
-      <button class="btn btn-default " (click)="addCustomRfR()" type="button" translate="addCustomRfr"></button>
-    </div>
-    <div class="col-md-5">
-      <button class="btn btn-default " (click)="toggleRfR()" type="button" translate="maintainStandardRfr"></button>
-    </div>
+  <div class="col-md-3">
+    <button class="btn btn-default pull-right" (click)="addCustomRfR()" type="button" translate="addCustomRfr"></button>
   </div>
+  <div class="col-md-3">
+    <button class="btn btn-default pull-right" (click)="toggleRfR()" type="button" translate="maintainStandardRfr"></button>
+  </div>
+
 </div>
 <app-confirmation-box [confirmationAction]="confirmationAction" #confirmationBox></app-confirmation-box>
 <app-overlay name="addCustomRfROverlay" #addCustomRfROverlay header="addCustomRfR" (load)="errorMessage=null">

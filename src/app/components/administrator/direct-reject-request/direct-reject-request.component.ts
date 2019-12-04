@@ -1,12 +1,13 @@
 import {Component, OnInit} from '@angular/core';
-import {Store, select, createSelector} from '@ngrx/store';
+import {createSelector, select, Store} from '@ngrx/store';
 import {State} from 'src/app/reducers';
-import {take, throwIfEmpty, switchMap, tap} from 'rxjs/operators';
-import {RefundRequestSettings, AdministratorService} from 'src/app/core/administrator.service';
+import {take} from 'rxjs/operators';
+import {AdministratorService, RefundRequestSettings} from 'src/app/core/administrator.service';
 import {SaveRefundRequestSettingAction} from 'src/app/actions/refundAction';
-import {Observable, forkJoin} from 'rxjs';
+import {forkJoin, Observable, of} from 'rxjs';
 import {ActionButton} from '../../controls/action-menu/action-menu.component';
 import * as _ from 'lodash';
+import {RefdataService} from "../../../core/refdata.service";
 
 @Component({
   selector: 'app-direct-reject-request',
@@ -21,11 +22,13 @@ export class DirectRejectRequestComponent implements OnInit {
   infoTextList: Array<{ locale: string, text: string }> = [];
 
 
-  constructor(private store: Store<State>, private adminService: AdministratorService) {
+  constructor(private store: Store<State>, private adminService: AdministratorService, private refdataService: RefdataService) {
   }
 
   ngOnInit() {
-    this.languages$ = this.adminService.getLanguageList();
+    this.refdataService.getLocales().subscribe(value => {
+      this.languages$ = of(value.map(l => l.locale));
+    });
     this.setSavedState();
   }
 
@@ -82,12 +85,12 @@ export class DirectRejectRequestComponent implements OnInit {
   setDefaultValue() {
     if (this.refundRequestSettings.refundRequestInfoList.length == 0) {
       this.refundRequestSettings.refundRequestInfoList = [];
-      this.addInformationalText(this.adminService.getDefaultLanguage());
+      this.addInformationalText(this.refdataService.getDefaultLanguage());
     }
   }
 
   ifDefault(locale) {
-    return this.adminService.isDefaultLanguage(locale);
+    return this.refdataService.isDefaultLanguage(locale);
   }
 
   removeFieldText(locale) {
