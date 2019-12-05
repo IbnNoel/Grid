@@ -15,6 +15,7 @@ import {FormArray, FormBuilder, FormGroup} from "@angular/forms";
 import {ReasonForRefundValidatorService} from "../../../../validator/administrator/reason-for-refund/reason-for-refund-validator.service";
 import {ConfirmationAction, ConfirmationBoxComponent} from "../../../controls/confirmation-box/confirmation-box.component";
 import {ExpansionSettings} from 'src/app/components/controls/data-table/classes/Expansion';
+import {RefdataService} from "../../../../core/refdata.service";
 
 
 @Component({
@@ -24,8 +25,8 @@ import {ExpansionSettings} from 'src/app/components/controls/data-table/classes/
 })
 export class ReasonForRefundComponent implements OnInit {
   @ViewChild("confirmationBox", {static: true}) confirmationBox: ConfirmationBoxComponent = new ConfirmationBoxComponent();
-  languages: Array<String>;
-  languagesList: Array<String>;
+  languages: Array<string>;
+  languagesList: Array<string>;
   customRfR: AddCustomRfR;
   reasonCodeColDef: Array<ColumnDefs>;
   reasonCodeI18NColDef: Array<ColumnDefs>;
@@ -50,7 +51,7 @@ export class ReasonForRefundComponent implements OnInit {
   private editRefundI18nForm: FormGroup;
   errorMessage: string;
 
-  constructor(private adminService: AdministratorService, private store: Store<State>, private router: Router, private route: ActivatedRoute, private viewContainerRef: ViewContainerRef, private CFR: ComponentFactoryResolver, private validator: ReasonForRefundValidatorService, private fb: FormBuilder) {
+  constructor(private adminService: AdministratorService, private store: Store<State>, private router: Router, private route: ActivatedRoute, private viewContainerRef: ViewContainerRef, private CFR: ComponentFactoryResolver, private validator: ReasonForRefundValidatorService, private fb: FormBuilder,private refdataService:RefdataService) {
     this.reasonCodeExpansionSettings = this.setupReasonCodeExpansionSettings();
     this.reasonCodeI18ExpansionSettings = this.setupI18ReasonCodeExpSettings();
     this.setupReasonCodeColDef();
@@ -83,12 +84,12 @@ export class ReasonForRefundComponent implements OnInit {
         select(
           createSelector((state) => state.adminSettings,
             (adminSettings) => adminSettings.clientSettings))),
-      languages: this.adminService.getLanguageList()
+      languages:  this.refdataService.getLocales()
     }).subscribe(data => {
-      this.languages = data.languages;
+      this.languages = data.languages.map(l=>l.locale);
       this.isStandardRfREnabled = !data.clientSettings.customRfr;
       this.clientId = data.clientSettings.clientId;
-      this.customRfR = {clientId: this.clientId}
+      this.customRfR = {clientId: this.clientId};
       this.updateTables();
     }, error => {
       console.error(error);
@@ -126,7 +127,7 @@ export class ReasonForRefundComponent implements OnInit {
       this.deleteI18N(data);
     });
     menu.buttons.push(editButton);
-    if (!this.adminService.isDefaultLanguage(rowData.locale) && !this.isStandardRfREnabled) {
+    if (!this.refdataService.isDefaultLanguage(rowData.locale) && !this.isStandardRfREnabled) {
       menu.buttons.push(deleteButton);
     }
     return menu;
@@ -204,7 +205,7 @@ export class ReasonForRefundComponent implements OnInit {
     this.createAddCustomRfRForm();
     this.errorMessage = null;
     this.customRfR.reasonForRefundList = [];
-    this.customRfR.reasonForRefundList.push({locale: this.adminService.getDefaultLanguage()});
+    this.customRfR.reasonForRefundList.push({locale: this.refdataService.getDefaultLanguage()});
     this.generateActionButtonForAddCustomRfR(this.languages, true);
     $("#addCustomRfROverlay").modal({show: true, backdrop: false});
   }
@@ -362,7 +363,7 @@ export class ReasonForRefundComponent implements OnInit {
     this.confirmationBox.show();
   }
 
-  private addLanguage(locale: String, disable: boolean) {
+  private addLanguage(locale: string, disable: boolean) {
     if (!_.find(this.customRfR.reasonForRefundList, {locale: locale})) {
       this.customRfR.reasonForRefundList.push({locale: locale});
       this.i18nArray.push(this.validator.reasonForRefundI18NValidator(disable));

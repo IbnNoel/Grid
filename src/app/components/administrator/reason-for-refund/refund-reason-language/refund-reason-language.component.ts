@@ -1,9 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {AdministratorService, CustomRfRI18N} from "../../../../core/administrator.service";
+import {CustomRfRI18N} from "../../../../core/administrator.service";
 import {ActionMenuComponent} from "../../../controls/action-menu/action-menu.component";
 import {State} from "../../../../reducers";
 import {Store} from "@ngrx/store";
 import {FormGroup} from "@angular/forms";
+import {RefdataService} from "../../../../core/refdata.service";
 
 @Component({
   selector: 'app-refund-reason-language',
@@ -20,13 +21,13 @@ export class RefundReasonLanguageComponent implements OnInit {
   @Input() customRfRI18N: CustomRfRI18N;
   class: string;
 
-  constructor(private adminService: AdministratorService, private store: Store<State>) {
+  constructor(private refDataService: RefdataService, private store: Store<State>) {
 
   }
 
   ngOnInit() {
     this.updateForm();
-    this.class = (this.adminService.isDefaultLanguage(this.customRfRI18N.locale)) ? "required" : "";
+    this.class = (this.refDataService.isDefaultLanguage(this.customRfRI18N.locale)) ? "required" : "";
   }
 
   updateForm() {
