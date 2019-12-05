@@ -43,6 +43,7 @@ import {CustomTranslationsLoader} from './core/translations.service';
 import { WidgetsModule } from './modules/widgets.module';
 import { DataTableModule } from './modules/dataTables.module';
 import { ConfirmationBoxComponent } from './components/controls/confirmation-box/confirmation-box.component';
+import { CustomFieldsComponent } from './components/administrator/custom-fields/custom-fields.component';
 
 
 export function CustomTranslationsFactory(gp2Service: Gp2Service) {
@@ -51,7 +52,7 @@ export function CustomTranslationsFactory(gp2Service: Gp2Service) {
 
 @NgModule({
   declarations: [
-    AppComponent, RefundsComponent, CreateRefundsComponent, ManageRefundsComponent, AdministratorComponent, ClientSettingsComponent, DirectRejectRequestComponent, OperationButtonsComponent, GpfiModalComponent, LoadingDirective, ReasonForRefundComponent,   RefundReasonLanguageComponent, ActionMenuComponent, RefundReasonSettingComponent, RefundHandlingComponent, EditRfRI18NComponent, OverlayComponent, ConfirmationBoxComponent
+    AppComponent, RefundsComponent, CreateRefundsComponent, ManageRefundsComponent, AdministratorComponent, ClientSettingsComponent, DirectRejectRequestComponent, OperationButtonsComponent, GpfiModalComponent, LoadingDirective, ReasonForRefundComponent,   RefundReasonLanguageComponent, ActionMenuComponent, RefundReasonSettingComponent, RefundHandlingComponent, EditRfRI18NComponent, OverlayComponent, ConfirmationBoxComponent, CustomFieldsComponent
   ],
   imports: [
     BrowserModule,
