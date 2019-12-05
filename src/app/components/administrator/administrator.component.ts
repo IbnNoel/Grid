@@ -13,6 +13,8 @@ import { PageSettings } from '../controls/data-table/classes/Paging';
 import { ColumnDefs, GPFIButton } from '../controls/data-table/classes/Columns';
 import { ExpansionSettings } from '../controls/data-table/classes/Expansion';
 import { ActionMenuComponent, ActionButton } from '../controls/action-menu/action-menu.component';
+import { StatusMessageService } from 'src/app/status-message.service';
+import { MessageStatus, MessageType } from '../controls/message/messageStatus';
 
 @Component({
   selector: 'app-administrator',
@@ -34,7 +36,7 @@ export class AdministratorComponent implements OnInit {
   });
 
   constructor(private adminService : AdministratorService, private store: Store<State>, private router: Router,
-    private route: ActivatedRoute, private clientService: ClientSettingsService) {
+    private route: ActivatedRoute, private clientService: ClientSettingsService, private statusMessageService: StatusMessageService) {
       this.setUpColumnDefintions();
   }
 
@@ -74,7 +76,12 @@ export class AdministratorComponent implements OnInit {
         return data ? "Yes" : "No";
       }},
       { cellElement: () => {
-        return new GPFIButton("CONFIGURE", (data) => { this.onClientClick(data.clientId); });
+        return new GPFIButton("CONFIGURE", (data) => { 
+          
+          this.statusMessageService.SetMessage(new MessageStatus(MessageType.Success,"test", "HELLO WORLD THIS WORKS"));
+          this.onClientClick(data.clientId); 
+        
+        });
       }, className: "data_grid_center_align"
     }];
   }
