@@ -5,6 +5,7 @@ import {flatMap, map} from 'rxjs/operators';
 import {of, OperatorFunction, throwError} from 'rxjs';
 import {PagedResponse} from "./refund.service";
 import {settings} from "cluster";
+import { List } from 'lodash';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,7 @@ export class AdministratorService {
   private readonly DELETE_RFR = `${this.ROUTE_URL}/client/reasonForRefunds/deleteRFR`;
   private readonly ADD_RFR_I18N = `${this.ROUTE_URL}/client/reasonForRefunds/addRFRI18N`;
   private readonly RESET_TO_STANDARD = `${this.ROUTE_URL}/client/reasonForRefunds/resetToStandard`;
+  private readonly GET_CUSTOMFIELDS = `${this.ROUTE_URL}/customFields/`;
 
 
   private apiResponseMap: OperatorFunction<ApiResponse<any>, any> = flatMap(response => {
@@ -141,6 +143,10 @@ export class AdministratorService {
 
   resetToStandard(data) {
     return this.httpClient.request("delete", this.RESET_TO_STANDARD, {body: data}).pipe(this.apiResponseMap);
+  }
+
+  getCustomFields(id) {
+    return this.httpClient.get<ApiResponse<List<CustomFieldsSettings>>>(this.GET_CUSTOMFIELDS + id).pipe(this.apiResponseMap);
   }
 
   /*getClients(name : string, pageNo, size){
@@ -258,3 +264,12 @@ export interface DeleteI18NRfR {
   locale: String;
 }
 
+export interface CustomFieldsSettings {
+  id: number;
+  clientId?: number;
+  display?: boolean;
+  fieldName?: string;
+  description?: string;
+  fieldType?: string;
+  mandatory?: boolean;
+}
