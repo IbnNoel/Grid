@@ -14,8 +14,8 @@ router.all('*', (req, res) => {
 });
 
 app.use(compression());
-app.use(_context, router);
 app.use(_context, express.static(_app_folder, {maxAge: '1y'}));
+app.use(_context, router);
 
 app.listen(_port, () => {
   console.log(`Node Express Server for WUBS Refunds UI App listening on http://localhost:${_port}${_context}/`);
