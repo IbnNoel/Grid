@@ -145,8 +145,9 @@ export class AdministratorService {
     return this.httpClient.request("delete", this.RESET_TO_STANDARD, {body: data}).pipe(this.apiResponseMap);
   }
 
-  getCustomFields(id) {
-    return this.httpClient.get<ApiResponse<List<CustomFieldsSettings>>>(this.GET_CUSTOMFIELDS + id).pipe(this.apiResponseMap);
+  getCustomFields(id, pageNo, size) {
+    const params = new HttpParams().set('page', pageNo).set('size', size);
+    return this.httpClient.get<ApiResponse<List<CustomFieldsSettings>>>(this.GET_CUSTOMFIELDS + id, {params}).pipe(this.apiResponseMap);
   }
 
   /*getClients(name : string, pageNo, size){
