@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { StatusMessageService } from 'src/app/status-message.service';
 import { MessageStatus } from './messageStatus';
 import { Observable } from 'rxjs';
@@ -10,10 +10,15 @@ import { Observable } from 'rxjs';
 })
 export class MessageComponent implements OnInit {
 
-  private messageStatus$: Observable<MessageStatus>;
+  messageStatus$: Observable<MessageStatus>;
+
+  @Input() Module?: string;
 
   constructor(private statusMessageService: StatusMessageService) { 
-    this.messageStatus$ = statusMessageService.StatusSubject;
+    this.messageStatus$ = statusMessageService.GetStatusSubject(this.Module);
+    this.messageStatus$.subscribe((model)=>{
+      console.log(model);
+    });
   }
 
   ngOnInit() {}

@@ -123,3 +123,57 @@ table.detailItems {
     border-top: 0 !important;
     border-bottom: 1px solid #ddd
 }
+
+
+.status-msg {
+    border: 1px solid #ffde00;
+    background: #ffffcc;
+    padding: 10px 0;
+    margin-bottom: 20px
+}
+
+.section-help-msg {
+    border: 1px solid #1358A8;
+    background: #f8f8f8;
+}
+
+.status-msg .descriptionMsgHolder {
+    padding-top: 5px;
+}
+
+.status-msg .descriptionMsgHolder p {
+    font-weight: bold;
+}
+
+.status-msg .statusMsgHolder .lead {
+    margin-bottom: 5px;
+}
+
+.gpfiCloseButton {
+    float: right;
+    padding: 0;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    font-size: 21px;
+    font-weight: bold;
+    line-height: 1;
+    color: #000;
+}
+
+.status-msg-description {
+    font-weight: bold;
+    padding-top: 5px;
+}
+
+.tick-msg {
+    color: #66cc00;
+    background: url('images/tick.png') left no-repeat;
+    padding-left: 30px;
+    margin-bottom: 0
+}
+
+.alert-msg {
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}

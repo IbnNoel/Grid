@@ -77,10 +77,7 @@ export class AdministratorComponent implements OnInit {
       }},
       { cellElement: () => {
         return new GPFIButton("CONFIGURE", (data) => { 
-          
-          this.statusMessageService.SetMessage(new MessageStatus(MessageType.Success,"test", "HELLO WORLD THIS WORKS"));
           this.onClientClick(data.clientId); 
-        
         });
       }, className: "data_grid_center_align"
     }];
@@ -101,7 +98,7 @@ export class AdministratorComponent implements OnInit {
        this.router.navigate([ '../admin/clientSettings'], { relativeTo: this.route });
        $("#findClientPanel").collapse('hide');
      }, error => {
-       console.error(error);
+       this.statusMessageService.SetMessage(new MessageStatus(MessageType.Error,null, error.message));
       })
   }
 

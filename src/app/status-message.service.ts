@@ -6,21 +6,28 @@ import { MessageStatus } from './components/controls/message/messageStatus';
   providedIn: 'root'
 })
 export class StatusMessageService {
-  private _statusObservable: BehaviorSubject<MessageStatus>;
+  private _messageStatusMap: Map<String,BehaviorSubject<MessageStatus>>;
   
-  constructor() { }
-
+  constructor() { 
+    this._messageStatusMap = new Map<String,BehaviorSubject<MessageStatus>>();
+    this._messageStatusMap.set("root", new BehaviorSubject<MessageStatus>(null));
+  }
   
-  get StatusSubject(){
-    return this._statusObservable;
+  GetStatusSubject(model){
+    return this._messageStatusMap.get( model || "root");
   }
 
-  SetMessage(messageStatus){
-    this._statusObservable.next(messageStatus);
+  SetMessage(messageStatus, model?){
+    let key  = model || "root";
+    if(this._messageStatusMap.has(key)){
+      this._messageStatusMap.get(key).next(messageStatus);
+    }else{
+      this._messageStatusMap.set(key , new BehaviorSubject<MessageStatus>(messageStatus));
+    }
   }
 
-  ClearMessage(){
-    this._statusObservable.next(null);
+  ClearMessage(model?){
+    this._messageStatusMap.get( model || "root").next(null);
   }
 
 }
