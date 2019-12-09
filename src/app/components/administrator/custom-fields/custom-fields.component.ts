@@ -32,7 +32,9 @@ export class CustomFieldsComponent implements OnInit {
     this.updateReasonCodeTable();
   });
 
-  constructor(private adminService: AdministratorService, private CFR: ComponentFactoryResolver, private validator: ReasonForRefundValidatorService, private store: Store<State>, private refdataService: RefdataService) {
+  constructor(private adminService: AdministratorService, private CFR: ComponentFactoryResolver,
+              private validator: ReasonForRefundValidatorService, private store: Store<State>,
+              private refdataService: RefdataService) {
     this.setupCustomFieldColDef();
   }
 
@@ -43,37 +45,37 @@ export class CustomFieldsComponent implements OnInit {
         select(
           createSelector((state) => state.adminSettings,
             (adminSettings) => adminSettings.clientSettings))),
-      languages:  this.refdataService.getLocales()
+      languages: this.refdataService.getLocales()
     }).subscribe(data => {
-      this.languages = data.languages.map(l=>l.locale);
+      this.languages = data.languages.map(l => l.locale);
       this.isStandardRfREnabled = !data.clientSettings.customRfr;
       this.clientId = data.clientSettings.clientId;
-      this.customRfR = {clientId: this.clientId};
       this.updateTables();
     }, error => {
       console.error(error);
-    })
+    });
   }
 
   updateReasonCodeTable() {
-    this.adminService.getCustomFields(this.clientId, this.reasonCodePageSettings.currentPage, this.reasonCodePageSettings.pageSize).subscribe(value => {
+    this.adminService.getCustomFields(this.clientId, this.reasonCodePageSettings.currentPage,
+      this.reasonCodePageSettings.pageSize).subscribe(value => {
       this.reasonCodePageSettings.setTotalRecords(value.totalElements);
       this.customFields.next(value.list);
     });
   }
 
-  private updateRefundSetting(request: CustomFieldsSettings) {
+  /*private updateRefundSetting(request: CustomFieldsSettings) {
     if (this.editRefundSettingForm.valid) {
       request.clientId = this.clientId;
       Object.assign(request, this.editRefundSettingForm.value);
       this.adminService.updateRfRForClient(request).subscribe(value => {
         this.updateTables();
-        this.reasonCodeExpansionSettings.CollapseGrid({propertyName: "clientId", id: value.clientId});
+        //this.reasonCodeExpansionSettings.CollapseGrid({propertyName: "clientId", id: value.clientId});
       })
     } else {
       this.editRefundSettingForm.markAllAsTouched();
     }
-  }
+  }*/
 
   updateTables() {
     this.updateReasonCodeTable();
@@ -81,12 +83,20 @@ export class CustomFieldsComponent implements OnInit {
 
   setupCustomFieldColDef() {
     this.customFieldColDef = [
-      {key: "display", className: "data_grid_left_align", header: "Displayed"},
-      {key: "fieldName", className: "data_grid_center_align", header: "FieldName"},
-      {key: "description", className: "data_grid_center_align", header: "Description"},
-      {key: "fieldType", className: "data_grid_center_align", header: "FieldType"},
-      {key: "mandatory", className: "data_grid_center_align", header: "Mandatory"},
-     ];
+      {
+        key: 'display', className: 'data_grid_left_align', header: 'Displayed', formatter: (data) => {
+          return data ? 'Yes' : 'No';
+        }
+      },
+      {key: 'fieldName', className: 'data_grid_center_align', header: 'FieldName'},
+      {key: 'description', className: 'data_grid_center_align', header: 'Description'},
+      {key: 'fieldType', className: 'data_grid_center_align', header: 'FieldType'},
+      {
+        key: 'mandatory', className: 'data_grid_center_align', header: 'Mandatory', formatter: (data) => {
+          return data ? 'Yes' : 'No';
+        }
+      },
+    ];
   }
 
 
