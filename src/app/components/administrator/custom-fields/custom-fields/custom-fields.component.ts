@@ -1,4 +1,4 @@
-import {Component, ComponentFactoryResolver, OnInit} from '@angular/core';
+import {Component, ComponentFactoryResolver, EventEmitter, OnInit, Output} from '@angular/core';
 import {ExpansionSettings} from '../../../controls/data-table/classes/Expansion';
 import {ColumnDefs} from '../../../controls/data-table/classes/Columns';
 import {BehaviorSubject, forkJoin} from 'rxjs';
@@ -25,6 +25,7 @@ export class CustomFieldsComponent implements OnInit {
   customFields = new BehaviorSubject<Array<CustomFieldsSettings>>([]);
   customFieldsExpansionSettings: ExpansionSettings;
   private editCustomFieldsSettingForm: FormGroup;
+  @Output() closeOverlay = new EventEmitter();
 
   customFieldPageSettings = new PageSettings(() => {
     this.updateCustomFieldsTable();
@@ -67,9 +68,9 @@ export class CustomFieldsComponent implements OnInit {
         let component = viewContainerRef.createComponent(componentResolve);
         component.instance.customFieldsSettings = rowData;
        // this.editRefundSettingForm = this.validator.reasonForRefundSettingValidator();
-       // component.instance.formName = this.editRefundSettingForm;
-        // component.instance.editMode = true;
-        // component.instance.closeOverlay.asObservable().subscribe(value => this.customFieldsExpansionSettings.CollapseGrid(row));
+        component.instance.formName = this.editCustomFieldsSettingForm;
+        component.instance.editMode = true;
+        component.instance.closeOverlay.asObservable().subscribe(value => this.customFieldsExpansionSettings.CollapseGrid(row));
         // component.instance.updateCustomFieldsSetting.asObservable().subscribe(value => this.updateCustomFieldsSetting(value));
         resolve(component);
       });
@@ -94,18 +95,5 @@ export class CustomFieldsComponent implements OnInit {
      ];
   }
 
-
-  /*private updateCustomFieldsSetting(request: CustomFieldsSettings) {
-    if (this.editCustomFieldsSettingForm.valid) {
-      request.clientId = this.clientId;
-      Object.assign(request, this.editCustomFieldsSettingForm.value);
-      this.adminService.updateRfRForClient(request).subscribe(value => {
-        this.updateTables();
-        this.reasonCodeExpansionSettings.CollapseGrid({propertyName: "clientId", id: value.clientId});
-      })
-    } else {
-      this.editRefundSettingForm.markAllAsTouched();
-    }
-  }*/
 
 }

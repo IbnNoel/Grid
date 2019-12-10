@@ -148,12 +148,12 @@ export class AdministratorService {
 
   getCustomFields(id, pageNo, size) {
     const params = new HttpParams().set('page', pageNo).set('size', size);
-    return this.httpClient.get<ApiResponse<List<CustomFieldsSettings>>>(this.GET_CUSTOMFIELDS + id, {params}).pipe(this.apiResponseMap);
+    return this.httpClient.get<ApiResponse<PagedResponse<CustomFieldsSettings>>>(this.GET_CUSTOMFIELDS + id, {params}).pipe(this.apiResponseMap);
   }
 
   getAllCustomFieldDetails(id, fieldName) {
     const params = new HttpParams().set('clientId', id).set('fieldName', fieldName);
-    return this.httpClient.get<ApiResponse<CustomFieldsView>>(this.GET_ALL_CUSTOMFIELDS, {params}).pipe(this.apiResponseMap);
+    return this.httpClient.get<ApiResponse<CustomFieldsView>>(this.GET_ALL_CUSTOMFIELDS, {params}).pipe(map(response => response.data));
   }
 
   /*getClients(name : string, pageNo, size){

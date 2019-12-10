@@ -4,7 +4,6 @@ import {AdministratorService, CustomFieldsSettings, CustomFieldsView} from '../.
 import {BehaviorSubject, forkJoin} from "rxjs";
 import {take} from "rxjs/operators";
 import {createSelector, select, Store} from "@ngrx/store";
-import {ReasonForRefundValidatorService} from "../../../../validator/administrator/reason-for-refund/reason-for-refund-validator.service";
 import {State} from "../../../../reducers";
 import {RefdataService} from "../../../../core/refdata.service";
 
@@ -19,39 +18,31 @@ export class CustomFieldsSettingComponent implements OnInit {
   @Input() customFieldsSettings: CustomFieldsSettings;
   customFieldsView: CustomFieldsView;
   fieldType: Array<String>;
+  gridWidth: String;
+  editMode: boolean;
+  @Output() closeOverlay = new EventEmitter();
   allCustomFields = new BehaviorSubject<CustomFieldsView>({});
 
   constructor(private store: Store<State>, private refdataService: RefdataService, private adminService: AdministratorService) {
   }
 
   ngOnInit() {
+    this.gridWidth = this.editMode ? "col-md-3" : "col-md-4";
     this.updateTables();
   }
 
   updateTables() {
-    this.adminService.getAllCustomFieldDetails(this.customFieldsSettings.id, this.customFieldsSettings.fieldName).subscribe(value => {
+    this.adminService.getAllCustomFieldDetails(this.customFieldsSettings.clientId, this.customFieldsSettings.fieldName).subscribe(value => {
       this.allCustomFields.next(value);
     });
-  }
-
-  /*@Input() formName: FormGroup;
-  editMode: boolean;
-  gridWidth: String;
-  @Output() closeOverlay = new EventEmitter();
-  @Output() updateCustomFieldsSetting = new EventEmitter();
-
-  updateForm() {
-    this.formName.patchValue({
-      display: this.customFieldsSettings.display,
-      mandatory: this.customFieldsSettings.mandatory,
-    });
+    this.customFieldsView = this.allCustomFields.getValue();
   }
 
   onCancel() {
     this.closeOverlay.emit();
   }
-
-  onSave($event: any) {
-    this.updateCustomFieldsSetting.emit(this.customFieldsSettings);
-  }*/
+  onSave() {
+    this.closeOverlay.emit();
+   // this.updateRefundSetting.emit(this.customRfRSetting);
+  }
 }
