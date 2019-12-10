@@ -153,7 +153,7 @@ export class AdministratorService {
 
   getAllCustomFieldDetails(id, fieldName) {
     const params = new HttpParams().set('clientId', id).set('fieldName', fieldName);
-    return this.httpClient.get<ApiResponse<CustomFieldsView>>(this.GET_ALL_CUSTOMFIELDS, {params}).pipe(map(response => response.data));
+    return this.httpClient.get<ApiResponse<CustomFieldsView>>(this.GET_ALL_CUSTOMFIELDS, {params}).pipe(this.apiResponseMap);
   }
 
   /*getClients(name : string, pageNo, size){
@@ -282,7 +282,7 @@ export interface CustomFieldsSettings {
 }
 
 export interface CustomFieldsView {
-  id: number;
+  id?: number;
   clientId?: number;
   display?: boolean;
   fieldName?: string;

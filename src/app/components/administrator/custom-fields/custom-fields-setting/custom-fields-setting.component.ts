@@ -1,7 +1,12 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormGroup} from "@angular/forms";
-import {AdministratorService, CustomFieldsSettings, CustomFieldsView} from '../../../../core/administrator.service';
-import {BehaviorSubject, forkJoin} from "rxjs";
+import {
+  AdministratorService,
+  ClientSettings,
+  CustomFieldsSettings,
+  CustomFieldsView
+} from '../../../../core/administrator.service';
+import {BehaviorSubject, forkJoin, Observable, of} from "rxjs";
 import {take} from "rxjs/operators";
 import {createSelector, select, Store} from "@ngrx/store";
 import {State} from "../../../../reducers";
@@ -32,7 +37,7 @@ export class CustomFieldsSettingComponent implements OnInit {
   }
 
   updateTables() {
-    this.adminService.getAllCustomFieldDetails(this.customFieldsSettings.clientId, this.customFieldsSettings.fieldName).subscribe(value => {
+   this.adminService.getAllCustomFieldDetails(this.customFieldsSettings.clientId, this.customFieldsSettings.fieldName).subscribe(value => {
       this.allCustomFields.next(value);
     });
     this.customFieldsView = this.allCustomFields.getValue();

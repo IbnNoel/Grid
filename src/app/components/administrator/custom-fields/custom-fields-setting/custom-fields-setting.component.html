@@ -14,7 +14,7 @@
 
 
 
-<!--<div [formGroup]="formName">
+<div [formGroup]="formName">
   <div class="form-group col-md-4 ">
     <div>
       <label class="control-label " translate="description">Description</label>
@@ -74,6 +74,6 @@
       <div *ngIf="formName.controls.validationExpression.invalid" class="alert alert-danger" translate="validationExpressionRequired"></div>
     </div>
   </div>
-</div>-->
+</div>
 
 <app-operation-buttons (onCancel)="onCancel()" (onSave)="onSave()"></app-operation-buttons>
