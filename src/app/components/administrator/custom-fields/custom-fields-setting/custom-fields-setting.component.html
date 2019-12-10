@@ -1,0 +1,71 @@
+<p>custom-fields-setting works!</p>
+<div class="row">
+  <div class ="col-md-12">
+    <mat-checkbox class="example-margin control-label" [(ngModel)]="customFieldsView.display">Displayed </mat-checkbox>
+
+    <mat-checkbox class="example-margin control-label" [(ngModel)]="customFieldsView.flowLayout">Can Display Side by Side </mat-checkbox>
+
+    <mat-checkbox class="example-margin control-label" [(ngModel)]="customFieldsView.mandatory">Mandatory </mat-checkbox>
+  </div>
+</div>
+
+
+
+<div [formGroup]="formName">
+  <div class="form-group col-md-4 ">
+    <div>
+      <label class="control-label " translate="description">Description</label>
+    </div>
+    <div>
+      <input type="text" name="description" formControlName="description" class="form-control col-md-4 "/>
+    </div>
+    <div *ngIf="(formName.controls.description.touched) && formName.controls.description.errors">
+      <div *ngIf="formName.controls.description.invalid" class="alert alert-danger" translate="descriptionRequired"></div>
+    </div>
+  </div>
+  <div class="form-group col-md-4 ">
+    <div>
+      <label class="control-label" translate="minLength">Minimum Length</label>
+    </div>
+    <div>
+      <input type="text" name="minLength" formControlName="minLength" class="form-control col-md-4 "/>
+    </div>
+    <div *ngIf="(formName.controls.minLength.touched) && formName.controls.minLength.errors">
+      <div *ngIf="formName.controls.minLength.invalid" class="alert alert-danger" translate="minLengthRequired"></div>
+    </div>
+  </div>
+
+  <div class="form-group col-md-4 ">
+    <div>
+      <label class="control-label " translate="fieldType">Field Type</label>
+    </div>
+    <div>
+      <input type="text" name="fieldType" formControlName="fieldType" class="form-control col-md-4 "/>
+    </div>
+    <div *ngIf="(formName.controls.fieldType.touched) && formName.controls.fieldType.errors">
+      <div *ngIf="formName.controls.fieldType.invalid" class="alert alert-danger" translate="fieldTypeRequired"></div>
+    </div>
+  </div>
+  <div class="form-group col-md-4 ">
+    <div>
+      <label class="control-label" translate="maxLength">Maximum Length</label>
+    </div>
+    <div>
+      <input type="text" name="maxLength" formControlName="maxLength" class="form-control col-md-4 "/>
+    </div>
+    <div *ngIf="(formName.controls.maxLength.touched) && formName.controls.maxLength.errors">
+      <div *ngIf="formName.controls.maxLength.invalid" class="alert alert-danger" translate="maxLengthRequired"></div>
+    </div>
+  </div>
+  <div class="form-group col-md-4 ">
+    <div>
+      <label class="control-label" translate="validationExpression">Validation Expression</label>
+    </div>
+    <div>
+      <input type="text" name="validationExpression" formControlName="validationExpression" class="form-control col-md-4 "/>
+    </div>
+    <div *ngIf="(formName.controls.validationExpression.touched) && formName.controls.validationExpression.errors">
+      <div *ngIf="formName.controls.validationExpression.invalid" class="alert alert-danger" translate="validationExpressionRequired"></div>
+    </div>
+  </div>
+</div>

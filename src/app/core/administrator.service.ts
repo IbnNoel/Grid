@@ -37,6 +37,7 @@ export class AdministratorService {
   private readonly ADD_RFR_I18N = `${this.ROUTE_URL}/client/reasonForRefunds/addRFRI18N`;
   private readonly RESET_TO_STANDARD = `${this.ROUTE_URL}/client/reasonForRefunds/resetToStandard`;
   private readonly GET_CUSTOMFIELDS = `${this.ROUTE_URL}/customFields/`;
+  private readonly GET_ALL_CUSTOMFIELDS = `${this.ROUTE_URL}/customFields/details`;
 
 
   private apiResponseMap: OperatorFunction<ApiResponse<any>, any> = flatMap(response => {
@@ -148,6 +149,11 @@ export class AdministratorService {
   getCustomFields(id, pageNo, size) {
     const params = new HttpParams().set('page', pageNo).set('size', size);
     return this.httpClient.get<ApiResponse<List<CustomFieldsSettings>>>(this.GET_CUSTOMFIELDS + id, {params}).pipe(this.apiResponseMap);
+  }
+
+  getAllCustomFieldDetails(id, fieldName) {
+    const params = new HttpParams().set('clientId', id).set('fieldName', fieldName);
+    return this.httpClient.get<ApiResponse<CustomFieldsView>>(this.GET_ALL_CUSTOMFIELDS, {params}).pipe(this.apiResponseMap);
   }
 
   /*getClients(name : string, pageNo, size){
@@ -273,4 +279,45 @@ export interface CustomFieldsSettings {
   description?: string;
   fieldType?: string;
   mandatory?: boolean;
+}
+
+export interface CustomFieldsView {
+  id: number;
+  clientId?: number;
+  display?: boolean;
+  fieldName?: string;
+  description?: string;
+  fieldType?: string;
+  mandatory?: boolean;
+  valueOptions?: string;
+  maxLength?: number;
+  minLength?: number;
+  fieldLimit?: number;
+  minDate?: number;
+  maxDate?: number;
+  validationId?: number;
+  validationExpression?: string;
+  scriptBasedValidation?: boolean;
+  standard?: boolean;
+  fullyConfigurable?: boolean;
+  fieldTypeEditable?: boolean;
+  labelText?: TextElementViewList;
+  errorText?: TextElementViewList;
+  helpText?: TextElementViewList;
+  indexOrder?: number;
+  optionsText?: Array<TextElementViewList>;
+  flowLayout?: boolean;
+}
+
+export interface TextElementViewList {
+  key?: string;
+  clientId?: number;
+  textElementViews?: Array<TextElementView>;
+}
+
+export interface TextElementView {
+  key?: string;
+  clientId?: number;
+  locale?: string;
+  text?: string;
 }
