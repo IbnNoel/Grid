@@ -82,11 +82,15 @@ export class CustomFieldsComponent implements OnInit {
 
   setupCustomFieldColDef() {
     this.customFieldColDef = [
-      {key: "display", className: "data_grid_left_align", header: "Displayed"},
+      {key: "display", className: "data_grid_left_align", header: "Displayed", formatter: (data) => {
+          return data ? 'Yes' : 'No';
+        }},
       {key: "fieldName", className: "data_grid_center_align", header: "FieldName"},
       {key: "description", className: "data_grid_center_align", header: "Description"},
       {key: "fieldType", className: "data_grid_center_align", header: "FieldType"},
-      {key: "mandatory", className: "data_grid_center_align", header: "Mandatory"},
+      {key: "mandatory", className: "data_grid_center_align", header: "Mandatory", formatter: (data) => {
+          return data ? 'Yes' : 'No';
+        }},
      ];
   }
 
