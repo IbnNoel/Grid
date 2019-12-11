@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { MessageStatus } from './components/controls/message/messageStatus';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -8,9 +9,15 @@ import { MessageStatus } from './components/controls/message/messageStatus';
 export class StatusMessageService {
   private _messageStatusMap: Map<String,BehaviorSubject<MessageStatus>>;
   
-  constructor() { 
+  constructor(private router: Router) { 
     this._messageStatusMap = new Map<String,BehaviorSubject<MessageStatus>>();
     this._messageStatusMap.set("root", new BehaviorSubject<MessageStatus>(null));
+    
+    this.router.events.subscribe((event) => {
+      if(event instanceof NavigationEnd){
+        this.ClearMessage();
+      }
+    });
   }
   
   GetStatusSubject(model){

@@ -16,9 +16,6 @@ export class MessageComponent implements OnInit {
 
   constructor(private statusMessageService: StatusMessageService) { 
     this.messageStatus$ = statusMessageService.GetStatusSubject(this.Module);
-    this.messageStatus$.subscribe((model)=>{
-      console.log(model);
-    });
   }
 
   ngOnInit() {}

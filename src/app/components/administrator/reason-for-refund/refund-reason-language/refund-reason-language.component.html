@@ -10,7 +10,7 @@
       <label class="control-label " *ngIf="editMode">{{customRfRI18N.locale | translate}}</label>
     </div>
     <div *ngIf="(formName.controls.locale.touched) && formName.controls.locale.errors">
-      <div *ngIf="formName.controls.locale.invalid" class="alert alert-danger" translate="languageRequired"></div>
+      <span *ngIf="formName.controls.locale.invalid" class="msg-error" translate="languageRequired"></span>
     </div>
   </div>
   <div class="form-group col-md-4 " [ngClass]="class">
@@ -21,7 +21,7 @@
       <input type="text" name="reasonForRefund" formControlName="reasonForRefund" class="form-control col-md-4 "/>
     </div>
     <div *ngIf="(formName.controls.reasonForRefund.touched) && formName.controls.reasonForRefund.errors">
-      <div *ngIf="formName.controls.reasonForRefund.errors.requiredForDefaultLanguage" class="alert alert-danger" translate="reasonForRefundRequiredForDefaultLocale"></div>
+      <span *ngIf="formName.controls.reasonForRefund.errors.requiredForDefaultLanguage" class="msg-error" translate="reasonForRefundRequiredForDefaultLocale"></span>
     </div>
   </div>
   <div class="form-group col-md-4">
@@ -32,7 +32,7 @@
       <textarea name="hint" formControlName="hint" class="form-control col-md-5 " style="width: 100%"></textarea>
     </div>
     <div *ngIf="(formName.controls.hint.touched) && formName.controls.hint.errors">
-      <div *ngIf="formName.controls.hint.invalid" class="alert-danger alert" translate="hintInvalid"></div>
+      <span *ngIf="formName.controls.hint.invalid" class="msg-error" translate="hintInvalid"></span>
     </div>
   </div>
 </div>
