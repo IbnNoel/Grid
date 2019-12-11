@@ -1,11 +1,19 @@
 export class MessageStatus{
-    constructor(private messageType: MessageType, private title: string, private description: string){}
+    private descriptArray = Array<string>();
 
-    set Description(msg){
-        this.description = msg;
+    constructor(private messageType: MessageType, private title: string, private description: string | Array<string>){
+        this.Description = description;
+    }
+
+    set Description(msg : string | Array<string>){
+        if(msg instanceof Array){
+            this.descriptArray = msg as Array<string>;
+        } else{
+         this.descriptArray = [msg];
+        }
     }
     get Description(){
-        return this.description;
+        return this.descriptArray;
     }
     set Title(title){
         this.title = title;

@@ -31,5 +31,18 @@ div.mask {
 }
 .form-group.required .control-label:after {
   content:"*";
-  color:red;
+}
+
+textarea{
+  resize: none;
+}
+
+.ng-touched input.ng-invalid{
+  border-color: #a94442;
+} 
+
+.msg-error {
+  color: #a94442;
+  font-size: 80%;
+  text-align: left;
 }

@@ -8,6 +8,7 @@ import {State} from 'src/app/reducers';
 import {GpfiModalInfo} from '../../controls/gpfi-modal/gpfi-modal.component';
 import {SaveClientSettingsAction} from 'src/app/actions/refundAction';
 import {IndustrySegment, RefdataService} from "../../../core/refdata.service";
+import { MessageStatus, MessageType } from '../../controls/message/messageStatus';
 
 @Component({
   selector: 'app-client-settings',
@@ -45,10 +46,9 @@ export class ClientSettingsComponent implements OnInit {
 
   onSave(onEmit) {
     this.adminService.setClientSettings(this.clientSettings).subscribe(response => {
-      if (response.success) {
+        let messageStatus = new MessageStatus( MessageType.Success, "", "MSG_ONADMINTABSAVE" );
         this.store.dispatch(new SaveClientSettingsAction(response.data));
-        onEmit();
-      }
+        onEmit(messageStatus);
     })
   }
 

@@ -8,7 +8,7 @@
       <label class="control-label" *ngIf="editMode">{{customRfRSetting.reasonCode}}</label>
     </div>
     <div *ngIf="(formName.controls.reasonCode.touched) && formName.controls.reasonCode.errors">
-      <div *ngIf="formName.controls.reasonCode.invalid" class="alert alert-danger" translate="reasonCodeRequired"></div>
+      <span *ngIf="formName.controls.reasonCode.invalid" class="msg-error" translate="reasonCodeRequired"></span>
     </div>
 
   </div>
@@ -28,7 +28,7 @@
       <input type="text" name="sortOrder" formControlName="sortOrder" class="form-control" />
     </div>
     <div *ngIf="( formName.controls.sortOrder.touched) && formName.controls.sortOrder.errors">
-      <div *ngIf="formName.controls.sortOrder.invalid" class="alert alert-danger" translate="sortOrderInvalid"></div>
+      <span *ngIf="formName.controls.sortOrder.invalid" class="msg-error" translate="sortOrderInvalid"></span>
     </div>
   </div>
   <div class=" form-group" [ngClass]="gridWidth">
@@ -39,7 +39,7 @@
       <input type="text" name="numOfDocument" formControlName="numOfDocument" class="form-control" />
     </div>
     <div *ngIf="(formName.controls.numOfDocument.touched) && formName.controls.numOfDocument.errors">
-      <div *ngIf="formName.controls.numOfDocument.invalid" class="alert-danger alert" translate="numOfDocumentInvalid"></div>
+      <span *ngIf="formName.controls.numOfDocument.invalid" class="msg-error" translate="numOfDocumentInvalid"></span>
     </div>
   </div>
 </div>

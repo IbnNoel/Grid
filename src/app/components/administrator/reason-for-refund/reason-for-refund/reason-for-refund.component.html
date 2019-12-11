@@ -21,9 +21,9 @@
 <app-confirmation-box [confirmationAction]="confirmationAction" #confirmationBox></app-confirmation-box>
 <app-overlay name="addCustomRfROverlay" #addCustomRfROverlay header="addCustomRfR" (load)="errorMessage=null">
   <form [formGroup]="addCustomRfRForm">
-    <div class="alert alert-danger" *ngIf="errorMessage">
+    <span class="msg-error" *ngIf="errorMessage">
       {{errorMessage | translate}}
-    </div>
+    </span>
     <div class="row">
       <app-refund-reason-setting [customRfRSetting]="customRfR" [formName]="addCustomRfRForm.get('refundSetting')"></app-refund-reason-setting>
     </div>
@@ -42,9 +42,9 @@
 </app-overlay>
 <app-overlay name="addNewLanguageOverlay" #addNewLanguageOverlay header="addLanguage" (load)="errorMessage=null">
   <form [formGroup]="addLanguageForm">
-    <div class="alert alert-danger" *ngIf="errorMessage">
+    <span class="msg-error" *ngIf="errorMessage">
       {{errorMessage | translate}}
-    </div>
+    </span>
     <div class="row" *ngFor="let i18n of customRfR.reasonForRefundList;let i18nIndex=index">
       <div class="col-md-11 row">
         <app-refund-reason-language [formName]="i18nForm(i18nIndex,false)" addNewLanguage="true" [languages]="languagesList" [customRfRI18N]="i18n"></app-refund-reason-language>
@@ -61,6 +61,7 @@
 <div>
   <app-data-table
     [(ExpansionSettings)]="reasonCodeExpansionSettings"
+    [CollapseOnRender]="false"
     [Columns]="reasonCodeColDef"
     [Data]="reasonCodes"
     [(PageSettings)]="reasonCodePageSettings"></app-data-table>
@@ -68,6 +69,7 @@
 <div>
   <app-data-table
     [(ExpansionSettings)]="reasonCodeI18ExpansionSettings"
+    [CollapseOnRender]="false"
     [Columns]="reasonCodeI18NColDef"
     [Data]="reasonCodesI18N"
     [(PageSettings)]="reasonCodeI18NPageSettings"></app-data-table>

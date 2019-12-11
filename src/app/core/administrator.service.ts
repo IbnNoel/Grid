@@ -5,6 +5,7 @@ import {flatMap, map} from 'rxjs/operators';
 import {of, OperatorFunction, throwError} from 'rxjs';
 import {PagedResponse} from "./refund.service";
 import {settings} from "cluster";
+import { StatusMessageService } from '../status-message.service';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,6 @@ export class AdministratorService {
   private readonly DELETE_RFR = `${this.ROUTE_URL}/client/reasonForRefunds/delete`;
   private readonly ADD_RFR_I18N = `${this.ROUTE_URL}/client/reasonForRefunds/I18N/add`;
   private readonly RESET_TO_STANDARD = `${this.ROUTE_URL}/client/reasonForRefunds/resetToStandard`;
-
 
   private apiResponseMap: OperatorFunction<ApiResponse<any>, any> = flatMap(response => {
     if (response.success) {
@@ -84,7 +84,7 @@ export class AdministratorService {
   }
 
   setClientSettings(settings: ClientSettings) {
-    return this.httpClient.put<ApiResponse<ClientSettings>>(this.SET_CLIENT_URL, settings);
+    return this.httpClient.put<ApiResponse<ClientSettings>>(this.SET_CLIENT_URL, settings).pipe(this.apiResponseMap);
   }
 
   addCustomRfR(settings: CustomRfRSettings) {
@@ -124,7 +124,7 @@ export class AdministratorService {
   }
 
   setRefundRequestSettings(settings: RefundRequestSettings) {
-    return this.httpClient.put<ApiResponse<RefundRequestSettings>>(this.SET_REFUND_URL, settings);
+    return this.httpClient.put<ApiResponse<RefundRequestSettings>>(this.SET_REFUND_URL, settings).pipe(this.apiResponseMap);
   }
 
   setDefaultSettings(clientId) {
