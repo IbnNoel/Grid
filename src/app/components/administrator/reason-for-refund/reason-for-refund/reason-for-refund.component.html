@@ -1,20 +1,20 @@
 <div class="row form-group" *ngIf="isStandardRfREnabled">
-  <div class="col-md-6">
+  <div class='col-md-12'>
     <h5 class='subHeader' translate="rfrStandard"></h5>
   </div>
-  <div class="col-md-6">
+  <div class="col-md-12">
     <button class="btn btn-default pull-right" (click)="toggleRfR()" type="button" translate="maintainCustomRfr"></button>
   </div>
 </div>
 <div class="row form-group" *ngIf="!isStandardRfREnabled">
-  <div class="col-md-6">
+  <div class='col-md-12'>
     <h5 class='subHeader' translate="rfrCustom"></h5>
   </div>
-  <div class="col-md-3">
-    <button class="btn btn-default pull-right" (click)="addCustomRfR()" type="button" translate="addCustomRfr"></button>
-  </div>
-  <div class="col-md-3">
-    <button class="btn btn-default pull-right" (click)="toggleRfR()" type="button" translate="maintainStandardRfr"></button>
+  <div class="col-md-12">
+    <div class="pull-right">
+      <button class="btn btn-default" (click)="addCustomRfR()" type="button" translate="addCustomRfr"></button>
+      <button class="btn btn-default" (click)="toggleRfR()" type="button" translate="maintainStandardRfr"></button>
+    </div>
   </div>
 
 </div>
@@ -58,7 +58,8 @@
     </div>
   </form>
 </app-overlay>
-<div>
+<div class="well">
+  <h5>ReasonCode</h5>
   <app-data-table
     [(ExpansionSettings)]="reasonCodeExpansionSettings"
     [CollapseOnRender]="false"
@@ -66,7 +67,8 @@
     [Data]="reasonCodes"
     [(PageSettings)]="reasonCodePageSettings"></app-data-table>
 </div>
-<div>
+<div class="well">
+  <h5>ReasonCodei18n</h5>
   <app-data-table
     [(ExpansionSettings)]="reasonCodeI18ExpansionSettings"
     [CollapseOnRender]="false"
