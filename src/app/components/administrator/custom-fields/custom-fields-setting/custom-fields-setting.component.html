@@ -68,7 +68,11 @@
       <label class="control-label" translate="validationExpression">Validation Expression</label>
     </div>
     <div>
-      <input type="text" name="validationExpression" formControlName="validationExpression" class="form-control col-md-4 "/>
+      <select class="wuselect form-control" [(ngModel)]="clientSettings.industryTemplateId">
+        <option value={{indSeg.templateId}} *ngFor="let indSeg of industrySegments$ |async">
+          {{ indSeg.templateId | translate}}
+        </option>
+      </select>
     </div>
     <div *ngIf="(formName.controls.validationExpression.touched) && formName.controls.validationExpression.errors">
       <div *ngIf="formName.controls.validationExpression.invalid" class="alert alert-danger" translate="validationExpressionRequired"></div>

@@ -37,6 +37,7 @@ export class AdministratorService {
   private readonly ADD_RFR_I18N = `${this.ROUTE_URL}/client/reasonForRefunds/I18N/add`;
   private readonly RESET_TO_STANDARD = `${this.ROUTE_URL}/client/reasonForRefunds/resetToStandard`;
   private readonly GET_CUSTOMFIELDS = `${this.ROUTE_URL}/customFields/`;
+  private readonly GET_VALIDATION_EXPRESSION = `${this.ROUTE_URL}/customFields/validation/expression/`;
   private readonly GET_ALL_CUSTOMFIELDS = `${this.ROUTE_URL}/customFields/details`;
 
 
@@ -149,6 +150,10 @@ export class AdministratorService {
   getCustomFields(id, pageNo, size) {
     const params = new HttpParams().set('page', pageNo).set('size', size);
     return this.httpClient.get<ApiResponse<PagedResponse<CustomFieldsSettings>>>(this.GET_CUSTOMFIELDS + id, {params}).pipe(this.apiResponseMap);
+  }
+
+  getValidationExpressions(id) {
+    return this.httpClient.get<ApiResponse<ValidationsExpressions>>(this.GET_VALIDATION_EXPRESSION + id, ).pipe(this.apiResponseMap);
   }
 
   getAllCustomFieldDetails(id, fieldName) {
@@ -279,6 +284,14 @@ export interface CustomFieldsSettings {
   description?: string;
   fieldType?: string;
   mandatory?: boolean;
+}
+
+export interface ValidationsExpressions {
+  id: number;
+  description: string;
+  expression: string;
+  scriptBased: boolean;
+  clientId: number;
 }
 
 export interface CustomFieldsView {
