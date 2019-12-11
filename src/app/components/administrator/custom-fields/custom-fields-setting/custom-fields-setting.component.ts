@@ -4,7 +4,7 @@ import {
   AdministratorService,
   ClientSettings,
   CustomFieldsSettings,
-  CustomFieldsView
+  CustomFieldsView, TextElementViewList
 } from '../../../../core/administrator.service';
 import {BehaviorSubject, forkJoin, Observable, of} from "rxjs";
 import {take} from "rxjs/operators";
@@ -22,6 +22,7 @@ export class CustomFieldsSettingComponent implements OnInit {
   @Input() formName: FormGroup;
   @Input() customFieldsSettings: CustomFieldsSettings;
   customFieldsView: CustomFieldsView;
+  labelText: TextElementViewList;
   fieldType: Array<String>;
   gridWidth: String;
   editMode: boolean;
@@ -37,10 +38,9 @@ export class CustomFieldsSettingComponent implements OnInit {
   }
 
   updateTables() {
-   this.adminService.getAllCustomFieldDetails(this.customFieldsSettings.clientId, this.customFieldsSettings.fieldName).subscribe(value => {
-      this.allCustomFields.next(value);
+   this.adminService.getAllCustomFieldDetails(this.customFieldsSettings.clientId, this.customFieldsSettings.fieldName).subscribe(data => {
+     this.customFieldsView = data;
     });
-    this.customFieldsView = this.allCustomFields.getValue();
   }
 
   onCancel() {
