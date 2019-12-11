@@ -18,7 +18,7 @@ export class AdministratorService {
   private readonly GET_PAYMENT_TYPE_AND_CURRENCIES_URL = `${this.ROUTE_URL}/directRejection/currencies`;
   private readonly GET_CLIENT_PYMNT_TYPE_CURR_URL = `${this.ROUTE_URL}/directRejections/client/currencies`;
   private readonly SET_CLIENT_URL = `${this.ROUTE_URL}/configure/clientSettings`;
-  private readonly ADD_RFR = `${this.ROUTE_URL}/client/reasonForRefunds/addRFR`;
+  private readonly ADD_RFR = `${this.ROUTE_URL}/client/reasonForRefunds/add`;
   private readonly ADD_PYMT_TYPE_CURR = `${this.ROUTE_URL}/directRejections/client/add`;
   private readonly REMOVE_PYMT_TYPE_CURR = `${this.ROUTE_URL}/directRejections/client/remove`;
   private readonly GET_REFUND_URL = `${this.ROUTE_URL}/getRefundRequestSettings/`;
@@ -29,11 +29,11 @@ export class AdministratorService {
   private readonly TOGGLE_RFR = `${this.ROUTE_URL}/client/reasonForRefunds/configure/`;
   private readonly GET_REFUND_HANDLING = `${this.ROUTE_URL}/getRefundHandling/`;
   private readonly SET_REFUND_HANDLING = `${this.ROUTE_URL}/configure/updateRefundHandling`;
-  private readonly UPDATE_RFR_I18N = `${this.ROUTE_URL}/client/reasonForRefunds/updateRFRI18N`;
-  private readonly UPDATE_RFR = `${this.ROUTE_URL}/client/reasonForRefunds/updateRFR`;
-  private readonly DELETE_RFR_I18N = `${this.ROUTE_URL}/client/reasonForRefunds/deleteRFRI18N`;
-  private readonly DELETE_RFR = `${this.ROUTE_URL}/client/reasonForRefunds/deleteRFR`;
-  private readonly ADD_RFR_I18N = `${this.ROUTE_URL}/client/reasonForRefunds/addRFRI18N`;
+  private readonly UPDATE_RFR_I18N = `${this.ROUTE_URL}/client/reasonForRefunds/I18N/update`;
+  private readonly UPDATE_RFR = `${this.ROUTE_URL}/client/reasonForRefunds/update`;
+  private readonly DELETE_RFR_I18N = `${this.ROUTE_URL}/client/reasonForRefunds/I18N/delete`;
+  private readonly DELETE_RFR = `${this.ROUTE_URL}/client/reasonForRefunds/delete`;
+  private readonly ADD_RFR_I18N = `${this.ROUTE_URL}/client/reasonForRefunds/I18N/add`;
   private readonly RESET_TO_STANDARD = `${this.ROUTE_URL}/client/reasonForRefunds/resetToStandard`;
 
 
