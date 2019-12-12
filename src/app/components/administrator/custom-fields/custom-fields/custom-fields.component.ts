@@ -29,6 +29,7 @@ export class CustomFieldsComponent implements OnInit {
   clientId: number;
   customFields = new BehaviorSubject<Array<CustomFieldsSettings>>([]);
   validationExpressions = new BehaviorSubject<Array<ValidationsExpressions>>([]);
+  allFieldTypes = new BehaviorSubject<Array<string>>([]);
   customFieldsExpansionSettings: ExpansionSettings;
   private editCustomFieldsSettingForm: FormGroup;
   @Output() closeOverlay = new EventEmitter();
@@ -77,6 +78,7 @@ export class CustomFieldsComponent implements OnInit {
         component.instance.formName = this.editCustomFieldsSettingForm;
         component.instance.editMode = true;
         component.instance.validationExpressions = this.validationExpressions;
+        component.instance.allFieldTypes = this.allFieldTypes;
         component.instance.closeOverlay.asObservable().subscribe(value => this.customFieldsExpansionSettings.CollapseGrid(row));
         // component.instance.updateCustomFieldsSetting.asObservable().subscribe(value => this.updateCustomFieldsSetting(value));
         resolve(component);
@@ -87,6 +89,7 @@ export class CustomFieldsComponent implements OnInit {
   updateTables() {
     this.updateCustomFieldsTable();
     this.getValidationsExpressions();
+    this.getAllFieldTypes();
   }
 
   setupCustomFieldColDef() {
@@ -103,7 +106,12 @@ export class CustomFieldsComponent implements OnInit {
      ];
   }
 
-   getValidationsExpressions() {
+  getAllFieldTypes() {
+    this.adminService.getAllFieldTypes().subscribe(value => {
+      this.allFieldTypes.next(value);
+    });
+  }
+  getValidationsExpressions() {
      this.adminService.getValidationExpressions(this.clientId).subscribe(value => {
        this.validationExpressions.next(value);
      });

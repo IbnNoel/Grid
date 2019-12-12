@@ -24,9 +24,10 @@ export class CustomFieldsSettingComponent implements OnInit {
   @Input() customFieldsSettings: CustomFieldsSettings;
   customFieldsView: CustomFieldsView;
   validationExpressions = new BehaviorSubject<Array<ValidationsExpressions>>([]);
+  allFieldTypes = new BehaviorSubject<Array<string>>([]);
   labelText: TextElementViewList;
-  fieldType: Array<String>;
-  gridWidth: String;
+  fieldType: Array<string>;
+  gridWidth: string;
   editMode: boolean;
   @Output() closeOverlay = new EventEmitter();
   allCustomFields = new BehaviorSubject<CustomFieldsView>({});
@@ -35,7 +36,7 @@ export class CustomFieldsSettingComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.gridWidth = this.editMode ? "col-md-3" : "col-md-4";
+    this.gridWidth = this.editMode ? 'col-md-3' : 'col-md-4';
     this.updateTables();
   }
 

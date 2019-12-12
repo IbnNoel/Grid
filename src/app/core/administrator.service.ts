@@ -38,6 +38,7 @@ export class AdministratorService {
   private readonly RESET_TO_STANDARD = `${this.ROUTE_URL}/client/reasonForRefunds/resetToStandard`;
   private readonly GET_CUSTOMFIELDS = `${this.ROUTE_URL}/customFields/`;
   private readonly GET_VALIDATION_EXPRESSION = `${this.ROUTE_URL}/customFields/validation/expression/`;
+  private readonly GET_ALL_FIELD_TYPES = `${this.ROUTE_URL}/customFields/fieldTypes`;
   private readonly GET_ALL_CUSTOMFIELDS = `${this.ROUTE_URL}/customFields/details`;
 
 
@@ -156,6 +157,10 @@ export class AdministratorService {
     return this.httpClient.get<ApiResponse<List<ValidationsExpressions>>>(this.GET_VALIDATION_EXPRESSION + id, ).pipe(this.apiResponseMap);
   }
 
+  getAllFieldTypes() {
+    return this.httpClient.get<ApiResponse<List<string>>>(this.GET_ALL_FIELD_TYPES).pipe(this.apiResponseMap);
+  }
+
   getAllCustomFieldDetails(id, fieldName) {
     const params = new HttpParams().set('clientId', id).set('fieldName', fieldName);
     return this.httpClient.get<ApiResponse<CustomFieldsView>>(this.GET_ALL_CUSTOMFIELDS, {params}).pipe(map(response => response.data));
@@ -211,7 +216,7 @@ export interface RefundHandling {
 }
 
 export interface AdminSettings {
-  clientId: Number;
+  clientId: number;
   clientSettings: ClientSettings;
   refundRequestSettings: RefundRequestSettings;
   customRfrSettings: Array<CustomRfRSettings>;
