@@ -60,8 +60,7 @@ export function CustomTranslationsFactory(gp2Service: Gp2Service) {
     DirectRejectRequestComponent, OperationButtonsComponent, GpfiModalComponent,
     LoadingDirective, ReasonForRefundComponent,   RefundReasonLanguageComponent, ActionMenuComponent,
     RefundReasonSettingComponent, RefundHandlingComponent, EditRfRI18NComponent, OverlayComponent, ConfirmationBoxComponent,
-    MessageComponent, AppDropdownComponent
-    AppComponent, RefundsComponent, CreateRefundsComponent, ManageRefundsComponent, AdministratorComponent, ClientSettingsComponent, DirectRejectRequestComponent, OperationButtonsComponent, GpfiModalComponent, LoadingDirective, ReasonForRefundComponent,   RefundReasonLanguageComponent, ActionMenuComponent, RefundReasonSettingComponent, RefundHandlingComponent, EditRfRI18NComponent, OverlayComponent, ConfirmationBoxComponent, MessageComponent, CustomFieldsComponent, CustomFieldsSettingComponent, CustomFieldsTextComponent
+    MessageComponent, AppDropdownComponent, CustomFieldsComponent, CustomFieldsSettingComponent, CustomFieldsTextComponent
   ],
   imports: [
     BrowserModule,
