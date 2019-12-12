@@ -1,10 +1,11 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormGroup} from "@angular/forms";
+import {BehaviorSubject, forkJoin} from 'rxjs';
 import {
   AdministratorService,
   ClientSettings,
   CustomFieldsSettings,
-  CustomFieldsView, TextElementViewList
+  CustomFieldsView, TextElementViewList, ValidationsExpressions
 } from '../../../../core/administrator.service';
 import {BehaviorSubject, forkJoin, Observable, of} from "rxjs";
 import {take} from "rxjs/operators";
@@ -23,6 +24,7 @@ export class CustomFieldsSettingComponent implements OnInit {
   @Input() formName: FormGroup;
   @Input() customFieldsSettings: CustomFieldsSettings;
   customFieldsView: CustomFieldsView;
+  validationExpressions = new BehaviorSubject<Array<ValidationsExpressions>>([]);
   labelText: TextElementViewList;
   fieldType: Array<String>;
   gridWidth: String;
@@ -42,7 +44,7 @@ export class CustomFieldsSettingComponent implements OnInit {
   updateTables() {
    this.adminService.getAllCustomFieldDetails(this.customFieldsSettings.clientId, this.customFieldsSettings.fieldName).subscribe(data => {
      this.customFieldsView = data;
-    });
+   });
   }
 
   onCancel() {

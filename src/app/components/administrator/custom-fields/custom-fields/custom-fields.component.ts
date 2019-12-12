@@ -2,7 +2,12 @@ import {Component, ComponentFactoryResolver, EventEmitter, OnInit, Output} from 
 import {ExpansionSettings} from '../../../controls/data-table/classes/Expansion';
 import {ColumnDefs} from '../../../controls/data-table/classes/Columns';
 import {BehaviorSubject, forkJoin} from 'rxjs';
-import {AdministratorService, CustomFieldsSettings, CustomRfRSettings} from '../../../../core/administrator.service';
+import {
+  AdministratorService,
+  CustomFieldsSettings,
+  CustomRfRSettings,
+  ValidationsExpressions
+} from '../../../../core/administrator.service';
 import {PageSettings} from '../../../controls/data-table/classes/Paging';
 import {CustomFieldsSettingComponent} from '../../custom-fields/custom-fields-setting/custom-fields-setting.component';
 import {ReasonForRefundValidatorService} from '../../../../validator/administrator/reason-for-refund/reason-for-refund-validator.service';
@@ -23,6 +28,7 @@ export class CustomFieldsComponent implements OnInit {
   customFieldColDef: Array<ColumnDefs>;
   clientId: number;
   customFields = new BehaviorSubject<Array<CustomFieldsSettings>>([]);
+  validationExpressions = new BehaviorSubject<Array<ValidationsExpressions>>([]);
   customFieldsExpansionSettings: ExpansionSettings;
   private editCustomFieldsSettingForm: FormGroup;
   @Output() closeOverlay = new EventEmitter();
@@ -70,6 +76,7 @@ export class CustomFieldsComponent implements OnInit {
        // this.editRefundSettingForm = this.validator.reasonForRefundSettingValidator();
         component.instance.formName = this.editCustomFieldsSettingForm;
         component.instance.editMode = true;
+        component.instance.validationExpressions = this.validationExpressions;
         component.instance.closeOverlay.asObservable().subscribe(value => this.customFieldsExpansionSettings.CollapseGrid(row));
         // component.instance.updateCustomFieldsSetting.asObservable().subscribe(value => this.updateCustomFieldsSetting(value));
         resolve(component);
@@ -79,6 +86,7 @@ export class CustomFieldsComponent implements OnInit {
 
   updateTables() {
     this.updateCustomFieldsTable();
+    this.getValidationsExpressions();
   }
 
   setupCustomFieldColDef() {
@@ -95,5 +103,9 @@ export class CustomFieldsComponent implements OnInit {
      ];
   }
 
-
+   getValidationsExpressions() {
+     this.adminService.getValidationExpressions(this.clientId).subscribe(value => {
+       this.validationExpressions.next(value);
+     });
+  }
 }

@@ -19,7 +19,7 @@ export class AdministratorService {
   private readonly GET_PAYMENT_TYPE_AND_CURRENCIES_URL = `${this.ROUTE_URL}/directRejection/currencies`;
   private readonly GET_CLIENT_PYMNT_TYPE_CURR_URL = `${this.ROUTE_URL}/directRejections/client/currencies`;
   private readonly SET_CLIENT_URL = `${this.ROUTE_URL}/configure/clientSettings`;
-  private readonly ADD_RFR = `${this.ROUTE_URL}/client/reasonForRefunds/addRFR`;
+  private readonly ADD_RFR = `${this.ROUTE_URL}/client/reasonForRefunds/add`;
   private readonly ADD_PYMT_TYPE_CURR = `${this.ROUTE_URL}/directRejections/client/add`;
   private readonly REMOVE_PYMT_TYPE_CURR = `${this.ROUTE_URL}/directRejections/client/remove`;
   private readonly GET_REFUND_URL = `${this.ROUTE_URL}/getRefundRequestSettings/`;
@@ -30,13 +30,14 @@ export class AdministratorService {
   private readonly TOGGLE_RFR = `${this.ROUTE_URL}/client/reasonForRefunds/configure/`;
   private readonly GET_REFUND_HANDLING = `${this.ROUTE_URL}/getRefundHandling/`;
   private readonly SET_REFUND_HANDLING = `${this.ROUTE_URL}/configure/updateRefundHandling`;
-  private readonly UPDATE_RFR_I18N = `${this.ROUTE_URL}/client/reasonForRefunds/updateRFRI18N`;
-  private readonly UPDATE_RFR = `${this.ROUTE_URL}/client/reasonForRefunds/updateRFR`;
-  private readonly DELETE_RFR_I18N = `${this.ROUTE_URL}/client/reasonForRefunds/deleteRFRI18N`;
-  private readonly DELETE_RFR = `${this.ROUTE_URL}/client/reasonForRefunds/deleteRFR`;
-  private readonly ADD_RFR_I18N = `${this.ROUTE_URL}/client/reasonForRefunds/addRFRI18N`;
+  private readonly UPDATE_RFR_I18N = `${this.ROUTE_URL}/client/reasonForRefunds/I18N/update`;
+  private readonly UPDATE_RFR = `${this.ROUTE_URL}/client/reasonForRefunds/update`;
+  private readonly DELETE_RFR_I18N = `${this.ROUTE_URL}/client/reasonForRefunds/I18N/delete`;
+  private readonly DELETE_RFR = `${this.ROUTE_URL}/client/reasonForRefunds/delete`;
+  private readonly ADD_RFR_I18N = `${this.ROUTE_URL}/client/reasonForRefunds/I18N/add`;
   private readonly RESET_TO_STANDARD = `${this.ROUTE_URL}/client/reasonForRefunds/resetToStandard`;
   private readonly GET_CUSTOMFIELDS = `${this.ROUTE_URL}/customFields/`;
+  private readonly GET_VALIDATION_EXPRESSION = `${this.ROUTE_URL}/customFields/validation/expression/`;
   private readonly GET_ALL_CUSTOMFIELDS = `${this.ROUTE_URL}/customFields/details`;
 
 
@@ -151,6 +152,10 @@ export class AdministratorService {
     return this.httpClient.get<ApiResponse<PagedResponse<CustomFieldsSettings>>>(this.GET_CUSTOMFIELDS + id, {params}).pipe(this.apiResponseMap);
   }
 
+  getValidationExpressions(id) {
+    return this.httpClient.get<ApiResponse<List<ValidationsExpressions>>>(this.GET_VALIDATION_EXPRESSION + id, ).pipe(this.apiResponseMap);
+  }
+
   getAllCustomFieldDetails(id, fieldName) {
     const params = new HttpParams().set('clientId', id).set('fieldName', fieldName);
     return this.httpClient.get<ApiResponse<CustomFieldsView>>(this.GET_ALL_CUSTOMFIELDS, {params}).pipe(map(response => response.data));
@@ -189,13 +194,13 @@ export interface ClientSettings {
   convenienceUrl?: string;
   countrySegment?: string;
   industrySegment?: string;
-  industryTemplateId?: string,
+  industryTemplateId?: string;
   name?: string;
   portalDefaultLanguage?: string;
   refundConfigured?: boolean;
   refundPortalDomain?: string;
   securityChallengeEnabled?: boolean;
-  customRfr?: boolean
+  customRfr?: boolean;
 }
 
 export interface RefundHandling {
@@ -267,8 +272,8 @@ export interface ToggleRfrResponse {
 
 export interface DeleteI18NRfR {
   clientId: number;
-  reasonCode: String;
-  locale: String;
+  reasonCode: string;
+  locale: string;
 }
 
 export interface CustomFieldsSettings {
@@ -279,6 +284,14 @@ export interface CustomFieldsSettings {
   description?: string;
   fieldType?: string;
   mandatory?: boolean;
+}
+
+export interface ValidationsExpressions {
+  id: number;
+  description: string;
+  expression: string;
+  scriptBased: boolean;
+  clientId: number;
 }
 
 export interface CustomFieldsView {
