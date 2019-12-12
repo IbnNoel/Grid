@@ -5,7 +5,7 @@ import {flatMap, map} from 'rxjs/operators';
 import {of, OperatorFunction, throwError} from 'rxjs';
 import {PagedResponse} from "./refund.service";
 import {settings} from "cluster";
-import { List } from 'lodash';
+import { StatusMessageService } from '../status-message.service';
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +40,6 @@ export class AdministratorService {
   private readonly GET_VALIDATION_EXPRESSION = `${this.ROUTE_URL}/customFields/validation/expression/`;
   private readonly GET_ALL_FIELD_TYPES = `${this.ROUTE_URL}/customFields/fieldTypes`;
   private readonly GET_ALL_CUSTOMFIELDS = `${this.ROUTE_URL}/customFields/details`;
-
 
   private apiResponseMap: OperatorFunction<ApiResponse<any>, any> = flatMap(response => {
     if (response.success) {
@@ -89,7 +88,7 @@ export class AdministratorService {
   }
 
   setClientSettings(settings: ClientSettings) {
-    return this.httpClient.put<ApiResponse<ClientSettings>>(this.SET_CLIENT_URL, settings);
+    return this.httpClient.put<ApiResponse<ClientSettings>>(this.SET_CLIENT_URL, settings).pipe(this.apiResponseMap);
   }
 
   addCustomRfR(settings: CustomRfRSettings) {
@@ -129,7 +128,7 @@ export class AdministratorService {
   }
 
   setRefundRequestSettings(settings: RefundRequestSettings) {
-    return this.httpClient.put<ApiResponse<RefundRequestSettings>>(this.SET_REFUND_URL, settings);
+    return this.httpClient.put<ApiResponse<RefundRequestSettings>>(this.SET_REFUND_URL, settings).pipe(this.apiResponseMap);
   }
 
   setDefaultSettings(clientId) {

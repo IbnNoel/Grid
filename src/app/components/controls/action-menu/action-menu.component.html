@@ -1,9 +1,9 @@
 <div class="btn-group">
-    <button type="button" [disabled]="disabled" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="
+    <button type="button" [disabled]="disabled" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="
     padding-top: 9px;">
-        <span class="glyphicon glyphicon-option-horizontal" aria-hidden="true" style="font-size: large;"></span>
+        <span class="caret"></span>
     </button>
-    <ul class="dropdown-menu">
+    <ul class="dropdown-menu dropdown-menu-right">
       <li mat-menu-item *ngFor="let b of buttons"><a (click)="b._performAction(b.data)">{{b.label | translate}}</a></li>
     </ul>
   </div>

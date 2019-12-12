@@ -11,6 +11,7 @@ import { SaveRefundHandlingSettingAction } from 'src/app/actions/refundAction';
 import {map, take} from 'rxjs/operators';
 import {ColumnDefs, GPFIButton} from '../../controls/data-table/classes/Columns';
 import {PageSettings} from '../../controls/data-table/classes/Paging';
+import { MessageStatus, MessageType } from '../../controls/message/messageStatus';
 
 @Component({
   selector: 'app-refund-handling',
@@ -54,10 +55,9 @@ export class RefundHandlingComponent implements OnInit {
 
   onSave(onEmit){
     this.adminService.setRefundHandling(this.refundHandling).subscribe(response =>{
-      if(response.success){
-        this.store.dispatch(new SaveRefundHandlingSettingAction(response.data));
-        onEmit();
-      }
+      let messageStatus = new MessageStatus(MessageType.Success, "", "MSG_ONADMINTABSAVE" );
+      this.store.dispatch(new SaveRefundHandlingSettingAction(response.data));
+      onEmit(messageStatus);
     })
   }
 
