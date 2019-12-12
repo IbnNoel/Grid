@@ -83,7 +83,7 @@
   <div class ="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1" disabled></textarea>
   </div>
   <div class ="col-md-4">
-    <button class="btn btn-default"  type="button" (click)="addLabelText()" translate="..."></button>
+    <button class="btn btn-default"  type="button" (click)="addLabelTextDefault()" translate="..."></button>
   </div>
 
   </div>
@@ -97,7 +97,7 @@
                                       disabled></textarea>
       </div>
       <div class="col-md-4">
-        <button class="btn btn-default"  type="button" (click)="addLabelText()" translate="..."></button>
+        <button class="btn btn-default"  type="button" (click)="addLabelText()" *ngIf="ifDefault(labelText.locale)" translate="..."></button>
       </div>
     </div>
   </div>
@@ -105,11 +105,12 @@
 </div>
 
 <app-overlay name="addLabelTextOverlay" #addLabelTextOverlay header="addLabelText">
-    <div class="row">
-      <app-custom-fields-text [customFieldsView]="customFieldsView" ></app-custom-fields-text>
+    <div class="row" *ngFor="let text of customFieldsView.labelText">
+      <app-custom-fields-text [textElementView]="text" ></app-custom-fields-text>
     </div>
   <div>
-    <app-operation-buttons (onCancel)="closeAddLabelText(addLabelTextOverlay.name)"></app-operation-buttons>
+    <button class="btn btn-default"  type="button" (click)="additionalLabelText()" translate="ADD"></button>
+    <button class="btn btn-default pull-right"  type="button" (click)="closeAddLabelText(addLabelTextOverlay.name)" translate="OK"></button>
   </div>
 </app-overlay>
 

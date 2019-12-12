@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {CustomFieldsView, CustomRfRSettings} from "../../../../core/administrator.service";
+import {TextElementView} from "../../../../core/administrator.service";
 
 @Component({
   selector: 'app-custom-fields-text',
@@ -7,11 +7,12 @@ import {CustomFieldsView, CustomRfRSettings} from "../../../../core/administrato
   styleUrls: ['./custom-fields-text.component.scss']
 })
 export class CustomFieldsTextComponent implements OnInit {
-  @Input() customFieldsView: CustomFieldsView;
+  @Input() textElementView: TextElementView;
 
   constructor() { }
 
   ngOnInit() {
+
   }
 
 }

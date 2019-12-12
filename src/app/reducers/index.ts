@@ -6,7 +6,7 @@ import {Country, Currency, IndustrySegment, Locale} from "../core/refdata.servic
 
 
 export interface State {
-  adminSettings: AdminSettings,
+  adminSettings: AdminSettings;
   refData: RefData;
 }
 
@@ -18,7 +18,7 @@ export interface RefData {
 }
 
 export class AdminSettingsState implements AdminSettings {
-  clientId: Number;
+  clientId: number;
   clientSettings: ClientSettings;
   refundRequestSettings: RefundRequestSettings;
   refundHandling: RefundHandling;
