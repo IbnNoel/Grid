@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormGroup} from "@angular/forms";
-import {BehaviorSubject, forkJoin} from 'rxjs';
 import {
   AdministratorService,
   ClientSettings,
@@ -58,8 +57,18 @@ export class CustomFieldsSettingComponent implements OnInit {
     return this.actionButtons.length === 0;
   }
 
+  addLabelTextDefault() {
+    this.customFieldsView.labelText = [{key:this.customFieldsView.fieldName.concat("_LABEL"),locale:"en_GB",text:""}];
+    $("#addLabelTextOverlay").modal({show: true, backdrop: false});
+  }
+
   addLabelText() {
     $("#addLabelTextOverlay").modal({show: true, backdrop: false});
+  }
+
+
+  additionalLabelText(){
+    this.customFieldsView.labelText.push({key:this.customFieldsView.fieldName.concat("_LABEL"),locale:"",text:""}) ;
   }
 
   closeAddLabelText(name: string) {
@@ -67,6 +76,10 @@ export class CustomFieldsSettingComponent implements OnInit {
   }
   close(overlay) {
     $("#" + overlay).modal("hide");
+  }
+
+  ifDefault(locale) {
+    return this.refdataService.isDefaultLanguage(locale);
   }
 
   show() {
