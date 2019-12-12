@@ -37,8 +37,7 @@ import { ExpansionSettingsHandler } from './Expansion';
 
         this._dataTableHtml = dtComponent.tableHtml;
         this._dataTableSettings = dtComponent.tableSettings;
-        this._isDetailRowEnabled = !!dtComponent.ExpansionSettings;
-        this._isDetailRowEnabled = !!dtComponent.ExpansionSettings;
+        this._isDetailRowEnabled = (!!dtComponent.ExpansionSettings) ? dtComponent.ExpansionSettings._isDetailRow : false;
         this._expandHelper = dtComponent.expansionSettingsHandler;
         this._dataTableSettings.dom = (this._dataTableSettings.paging) ? "<'container-fluid'<'row gpfiPageLengthControl' <'clearfix'> l><'row't><'row'p>>" : "<'container-fluid'<'row't>>";
         this._dataTableSettings.responsive = {

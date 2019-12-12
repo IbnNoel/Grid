@@ -26,8 +26,8 @@ export class CustomFieldsSettingComponent implements OnInit {
   customFieldsView: CustomFieldsView;
   validationExpressions = new BehaviorSubject<Array<ValidationsExpressions>>([]);
   allFieldTypes = new BehaviorSubject<Array<string>>([]);
-  fieldType: Array<String>;
-  gridWidth: String;
+  fieldType: Array<string>;
+  gridWidth: string;
   editMode: boolean;
   @Output() closeOverlay = new EventEmitter();
   actionButtons: Array<ActionButton>;
@@ -55,7 +55,7 @@ export class CustomFieldsSettingComponent implements OnInit {
   }
 
   disableActionButton() {
-    return this.actionButtons.length == 0;
+    return this.actionButtons.length === 0;
   }
 
   addLabelText() {
@@ -67,5 +67,10 @@ export class CustomFieldsSettingComponent implements OnInit {
   }
   close(overlay) {
     $("#" + overlay).modal("hide");
+  }
+
+  show() {
+    return this.customFieldsView.fieldType === 'TEXT' || this.customFieldsView.fieldType === 'DATE';
+
   }
 }

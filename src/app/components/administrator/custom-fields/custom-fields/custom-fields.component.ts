@@ -67,7 +67,7 @@ export class CustomFieldsComponent implements OnInit {
   }
 
   setupCustomFieldsExpansionSettings() {
-    return new ExpansionSettings(false, (viewContainerRef, rowData, row) => {
+    return new ExpansionSettings(true, (viewContainerRef, rowData, row) => {
       return new Promise<any>((resolve) => {
         const componentResolve = this.CFR.resolveComponentFactory(CustomFieldsSettingComponent);
         // Data table returns its own view container, so it can manage the removing of its instance on collapse of the grid
