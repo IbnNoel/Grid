@@ -3,11 +3,9 @@
         <div class="form-group">
             <!-- readd control-label class-->
             <label class="control-label">Industry Segment</label>
-            <select class="wuselect form-control" [(ngModel)]="clientSettings.industryTemplateId">
-                <option value={{indSeg.templateId}} *ngFor="let indSeg of industrySegments$ |async">
-                    {{ indSeg.templateId | translate}}
-                </option>
-            </select>
+            <app-dropdown [(ngModel)]="clientSettings.industryTemplateId">
+                <div class="item" [attr.data-value]="indSeg.templateId" *ngFor="let indSeg of industrySegments$ |async">{{indSeg.templateId | translate}}</div>
+            </app-dropdown>
         </div>
     </div>
     <!--<div class="col-md-12">
