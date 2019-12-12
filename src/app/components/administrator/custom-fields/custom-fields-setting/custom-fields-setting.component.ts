@@ -5,13 +5,14 @@ import {
   AdministratorService,
   ClientSettings,
   CustomFieldsSettings,
-  CustomFieldsView, TextElementViewList, ValidationsExpressions
+  CustomFieldsView, ValidationsExpressions
 } from '../../../../core/administrator.service';
 import {BehaviorSubject, forkJoin, Observable, of} from "rxjs";
 import {take} from "rxjs/operators";
 import {createSelector, select, Store} from "@ngrx/store";
 import {State} from "../../../../reducers";
 import {RefdataService} from "../../../../core/refdata.service";
+import {ActionButton} from "../../../controls/action-menu/action-menu.component";
 
 @Component({
   selector: 'app-custom-fields-setting',
@@ -25,12 +26,11 @@ export class CustomFieldsSettingComponent implements OnInit {
   customFieldsView: CustomFieldsView;
   validationExpressions = new BehaviorSubject<Array<ValidationsExpressions>>([]);
   allFieldTypes = new BehaviorSubject<Array<string>>([]);
-  labelText: TextElementViewList;
-  fieldType: Array<string>;
-  gridWidth: string;
+  fieldType: Array<String>;
+  gridWidth: String;
   editMode: boolean;
   @Output() closeOverlay = new EventEmitter();
-  allCustomFields = new BehaviorSubject<CustomFieldsView>({});
+  actionButtons: Array<ActionButton>;
 
   constructor(private store: Store<State>, private refdataService: RefdataService, private adminService: AdministratorService) {
   }
@@ -52,5 +52,9 @@ export class CustomFieldsSettingComponent implements OnInit {
   onSave() {
     this.closeOverlay.emit();
    // this.updateRefundSetting.emit(this.customRfRSetting);
+  }
+
+  disableActionButton() {
+    return this.actionButtons.length == 0;
   }
 }
