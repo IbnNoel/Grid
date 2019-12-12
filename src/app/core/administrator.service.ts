@@ -153,7 +153,7 @@ export class AdministratorService {
   }
 
   getValidationExpressions(id) {
-    return this.httpClient.get<ApiResponse<ValidationsExpressions>>(this.GET_VALIDATION_EXPRESSION + id, ).pipe(this.apiResponseMap);
+    return this.httpClient.get<ApiResponse<List<ValidationsExpressions>>>(this.GET_VALIDATION_EXPRESSION + id, ).pipe(this.apiResponseMap);
   }
 
   getAllCustomFieldDetails(id, fieldName) {
@@ -194,13 +194,13 @@ export interface ClientSettings {
   convenienceUrl?: string;
   countrySegment?: string;
   industrySegment?: string;
-  industryTemplateId?: string,
+  industryTemplateId?: string;
   name?: string;
   portalDefaultLanguage?: string;
   refundConfigured?: boolean;
   refundPortalDomain?: string;
   securityChallengeEnabled?: boolean;
-  customRfr?: boolean
+  customRfr?: boolean;
 }
 
 export interface RefundHandling {
@@ -272,8 +272,8 @@ export interface ToggleRfrResponse {
 
 export interface DeleteI18NRfR {
   clientId: number;
-  reasonCode: String;
-  locale: String;
+  reasonCode: string;
+  locale: string;
 }
 
 export interface CustomFieldsSettings {

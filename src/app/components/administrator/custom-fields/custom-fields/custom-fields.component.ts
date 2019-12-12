@@ -76,6 +76,7 @@ export class CustomFieldsComponent implements OnInit {
        // this.editRefundSettingForm = this.validator.reasonForRefundSettingValidator();
         component.instance.formName = this.editCustomFieldsSettingForm;
         component.instance.editMode = true;
+        component.instance.validationExpressions = this.validationExpressions;
         component.instance.closeOverlay.asObservable().subscribe(value => this.customFieldsExpansionSettings.CollapseGrid(row));
         // component.instance.updateCustomFieldsSetting.asObservable().subscribe(value => this.updateCustomFieldsSetting(value));
         resolve(component);
@@ -104,7 +105,7 @@ export class CustomFieldsComponent implements OnInit {
 
    getValidationsExpressions() {
      this.adminService.getValidationExpressions(this.clientId).subscribe(value => {
-       this.validationExpressions.next(value.list);
+       this.validationExpressions.next(value);
      });
   }
 }
