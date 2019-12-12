@@ -314,23 +314,16 @@ export interface CustomFieldsView {
   standard?: boolean;
   fullyConfigurable?: boolean;
   fieldTypeEditable?: boolean;
-  labelText?: TextElementViewList;
-  errorText?: TextElementViewList;
-  helpText?: TextElementViewList;
+  labelText?: Array<TextElementView>;
+  errorText?: Array<TextElementView>;
+  helpText?: Array<TextElementView>;
   indexOrder?: number;
-  optionsText?: Array<TextElementViewList>;
+  optionsText?: Array<TextElementView>;
   flowLayout?: boolean;
-}
-
-export interface TextElementViewList {
-  key?: string;
-  clientId?: number;
-  textElementViews?: Array<TextElementView>;
 }
 
 export interface TextElementView {
   key?: string;
-  clientId?: number;
   locale?: string;
   text?: string;
 }

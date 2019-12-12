@@ -1,11 +1,10 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormGroup} from "@angular/forms";
-import {BehaviorSubject, forkJoin} from 'rxjs';
 import {
   AdministratorService,
   ClientSettings,
   CustomFieldsSettings,
-  CustomFieldsView, TextElementViewList, ValidationsExpressions
+  CustomFieldsView, ValidationsExpressions
 } from '../../../../core/administrator.service';
 import {BehaviorSubject, forkJoin, Observable, of} from "rxjs";
 import {take} from "rxjs/operators";
@@ -25,12 +24,10 @@ export class CustomFieldsSettingComponent implements OnInit {
   @Input() customFieldsSettings: CustomFieldsSettings;
   customFieldsView: CustomFieldsView;
   validationExpressions = new BehaviorSubject<Array<ValidationsExpressions>>([]);
-  labelText: TextElementViewList;
   fieldType: Array<String>;
   gridWidth: String;
   editMode: boolean;
   @Output() closeOverlay = new EventEmitter();
-  allCustomFields = new BehaviorSubject<CustomFieldsView>({});
   actionButtons: Array<ActionButton>;
 
   constructor(private store: Store<State>, private refdataService: RefdataService, private adminService: AdministratorService) {

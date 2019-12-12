@@ -42,8 +42,7 @@
     </div>
   </div>
 
-  <div class="col-md-4">
-    <div class="form-group">
+  <div class="form-group col-md-4 " >
       <div>
         <label class="control-label" translate="maxLength">Maximum Length</label>
       </div>
@@ -51,10 +50,8 @@
         <input type="text" name="maxLength" [(ngModel)]="customFieldsView.maxLength" class="form-control col-md-4 "/>
       </div>
     </div>
-  </div>
 
-  <div class="col-md-4">
-    <div class="form-group">
+  <div class="form-group col-md-4 " >
       <div>
         <label class="control-label">Validation Expression</label>
       </div>
@@ -69,21 +66,40 @@
     <!--<div *ngIf="(formName.controls.validationExpression.touched) && formName.controls.validationExpression.errors">
       <div *ngIf="formName.controls.validationExpression.invalid" class="alert alert-danger" translate="validationExpressionRequired"></div>
     </div>-->
-  </div>
 </div>
 
-<div>
-  <div class="form-group  col-md-4 ">
-    <div>
-      <label class="control-label" translate="labelText"></label>
-    </div>
-    <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;"  rows="1" cols="5" disabled></textarea></div>
-    <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;"  rows="1" cols="5" disabled></textarea></div>
-    <div class="col-md-4">
-      <app-action-menu [disabled]="disableActionButton()" [buttons]="actionButtons"></app-action-menu>
+<div class="form-group col-md-4 ">
+  <div>
+    <label class="control-label" translate="labelText">Label Text</label>
+  </div>
+
+  <div *ngIf="customFieldsView.labelText.length==0" >
+  <div class ="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1" disabled></textarea>
+  </div>
+  <div class ="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1" disabled></textarea>
+  </div>
+  <div class ="col-md-4">
+    <app-action-menu [buttons]="actionButtons"></app-action-menu>
+  </div>
+  </div>
+
+  <div *ngIf="customFieldsView.labelText.length!=0">
+    <div class="row" *ngFor="let labelText of customFieldsView.labelText">
+      <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1" [(ngModel)]="labelText.locale"
+                                      disabled></textarea>
+      </div>
+      <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1" [(ngModel)]="labelText.text"
+                                      disabled></textarea>
+      </div>
+      <div class="col-md-4">
+        <app-action-menu [buttons]="actionButtons"></app-action-menu>
+      </div>
     </div>
   </div>
 
 </div>
+
+
+
 
 <app-operation-buttons (onCancel)="onCancel()" (onSave)="onSave()"></app-operation-buttons>
