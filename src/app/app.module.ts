@@ -46,6 +46,7 @@ import { ConfirmationBoxComponent } from './components/controls/confirmation-box
 import { MessageComponent } from './components/controls/message/message.component';
 import { CustomFieldsComponent } from './components/administrator/custom-fields/custom-fields/custom-fields.component';
 import { CustomFieldsSettingComponent } from './components/administrator/custom-fields/custom-fields-setting/custom-fields-setting.component';
+import { CustomFieldsTextComponent } from './components/administrator/custom-fields/custom-fields-text/custom-fields-text.component';
 
 
 export function CustomTranslationsFactory(gp2Service: Gp2Service) {
@@ -54,7 +55,7 @@ export function CustomTranslationsFactory(gp2Service: Gp2Service) {
 
 @NgModule({
   declarations: [
-    AppComponent, RefundsComponent, CreateRefundsComponent, ManageRefundsComponent, AdministratorComponent, ClientSettingsComponent, DirectRejectRequestComponent, OperationButtonsComponent, GpfiModalComponent, LoadingDirective, ReasonForRefundComponent,   RefundReasonLanguageComponent, ActionMenuComponent, RefundReasonSettingComponent, RefundHandlingComponent, EditRfRI18NComponent, OverlayComponent, ConfirmationBoxComponent, MessageComponent, CustomFieldsComponent, CustomFieldsSettingComponent
+    AppComponent, RefundsComponent, CreateRefundsComponent, ManageRefundsComponent, AdministratorComponent, ClientSettingsComponent, DirectRejectRequestComponent, OperationButtonsComponent, GpfiModalComponent, LoadingDirective, ReasonForRefundComponent,   RefundReasonLanguageComponent, ActionMenuComponent, RefundReasonSettingComponent, RefundHandlingComponent, EditRfRI18NComponent, OverlayComponent, ConfirmationBoxComponent, MessageComponent, CustomFieldsComponent, CustomFieldsSettingComponent, CustomFieldsTextComponent
   ],
   imports: [
     BrowserModule,
