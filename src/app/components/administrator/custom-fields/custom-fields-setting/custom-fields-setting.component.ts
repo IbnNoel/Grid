@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormGroup} from "@angular/forms";
+import {BehaviorSubject, forkJoin} from 'rxjs';
 import {
   AdministratorService,
   ClientSettings,
@@ -24,6 +25,7 @@ export class CustomFieldsSettingComponent implements OnInit {
   @Input() customFieldsSettings: CustomFieldsSettings;
   customFieldsView: CustomFieldsView;
   validationExpressions = new BehaviorSubject<Array<ValidationsExpressions>>([]);
+  allFieldTypes = new BehaviorSubject<Array<string>>([]);
   fieldType: Array<String>;
   gridWidth: String;
   editMode: boolean;
@@ -34,7 +36,7 @@ export class CustomFieldsSettingComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.gridWidth = this.editMode ? "col-md-3" : "col-md-4";
+    this.gridWidth = this.editMode ? 'col-md-3' : 'col-md-4';
     this.updateTables();
   }
 
