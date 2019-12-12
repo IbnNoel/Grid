@@ -57,4 +57,15 @@ export class CustomFieldsSettingComponent implements OnInit {
   disableActionButton() {
     return this.actionButtons.length == 0;
   }
+
+  addLabelText() {
+    $("#addLabelTextOverlay").modal({show: true, backdrop: false});
+  }
+
+  closeAddLabelText(name: string) {
+    this.close(name);
+  }
+  close(overlay) {
+    $("#" + overlay).modal("hide");
+  }
 }

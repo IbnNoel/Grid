@@ -83,8 +83,9 @@
   <div class ="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1" disabled></textarea>
   </div>
   <div class ="col-md-4">
-    <app-action-menu [buttons]="actionButtons"></app-action-menu>
+    <button class="btn btn-default"  type="button" (click)="addLabelText()" translate="..."></button>
   </div>
+
   </div>
 
   <div *ngIf="customFieldsView.labelText.length!=0">
@@ -96,14 +97,21 @@
                                       disabled></textarea>
       </div>
       <div class="col-md-4">
-        <app-action-menu [buttons]="actionButtons"></app-action-menu>
+        <button class="btn btn-default"  type="button" (click)="addLabelText()" translate="..."></button>
       </div>
     </div>
   </div>
 
 </div>
 
-
+<app-overlay name="addLabelTextOverlay" #addLabelTextOverlay header="addLabelText">
+    <div class="row">
+      <app-custom-fields-text [customFieldsView]="customFieldsView" ></app-custom-fields-text>
+    </div>
+  <div>
+    <app-operation-buttons (onCancel)="closeAddLabelText(addLabelTextOverlay.name)"></app-operation-buttons>
+  </div>
+</app-overlay>
 
 
 <app-operation-buttons (onCancel)="onCancel()" (onSave)="onSave()"></app-operation-buttons>
