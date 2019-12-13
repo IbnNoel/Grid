@@ -2,16 +2,15 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormGroup} from "@angular/forms";
 import {
   AdministratorService,
-  ClientSettings,
   CustomFieldsSettings,
   CustomFieldsView, ValidationsExpressions
 } from '../../../../core/administrator.service';
-import {BehaviorSubject, forkJoin, Observable, of} from "rxjs";
-import {take} from "rxjs/operators";
-import {createSelector, select, Store} from "@ngrx/store";
+import {BehaviorSubject} from "rxjs";
+import {Store} from "@ngrx/store";
 import {State} from "../../../../reducers";
 import {RefdataService} from "../../../../core/refdata.service";
 import {ActionButton} from "../../../controls/action-menu/action-menu.component";
+import * as _ from "lodash";
 
 @Component({
   selector: 'app-custom-fields-setting',
@@ -138,6 +137,31 @@ export class CustomFieldsSettingComponent implements OnInit {
     return this.helpI18Grid;
   }
 
+  removeLabelText(locale) {
+    this.customFieldsView.labelText = _.remove(this.customFieldsView.labelText, (labelText) => {
+      return labelText.locale != locale;
+    });
 
+    // this.addActionButton(locale);
+    // sort the action buttons in alphabetical order
+  }
+
+  removeErrorText(locale) {
+    this.customFieldsView.errorText = _.remove(this.customFieldsView.errorText, (errorText) => {
+      return errorText.locale != locale;
+    });
+
+    // this.addActionButton(locale);
+    // sort the action buttons in alphabetical order
+  }
+
+  removeHelpText(locale) {
+    this.customFieldsView.helpText = _.remove(this.customFieldsView.helpText, (helpText) => {
+      return helpText.locale != locale;
+    });
+
+    // this.addActionButton(locale);
+    // sort the action buttons in alphabetical order
+  }
 
 }

@@ -174,6 +174,7 @@
 <app-overlay name="addLabelTextOverlay" #addLabelTextOverlay header="addLabelText">
     <div class="row" *ngFor="let text of customFieldsView.labelText">
       <app-custom-fields-text [textElementView]="text" ></app-custom-fields-text>
+      <button class="btn btn-default" type="button" (click) ="removeLabelText(text.locale)" translate="DELETE" ></button>
     </div>
   <div>
     <button class="btn btn-default"  type="button" (click)="additionalLabelText()" translate="ADD"></button>
@@ -184,6 +185,7 @@
 <app-overlay name="addErrorTextOverlay" #addErrorTextOverlay header="addErrorText">
   <div class="row" *ngFor="let text of customFieldsView.errorText">
     <app-custom-fields-text [textElementView]="text" ></app-custom-fields-text>
+    <button class="btn btn-default" type="button" (click) ="removeErrorText(text.locale)" translate="DELETE" ></button>
   </div>
   <div>
     <button class="btn btn-default"  type="button" (click)="additionalErrorText()" translate="ADD"></button>
@@ -194,6 +196,7 @@
 <app-overlay name="addHelpTextOverlay" #addHelpTextOverlay header="addHelpText">
   <div class="row" *ngFor="let text of customFieldsView.helpText">
     <app-custom-fields-text [textElementView]="text" ></app-custom-fields-text>
+    <button class="btn btn-default" type="button" (click) ="removeHelpText(text.locale)" translate="DELETE" ></button>
   </div>
   <div>
     <button class="btn btn-default"  type="button" (click)="additionalHelpText()" translate="ADD"></button>
