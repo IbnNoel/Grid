@@ -22,7 +22,7 @@
                 <div class="col-md-9 col-sm-11 col-xs-12 text-left">
                     <small>{{ 'description' | translate }}</small>
                     <div class="descriptionMsgHolder">
-                        <p class="text-left ">{{ msgStatus.Description  | translate}}</p>
+                        <p *ngFor="let description of msgStatus.Description" class="text-left ">{{ description  | translate}}</p>
                     </div>
                 </div>
             </div>

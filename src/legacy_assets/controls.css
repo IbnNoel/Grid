@@ -46,7 +46,7 @@ tfoot, tfoot tr  {
 tbody td{
     color: #333333;
 }
-table tr:not(.child){
+table tr{
     background-color:#FFFFFF;
 }
 /* 008_4 */

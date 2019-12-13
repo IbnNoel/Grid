@@ -8,6 +8,7 @@ import {forkJoin, Observable, of} from 'rxjs';
 import {ActionButton} from '../../controls/action-menu/action-menu.component';
 import * as _ from 'lodash';
 import {RefdataService} from "../../../core/refdata.service";
+import { MessageStatus, MessageType } from '../../controls/message/messageStatus';
 
 @Component({
   selector: 'app-direct-reject-request',
@@ -103,10 +104,9 @@ export class DirectRejectRequestComponent implements OnInit {
 
   onSave(onEmit) {
     this.adminService.setRefundRequestSettings(this.refundRequestSettings).subscribe(response => {
-      if (response.success) {
-        this.store.dispatch(new SaveRefundRequestSettingAction(response.data));
-        onEmit();
-      }
+      let messageStatus = new MessageStatus(MessageType.Success, "", "MSG_ONADMINTABSAVE" );
+      this.store.dispatch(new SaveRefundRequestSettingAction(response.data));
+      onEmit(messageStatus);
     })
   }
 

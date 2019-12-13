@@ -13515,213 +13515,213 @@ interface JQuery {
   /**
    * Initialize SemanticUI.Dropdown
    */
-  dropdown(param ? : SemanticUI.Dropdown.Settings): JQuery
+  uiDropdown(param ? : SemanticUI.Dropdown.Settings): JQuery
 
   /**
    * Change SemanticUI.Dropdown settings
    */
-  dropdown(param: 'setting', settingName: SemanticUI.Dropdown.SettingNames, value ? : any): JQuery
+  uiDropdown(param: 'setting', settingName: SemanticUI.Dropdown.SettingNames, value ? : any): JQuery
 
 
 
   /**
    * Recreates dropdown menu from select option values.
    */
-  dropdown(param: 'setup menu'): any
+  uiDropdown(param: 'setup menu'): any
 
   /**
    * Refreshes all cached selectors and data
    */
-  dropdown(param: 'refresh'): any
+  uiDropdown(param: 'refresh'): any
 
   /**
    * Toggles current visibility of dropdown
    */
-  dropdown(param: 'toggle'): any
+  uiDropdown(param: 'toggle'): any
 
   /**
    * Shows dropdown
    */
-  dropdown(param: 'show'): any
+  uiDropdown(param: 'show'): any
 
   /**
    * Hides dropdown
    */
-  dropdown(param: 'hide'): any
+  uiDropdown(param: 'hide'): any
 
   /**
    * Clears dropdown of selection
    */
-  dropdown(param: 'clear'): any
+  uiDropdown(param: 'clear'): any
 
   /**
    * Hides all other dropdowns that is not current dropdown
    */
-  dropdown(param: 'hide others'): any
+  uiDropdown(param: 'hide others'): any
 
   /**
    * Restores dropdown text and value to its value on page load
    */
-  dropdown(param: 'restore defaults'): any
+  uiDropdown(param: 'restore defaults'): any
 
   /**
    * Restores dropdown text to its value on page load
    */
-  dropdown(param: 'restore default text'): any
+  uiDropdown(param: 'restore default text'): any
 
   /**
    * Restores dropdown text to its prompt, placeholder text
    */
-  dropdown(param: 'restore placeholder text'): any
+  uiDropdown(param: 'restore placeholder text'): any
 
   /**
    * Restores dropdown value to its value on page load
    */
-  dropdown(param: 'restore default value'): any
+  uiDropdown(param: 'restore default value'): any
 
   /**
    * Saves current text and value as new defaults (for use with restore)
    */
-  dropdown(param: 'save defaults'): any
+  uiDropdown(param: 'save defaults'): any
 
   /**
    * Sets value as selected
    * @param {any} value
    */
-  dropdown(param: 'set selected', value: any): any
+  uiDropdown(param: 'set selected', value: any): any
 
   /**
    * Remove value from selected
    * @param {any} value
    */
-  dropdown(param: 'remove selected', value: any): any
+  uiDropdown(param: 'remove selected', value: any): any
 
   /**
    * Adds a group of values as selected
    * @param {any[]} ...values
    */
-  dropdown(param: 'set selected', ...values: any[]): any
+  uiDropdown(param: 'set selected', ...values: any[]): any
 
   /**
    * Sets selected values to exactly specified values, removing current selection
    * @param {any[]} ...values
    */
-  dropdown(param: 'set exactly', ...values: any[]): any
+  uiDropdown(param: 'set exactly', ...values: any[]): any
 
   /**
    * Sets dropdown text to a value
    * @param {string} text
    */
-  dropdown(param: 'set text', text: string): any
+  uiDropdown(param: 'set text', text: string): any
 
   /**
    * Sets dropdown input to value (does not update display state)
    * @param {any} value
    */
-  dropdown(param: 'set value', value: any): any
+  uiDropdown(param: 'set value', value: any): any
 
   /**
    * Returns current dropdown text
    */
-  dropdown(param: 'get text'): any
+  uiDropdown(param: 'get text'): any
 
   /**
    * Returns current dropdown input value
    */
-  dropdown(param: 'get value'): any
+  uiDropdown(param: 'get value'): any
 
   /**
    * Returns DOM element that matches a given input value
    * @param {any} value
    */
-  dropdown(param: 'get item', value: any): any
+  uiDropdown(param: 'get item', value: any): any
 
   /**
    * Adds touch events to element
    */
-  dropdown(param: 'bind touch events'): any
+  uiDropdown(param: 'bind touch events'): any
 
   /**
    * Adds mouse events to element
    */
-  dropdown(param: 'bind mouse events'): any
+  uiDropdown(param: 'bind mouse events'): any
 
   /**
    * Binds a click to document to determine if you click away from a dropdown
    */
-  dropdown(param: 'bind intent'): any
+  uiDropdown(param: 'bind intent'): any
 
   /**
    * Unbinds document intent click
    */
-  dropdown(param: 'unbind intent'): any
+  uiDropdown(param: 'unbind intent'): any
 
   /**
    * Returns whether event occurred inside dropdown
    */
-  dropdown(param: 'determine intent'): any
+  uiDropdown(param: 'determine intent'): any
 
   /**
    * Triggers preset item selection action based on settings passing text/value
    * @param {string} text
    * @param {any} value
    */
-  dropdown(param: 'determine select action', text: string, value: any): any
+  uiDropdown(param: 'determine select action', text: string, value: any): any
 
   /**
    * Sets dropdown to active state
    */
-  dropdown(param: 'set active'): any
+  uiDropdown(param: 'set active'): any
 
   /**
    * Sets dropdown to visible state
    */
-  dropdown(param: 'set visible'): any
+  uiDropdown(param: 'set visible'): any
 
   /**
    * Removes dropdown active state
    */
-  dropdown(param: 'remove active'): any
+  uiDropdown(param: 'remove active'): any
 
   /**
    * Removes dropdown visible state
    */
-  dropdown(param: 'remove visible'): any
+  uiDropdown(param: 'remove visible'): any
 
   /**
    * Returns whether dropdown is a selection dropdown
    */
-  dropdown(param: 'is selection'): any
+  uiDropdown(param: 'is selection'): any
 
   /**
    * Returns whether dropdown is animated
    */
-  dropdown(param: 'is animated'): any
+  uiDropdown(param: 'is animated'): any
 
   /**
    * Returns whether dropdown is visible
    */
-  dropdown(param: 'is visible'): any
+  uiDropdown(param: 'is visible'): any
 
   /**
    * Returns whether dropdown is hidden
    */
-  dropdown(param: 'is hidden'): any
+  uiDropdown(param: 'is hidden'): any
 
   /**
    * Returns dropdown value as set on page load
    */
-  dropdown(param: 'get default text'): any
+  uiDropdown(param: 'get default text'): any
 
   /**
    * Returns placeholder text
    */
-  dropdown(param: 'get placeholder text'): any
+  uiDropdown(param: 'get placeholder text'): any
 
   /**
    * Removes all changes to the page made by initialization
    */
-  dropdown(param: 'destroy'): any
+  uiDropdown(param: 'destroy'): any
 
 
   //embed

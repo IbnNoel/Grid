@@ -1,6 +1,8 @@
 import { Component, OnInit, EventEmitter, ViewChild } from '@angular/core';
 import { resource } from 'selenium-webdriver/http';
 import { GpfiModalComponent, GpfiModalInfo } from '../gpfi-modal/gpfi-modal.component';
+import { StatusMessageService } from 'src/app/status-message.service';
+import { MessageStatus } from '../message/messageStatus';
 
 @Component({
   selector: 'app-operation-buttons',
@@ -12,7 +14,7 @@ export class OperationButtonsComponent implements OnInit {
 
   @ViewChild(GpfiModalComponent,{static:true}) gpfiModal:GpfiModalComponent;
 
-  constructor() { }
+  constructor(private statusMessageService: StatusMessageService) { }
 
   ngOnInit() {
   }
@@ -20,8 +22,12 @@ export class OperationButtonsComponent implements OnInit {
   onSave: EventEmitter<any> = new EventEmitter();
 
   save(){
-    this.onSave.emit((gpfiModalInfo?: GpfiModalInfo) => {
-       this.gpfiModal.show(gpfiModalInfo);
+    this.onSave.emit((displayInfo?: GpfiModalInfo | MessageStatus) => {
+       if(displayInfo instanceof GpfiModalInfo){
+        this.gpfiModal.show(displayInfo);
+       }else if(displayInfo instanceof MessageStatus){
+         this.statusMessageService.SetMessage(displayInfo);
+       }
     });
   }
 
