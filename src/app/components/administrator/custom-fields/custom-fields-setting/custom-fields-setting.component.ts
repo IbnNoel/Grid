@@ -29,7 +29,11 @@ export class CustomFieldsSettingComponent implements OnInit {
   gridWidth: string;
   editMode: boolean;
   @Output() closeOverlay = new EventEmitter();
+  @Output() updateCustomFieldsSetting = new EventEmitter();
   actionButtons: Array<ActionButton>;
+  labelI18Grid = true;
+  errorI18Grid = true;
+  helpI18Grid = true;
 
   constructor(private store: Store<State>, private refdataService: RefdataService, private adminService: AdministratorService) {
   }
@@ -49,8 +53,7 @@ export class CustomFieldsSettingComponent implements OnInit {
     this.closeOverlay.emit();
   }
   onSave() {
-    this.closeOverlay.emit();
-   // this.updateRefundSetting.emit(this.customRfRSetting);
+    this.updateCustomFieldsSetting.emit(this.customFieldsView);
   }
 
   disableActionButton() {
@@ -58,12 +61,32 @@ export class CustomFieldsSettingComponent implements OnInit {
   }
 
   addLabelTextDefault() {
-    this.customFieldsView.labelText = [{key:this.customFieldsView.fieldName.concat("_LABEL"),locale:"en_GB",text:""}];
+    this.labelI18Grid = false;
+    this.customFieldsView.labelText = [{key:this.customFieldsView.fieldName.concat("_LABEL"),locale:"",text:""}];
     $("#addLabelTextOverlay").modal({show: true, backdrop: false});
   }
 
   addLabelText() {
+    this.labelI18Grid = false;
     $("#addLabelTextOverlay").modal({show: true, backdrop: false});
+  }
+  addErrorTextDefault() {
+    this.errorI18Grid = false;
+    this.customFieldsView.errorText = [{key:this.customFieldsView.fieldName.concat("_ERROR"),locale:"",text:""}];
+    $("#addErrorTextOverlay").modal({show: true, backdrop: false});
+  }
+  addErrorText() {
+    this.errorI18Grid = false;
+    $("#addErrorTextOverlay").modal({show: true, backdrop: false});
+  }
+  addHelpTextDefault() {
+    this.helpI18Grid = false;
+    this.customFieldsView.helpText = [{key:this.customFieldsView.fieldName.concat("_HELP"),locale:"",text:""}];
+    $("#addHelpTextOverlay").modal({show: true, backdrop: false});
+  }
+  addHelpText() {
+    this.helpI18Grid = false;
+    $("#addHelpTextOverlay").modal({show: true, backdrop: false});
   }
 
 
@@ -71,7 +94,24 @@ export class CustomFieldsSettingComponent implements OnInit {
     this.customFieldsView.labelText.push({key:this.customFieldsView.fieldName.concat("_LABEL"),locale:"",text:""}) ;
   }
 
+  additionalErrorText(){
+    this.customFieldsView.errorText.push({key:this.customFieldsView.fieldName.concat("_ERROR"),locale:"",text:""}) ;
+  }
+
+  additionalHelpText(){
+    this.customFieldsView.helpText.push({key:this.customFieldsView.fieldName.concat("_HELP"),locale:"",text:""}) ;
+  }
+
   closeAddLabelText(name: string) {
+    this.labelI18Grid = true;
+    this.close(name);
+  }
+  closeAddErrorText(name: string) {
+    this.errorI18Grid = true;
+    this.close(name);
+  }
+  closeAddHelpText(name: string) {
+    this.helpI18Grid = true;
     this.close(name);
   }
   close(overlay) {
@@ -86,4 +126,18 @@ export class CustomFieldsSettingComponent implements OnInit {
     return this.customFieldsView.fieldType === 'TEXT' || this.customFieldsView.fieldType === 'DATE';
 
   }
+
+  showLabelI18Grid() {
+    return this.labelI18Grid;
+  }
+  showErrorI18Grid() {
+    return this.errorI18Grid;
+  }
+
+  showHelpI18Grid() {
+    return this.helpI18Grid;
+  }
+
+
+
 }

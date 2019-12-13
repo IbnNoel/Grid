@@ -40,6 +40,7 @@ export class AdministratorService {
   private readonly GET_VALIDATION_EXPRESSION = `${this.ROUTE_URL}/customFields/validation/expression/`;
   private readonly GET_ALL_FIELD_TYPES = `${this.ROUTE_URL}/customFields/fieldTypes`;
   private readonly GET_ALL_CUSTOMFIELDS = `${this.ROUTE_URL}/customFields/details`;
+  private readonly UPDATE_CUSTOMFIELD = `${this.ROUTE_URL}/customFields/update`;
 
 
   private apiResponseMap: OperatorFunction<ApiResponse<any>, any> = flatMap(response => {
@@ -164,6 +165,10 @@ export class AdministratorService {
   getAllCustomFieldDetails(id, fieldName) {
     const params = new HttpParams().set('clientId', id).set('fieldName', fieldName);
     return this.httpClient.get<ApiResponse<CustomFieldsView>>(this.GET_ALL_CUSTOMFIELDS, {params}).pipe(map(response => response.data));
+  }
+
+  updateCustomFieldForClient(data: CustomFieldsView) {
+    return this.httpClient.put<ApiResponse<CustomFieldsView>>(this.UPDATE_CUSTOMFIELD, data).pipe(this.apiResponseMap);
   }
 
   /*getClients(name : string, pageNo, size){

@@ -77,32 +77,99 @@
     <label class="control-label" translate="labelText">Label Text</label>
   </div>
 
-  <div *ngIf="customFieldsView.labelText.length==0" >
-  <div class ="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1" disabled></textarea>
-  </div>
-  <div class ="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1" disabled></textarea>
-  </div>
-  <div class ="col-md-4">
-    <button class="btn btn-default"  type="button" (click)="addLabelTextDefault()" translate="..."></button>
-  </div>
+  <div *ngIf="customFieldsView.labelText.length==0 || !showLabelI18Grid()">
+    <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1" disabled></textarea>
+    </div>
+    <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1" disabled></textarea>
+    </div>
+    <div class="col-md-4">
+      <button class="btn btn-default" type="button" (click)="addLabelTextDefault()" translate="..."></button>
+    </div>
 
   </div>
 
-  <div *ngIf="customFieldsView.labelText.length!=0">
+  <div *ngIf="showLabelI18Grid()">
     <div class="row" *ngFor="let labelText of customFieldsView.labelText">
-      <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1" [(ngModel)]="labelText.locale"
-                                      disabled></textarea>
+      <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1"
+                                      disabled>{{labelText.locale}}</textarea>
       </div>
-      <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1" [(ngModel)]="labelText.text"
-                                      disabled></textarea>
+      <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1"
+                                      disabled>{{labelText.text}}</textarea>
       </div>
       <div class="col-md-4">
-        <button class="btn btn-default"  type="button" (click)="addLabelText()" *ngIf="ifDefault(labelText.locale)" translate="..."></button>
+        <button class="btn btn-default" type="button" (click)="addLabelText()" *ngIf="ifDefault(labelText.locale)"
+                translate="..."></button>
       </div>
     </div>
   </div>
-
 </div>
+
+
+<div class="form-group col-md-4 ">
+  <div>
+    <label class="control-label" translate="errorText">Error Text</label>
+  </div>
+
+  <div *ngIf="customFieldsView.errorText.length==0 || !showErrorI18Grid()">
+    <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1" disabled></textarea>
+    </div>
+    <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1" disabled></textarea>
+    </div>
+    <div class="col-md-4">
+      <button class="btn btn-default" type="button" (click)="addErrorTextDefault()" translate="..."></button>
+    </div>
+
+  </div>
+
+  <div *ngIf="showErrorI18Grid()">
+    <div class="row" *ngFor="let errorText of customFieldsView.errorText">
+      <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1"
+                                      disabled>{{errorText.locale}}</textarea>
+      </div>
+      <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1"
+                                      disabled>{{errorText.text}}</textarea>
+      </div>
+      <div class="col-md-4">
+        <button class="btn btn-default" type="button" (click)="addErrorText()" *ngIf="ifDefault(errorText.locale)"
+                translate="..."></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="form-group col-md-4 ">
+  <div>
+    <label class="control-label" translate="helpText">Help Text</label>
+  </div>
+
+  <div *ngIf="customFieldsView.helpText.length==0 || !showHelpI18Grid()">
+    <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1" disabled></textarea>
+    </div>
+    <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1" disabled></textarea>
+    </div>
+    <div class="col-md-4">
+      <button class="btn btn-default" type="button" (click)="addHelpTextDefault()" translate="..."></button>
+    </div>
+
+  </div>
+
+  <div *ngIf="showHelpI18Grid()">
+    <div class="row" *ngFor="let helpText of customFieldsView.helpText">
+      <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1"
+                                      disabled>{{helpText.locale}}</textarea>
+      </div>
+      <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1"
+                                      disabled>{{helpText.text}}</textarea>
+      </div>
+      <div class="col-md-4">
+        <button class="btn btn-default" type="button" (click)="addHelpText()" *ngIf="ifDefault(helpText.locale)"
+                translate="..."></button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <app-overlay name="addLabelTextOverlay" #addLabelTextOverlay header="addLabelText">
     <div class="row" *ngFor="let text of customFieldsView.labelText">
@@ -111,6 +178,26 @@
   <div>
     <button class="btn btn-default"  type="button" (click)="additionalLabelText()" translate="ADD"></button>
     <button class="btn btn-default pull-right"  type="button" (click)="closeAddLabelText(addLabelTextOverlay.name)" translate="OK"></button>
+  </div>
+</app-overlay>
+
+<app-overlay name="addErrorTextOverlay" #addErrorTextOverlay header="addErrorText">
+  <div class="row" *ngFor="let text of customFieldsView.errorText">
+    <app-custom-fields-text [textElementView]="text" ></app-custom-fields-text>
+  </div>
+  <div>
+    <button class="btn btn-default"  type="button" (click)="additionalErrorText()" translate="ADD"></button>
+    <button class="btn btn-default pull-right"  type="button" (click)="closeAddErrorText(addErrorTextOverlay.name)" translate="OK"></button>
+  </div>
+</app-overlay>
+
+<app-overlay name="addHelpTextOverlay" #addHelpTextOverlay header="addHelpText">
+  <div class="row" *ngFor="let text of customFieldsView.helpText">
+    <app-custom-fields-text [textElementView]="text" ></app-custom-fields-text>
+  </div>
+  <div>
+    <button class="btn btn-default"  type="button" (click)="additionalHelpText()" translate="ADD"></button>
+    <button class="btn btn-default pull-right"  type="button" (click)="closeAddHelpText(addHelpTextOverlay.name)" translate="OK"></button>
   </div>
 </app-overlay>
 

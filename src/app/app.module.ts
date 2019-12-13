@@ -86,7 +86,7 @@ export function CustomTranslationsFactory(gp2Service: Gp2Service) {
   providers: [WINDOW_PROVIDERS, Gp2Service, AuthGuardService, AuthService, RefundService, AdministratorService, RoleAuthGuard, LoaderService, LoaderInterceptor,
     {provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true}],
-  entryComponents: [RefundReasonLanguageComponent, ActionMenuComponent, EditRfRI18NComponent,  RefundReasonSettingComponent, CustomFieldsSettingComponent],
+  entryComponents: [RefundReasonLanguageComponent, ActionMenuComponent, EditRfRI18NComponent,  RefundReasonSettingComponent, CustomFieldsSettingComponent, CustomFieldsTextComponent],
   bootstrap: [AppComponent]
 
 })

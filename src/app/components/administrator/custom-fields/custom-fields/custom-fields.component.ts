@@ -4,7 +4,7 @@ import {ColumnDefs} from '../../../controls/data-table/classes/Columns';
 import {BehaviorSubject, forkJoin} from 'rxjs';
 import {
   AdministratorService,
-  CustomFieldsSettings,
+  CustomFieldsSettings, CustomFieldsView,
   CustomRfRSettings,
   ValidationsExpressions
 } from '../../../../core/administrator.service';
@@ -80,7 +80,7 @@ export class CustomFieldsComponent implements OnInit {
         component.instance.validationExpressions = this.validationExpressions;
         component.instance.allFieldTypes = this.allFieldTypes;
         component.instance.closeOverlay.asObservable().subscribe(value => this.customFieldsExpansionSettings.CollapseGrid(row));
-        // component.instance.updateCustomFieldsSetting.asObservable().subscribe(value => this.updateCustomFieldsSetting(value));
+        component.instance.updateCustomFieldsSetting.asObservable().subscribe(value => this.updateCustomFieldsSetting(value));
         resolve(component);
       });
     });
@@ -115,5 +115,13 @@ export class CustomFieldsComponent implements OnInit {
      this.adminService.getValidationExpressions(this.clientId).subscribe(value => {
        this.validationExpressions.next(value);
      });
+  }
+
+  private updateCustomFieldsSetting(request: CustomFieldsView) {
+      request.clientId = this.clientId;
+      this.adminService.updateCustomFieldForClient(request).subscribe(value => {
+        this.updateTables();
+        this.customFieldsExpansionSettings.CollapseGrid({propertyName: "clientId", id: value.clientId});
+      });
   }
 }
