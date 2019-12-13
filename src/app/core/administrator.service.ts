@@ -3,7 +3,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {ApiResponse} from './auth.guard.service';
 import {flatMap, map} from 'rxjs/operators';
 import {of, OperatorFunction, throwError} from 'rxjs';
-import {PagedResponse} from "./refund.service";
+import {List, PagedResponse} from "./refund.service";
 import {settings} from "cluster";
 import { StatusMessageService } from '../status-message.service';
 

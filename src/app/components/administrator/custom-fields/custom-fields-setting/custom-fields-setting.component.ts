@@ -121,9 +121,8 @@ export class CustomFieldsSettingComponent implements OnInit {
     return this.refdataService.isDefaultLanguage(locale);
   }
 
-  show() {
+  showOnText() {
     return this.customFieldsView.fieldType === 'TEXT' || this.customFieldsView.fieldType === 'DATE';
-
   }
 
   showLabelI18Grid() {
