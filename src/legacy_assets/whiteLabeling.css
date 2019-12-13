@@ -1,0 +1,15 @@
+/* 011_3 */
+.gpfi.selection.gpfi-dropdown .menu>.item {
+    background: #FFFFFF;
+    color: #000000;
+}
+/* 011_1 */
+.gpfi.gpfi-dropdown .menu .selected.item, .gpfi.gpfi-dropdown.selected {
+    background: #ffde04;
+    color: #000000;
+}
+/* 011_2 */
+.gpfi.gpfi-dropdown .menu>.item:hover {
+    background: #23527c;
+    color:#FFFFFF;
+}
