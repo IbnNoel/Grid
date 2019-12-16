@@ -61,7 +61,7 @@ export class CustomFieldsSettingComponent implements OnInit {
 
   addLabelTextDefault() {
     this.labelI18Grid = false;
-    this.customFieldsView.labelText = [{key:this.customFieldsView.fieldName.concat("_LABEL"),locale:"",text:""}];
+    this.customFieldsView.labelText = [{key:this.customFieldsView.fieldName.concat("_LABEL"),locale:"en_GB",text:""}];
     $("#addLabelTextOverlay").modal({show: true, backdrop: false});
   }
 
@@ -71,7 +71,7 @@ export class CustomFieldsSettingComponent implements OnInit {
   }
   addErrorTextDefault() {
     this.errorI18Grid = false;
-    this.customFieldsView.errorText = [{key:this.customFieldsView.fieldName.concat("_ERROR"),locale:"",text:""}];
+    this.customFieldsView.errorText = [{key:this.customFieldsView.fieldName.concat("_ERROR"),locale:"en_GB",text:""}];
     $("#addErrorTextOverlay").modal({show: true, backdrop: false});
   }
   addErrorText() {
@@ -80,7 +80,7 @@ export class CustomFieldsSettingComponent implements OnInit {
   }
   addHelpTextDefault() {
     this.helpI18Grid = false;
-    this.customFieldsView.helpText = [{key:this.customFieldsView.fieldName.concat("_HELP"),locale:"",text:""}];
+    this.customFieldsView.helpText = [{key:this.customFieldsView.fieldName.concat("_HELP"),locale:"en_GB",text:""}];
     $("#addHelpTextOverlay").modal({show: true, backdrop: false});
   }
   addHelpText() {

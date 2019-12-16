@@ -76,11 +76,11 @@
 </div>
 <!--Label Text-->
 <div class="row">
-  <div class="col-md-4">
+  <div class="form-group col-md-4">
     <div >
       <label class="control-label" translate="labelText">Label Text</label>
     </div>
-    <div class="col-md-4" *ngIf="customFieldsView.labelText.length==0 || !showLabelI18Grid()" >
+    <div class="row" *ngIf="customFieldsView.labelText.length==0 || !showLabelI18Grid()" >
       <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1"
                                       disabled></textarea>
       </div>
@@ -108,7 +108,7 @@
       </div>
     </div>
   <app-overlay name="addLabelTextOverlay" #addLabelTextOverlay header="addLabelText">
-    <div class="row" *ngFor="let text of customFieldsView.labelText">
+    <div *ngFor="let text of customFieldsView.labelText">
       <app-custom-fields-text [textElementView]="text"></app-custom-fields-text>
       <button class="btn btn-default" type="button" (click)="removeLabelText(text.locale)" translate="DELETE"></button>
     </div>
@@ -127,7 +127,7 @@
       <label class="control-label" translate="errorText">Error Text</label>
     </div>
 
-    <div *ngIf="customFieldsView.errorText.length==0 || !showErrorI18Grid()">
+    <div class="row" *ngIf="customFieldsView.errorText.length==0 || !showErrorI18Grid()">
       <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1"
                                       disabled></textarea>
       </div>
@@ -154,7 +154,7 @@
     </div>
   </div>
   <app-overlay name="addErrorTextOverlay" #addErrorTextOverlay header="addErrorText">
-    <div class="row" *ngFor="let text of customFieldsView.errorText">
+    <div *ngFor="let text of customFieldsView.errorText">
       <app-custom-fields-text [textElementView]="text"></app-custom-fields-text>
       <button class="btn btn-default" type="button" (click)="removeErrorText(text.locale)" translate="DELETE"></button>
     </div>
@@ -172,7 +172,7 @@
       <label class="control-label" translate="helpText">Help Text</label>
     </div>
 
-    <div *ngIf="customFieldsView.helpText.length==0 || !showHelpI18Grid()">
+    <div class="row" *ngIf="customFieldsView.helpText.length==0 || !showHelpI18Grid()">
       <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1"
                                       disabled></textarea>
       </div>
@@ -201,7 +201,7 @@
     </div>
   </div>
   <app-overlay name="addHelpTextOverlay" #addHelpTextOverlay header="addHelpText">
-    <div class="row" *ngFor="let text of customFieldsView.helpText">
+    <div  *ngFor="let text of customFieldsView.helpText">
       <app-custom-fields-text [textElementView]="text"></app-custom-fields-text>
       <button class="btn btn-default" type="button" (click)="removeHelpText(text.locale)" translate="DELETE"></button>
     </div>

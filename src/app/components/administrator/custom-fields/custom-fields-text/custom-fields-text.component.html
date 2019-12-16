@@ -1,10 +1,15 @@
 <div class="row">
-  <div class="form-group col-md-4 ">
+  <div class="form-group col-md-4">
     <div>
       <label class="control-label" translate="Language"></label>
-    </div>
-    <div>
-      <input type="text" name="description" [(ngModel)]="textElementView.locale" class="form-control col-md-4 "/>
+      <div>
+        <app-dropdown [(ngModel)]="textElementView.locale" [disabled]="ifDefault(textElementView.locale)"  >
+          <div class="item" [attr.data-value]="l"
+               *ngFor="let l of languages$ |async" >
+            {{ l | translate}}
+          </div>
+        </app-dropdown>
+      </div>
     </div>
   </div>
 
