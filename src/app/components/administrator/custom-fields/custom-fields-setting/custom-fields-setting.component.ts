@@ -132,6 +132,10 @@ export class CustomFieldsSettingComponent implements OnInit {
     return this.customFieldsView.fieldType === 'TEXT' || this.customFieldsView.fieldType === 'DATE';
   }
 
+  showOnTextNew() {
+    return this.customFieldsView.fieldType === 'SELECT' || this.customFieldsView.fieldType === 'RADIO_BUTTONS';
+  }
+
   showLabelI18Grid() {
     return this.labelI18Grid;
   }
