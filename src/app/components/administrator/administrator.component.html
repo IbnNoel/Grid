@@ -1,7 +1,7 @@
 <app-status-message></app-status-message>
 
 <div class="panel panel-default">
-  <div class="panel-heading" role="button" data-toggle="collapse" href="#findClientPanel">Find Client 
+  <div class="panel-heading" role="button" data-toggle="collapse" href="#findClientPanel">{{'findClient' | translate}}
     <span class="glyphicon glyphicon-chevron-up pull-right" aria-hidden="true"></span></div>
   <div id="findClientPanel" class="panel-body collapse in">
     <div class="container-fluid">
@@ -10,14 +10,14 @@
           <div class="row">
             <div class="col-md-12">
               <div class="col-md-5 form-group">
-                <label class="control-label">Client Name</label>
-                <input type="text" class="form-control col-md-4" name="clientName" id="clientName" placeholder="Search" [(ngModel)]="searchName">
+                <label class="control-label" translate="clientName"></label>
+                <input type="text" class="form-control col-md-4" name="clientName" id="clientName" placeholder="{{ 'search' | translate }}" [(ngModel)]="searchName">
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-md-12">
-              <button type="submit" class="btn btn-primary pull-right">SEARCH</button>
+              <button type="submit" class="btn btn-primary pull-right">{{'search' | translate}}</button>
             </div>
           </div>
         </div>
@@ -26,7 +26,7 @@
     <app-data-table [Columns]="colDefinitions" [Data]="data" [(PageSettings)]="pageSettings"></app-data-table>
     <div class="row">
       <div class="col-xs-12">
-        <button class="btn btn-default pull-left" (click)="onCancel()" type="button">Cancel</button>
+        <button class="btn btn-default pull-left" (click)="onCancel()" type="button">{{ 'cancel' | translate }}</button>
       </div>
     </div>
   </div>
@@ -34,12 +34,12 @@
 
 <div [hidden]="clientId == null">
   <div class="row">
-    <div class="col-xs-12" style="text-align: center"><h4 class="pb20">Editing: {{clientName}}</h4></div>
+    <div class="col-xs-12" style="text-align: center"><h4 class="pb20">{{'editing' | translate}}: {{clientName}}</h4></div>
   </div>
   <ul class="nav nav-pills">
-    <li routerLinkActive="active"><a routerLink="/refunds/admin/clientSettings">Client Settings</a></li>
-    <li routerLinkActive="active"><a routerLink="/refunds/admin/refundHandling">Refund Handling</a></li>
-    <li routerLinkActive="active"><a routerLink="/refunds/admin/directRejectionRequest">Refund Request Settings</a></li>
+    <li routerLinkActive="active"><a routerLink="/refunds/admin/clientSettings" translate="clientSettings"></a></li>
+    <li routerLinkActive="active"><a routerLink="/refunds/admin/refundHandling" translate="refundHandling"></a></li>
+    <li routerLinkActive="active"><a routerLink="/refunds/admin/directRejectionRequest" translate="refundRequestSettings"></a></li>
     <li routerLinkActive="active"><a routerLink="/refunds/admin/reasonForRefund" translate="reasonForRefund"></a></li>
     <li routerLinkActive="active"><a routerLink="/refunds/admin/customFields">Field Customisation</a></li>
   </ul>
@@ -49,7 +49,7 @@
 </div>
 <div class="row">
   <div class="col-xs-12">
-    <button class="btn btn-default pull-left" (click)="onBack()" *ngIf="clientId != null" type="button">Back</button>
+    <button class="btn btn-default pull-left" (click)="onBack()" *ngIf="clientId != null" type="button">{{ 'back' | translate }}</button>
   </div>
 </div>
 

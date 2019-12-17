@@ -1,8 +1,8 @@
 <div class="row">
     <hr/>
         <div class="col-xs-12">
-            <button class="btn btn-default pull-left" (click)="onCancel.emit()" *ngIf="hideButton(onCancel)" type="button">Cancel</button>
-            <button class="btn btn-primary pull-right" (click)="save()" *ngIf="hideButton(onSave)" type="button">Save</button>
+            <button class="btn btn-default pull-left" (click)="onCancel.emit()" *ngIf="hideButton(onCancel)" type="button">{{'cancel' | translate}}</button>
+            <button class="btn btn-primary pull-right" (click)="save()" *ngIf="hideButton(onSave)" type="button">{{'save' | translate }}</button>
         </div>
  </div>
  <gpfi-modal></gpfi-modal>

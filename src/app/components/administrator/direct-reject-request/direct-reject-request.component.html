@@ -1,4 +1,4 @@
-<h5 class='subHeader'>Refund Request Informational Text</h5>
+<h5 class='subHeader'>{{'refundRequest_refundRequestInfoText' | translate }}</h5>
 <div class="row" *ngFor="let infoText of refundRequestSettings.refundRequestInfoList">
     <div>
         <div class="form-group">
@@ -20,52 +20,27 @@
 
 
 <ng-container *ngIf="refundRequestSettings as rf">
-    <h5 class='subHeader'>Field Handling</h5>
+    <h5 class='subHeader'>{{'refundRequest_fieldHandling' | translate }}</h5>
     <div class="row">
         <div class="form-group" >
             <div class="col-md-3">
-                <label class="control-label">Pledge Reference</label>
+                <label class="control-label">{{'refundRequest_pledgeReference' | translate}}</label>
             </div>
             <div class="col-md-6 col-xs-12">
                 <div class="col-md-6 col-xs-12 list-group-item" >
                     <div class="col-xs-6">
-                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.pledgeReferenceVisible" [value] = "false" name="pledgeReferenceVisible"> Hidden</label>
+                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.pledgeReferenceVisible" [value] = "false" name="pledgeReferenceVisible"> {{'refundRequest_hidden' | translate }}</label>
                     </div>
                     <div class="col-xs-6">
-                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.pledgeReferenceVisible" [value] = "true"  name="pledgeReferenceVisible"> Displayed</label>
+                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.pledgeReferenceVisible" [value] = "true"  name="pledgeReferenceVisible"> {{'refundRequest_displayed' | translate }}</label>
                     </div>
                 </div>
                 <div class="col-md-6 col-xs-12 list-group-item">
                     <div class="col-xs-6">
-                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.pledgeReferenceMandatory" [value] = "false"  name="pledgeReferenceMandatory"> Optional</label>
+                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.pledgeReferenceMandatory" [value] = "false"  name="pledgeReferenceMandatory"> {{'refundRequest_optional' | translate }}</label>
                     </div>
                     <div class="col-xs-6">
-                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.pledgeReferenceMandatory" [value] ="true"  name="pledgeReferenceMandatory"> Mandatory</label>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="form-group" >
-            <div class="col-md-3">
-                <label class="control-label">Requested refund amount</label>
-            </div>
-            <div class="col-md-6 col-xs-12">
-                <div class="col-md-6 col-xs-12 list-group-item" >
-                    <div class="col-xs-6">
-                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.refundAmountVisible" [value] = "false" name="refundAmountVisible"> Hidden</label>
-                    </div>
-                    <div class="col-xs-6">
-                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.refundAmountVisible" [value] = "true"  name="refundAmountVisible"> Displayed</label>
-                    </div>
-                </div>
-                <div class="col-md-6 col-xs-12 list-group-item" >
-                    <div class="col-xs-6">
-                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.refundAmountMandatory" [value] = "false"  name="refundAmountMandatory"> Optional</label>
-                    </div>
-                    <div class="col-xs-6">
-                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.refundAmountMandatory" [value] ="true"  name="refundAmountMandatory"> Mandatory</label>
+                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.pledgeReferenceMandatory" [value] ="true"  name="pledgeReferenceMandatory"> {{'refundRequest_mandatory' | translate }}</label>
                     </div>
                 </div>
             </div>
@@ -74,23 +49,48 @@
     <div class="row">
         <div class="form-group" >
             <div class="col-md-3">
-                <label class="control-label">Reason for refund</label>
+                <label class="control-label">{{'refundRequest_requestedRefundAmount' | translate }}</label>
             </div>
             <div class="col-md-6 col-xs-12">
                 <div class="col-md-6 col-xs-12 list-group-item" >
                     <div class="col-xs-6">
-                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.reasonForRefundVisible" [value] = "false" name="reasonForRefundVisible"> Hidden</label>
+                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.refundAmountVisible" [value] = "false" name="refundAmountVisible"> {{'refundRequest_hidden' | translate }}</label>
                     </div>
                     <div class="col-xs-6">
-                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.reasonForRefundVisible" [value] = "true"  name="reasonForRefundVisible"> Displayed</label>
+                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.refundAmountVisible" [value] = "true"  name="refundAmountVisible"> {{'refundRequest_displayed' | translate }}</label>
                     </div>
                 </div>
                 <div class="col-md-6 col-xs-12 list-group-item" >
                     <div class="col-xs-6">
-                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.reasonForRefundMandatory" [value] = "false"  name="reasonForRefundMandatory"> Optional</label>
+                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.refundAmountMandatory" [value] = "false"  name="refundAmountMandatory"> {{'refundRequest_optional' | translate }}</label>
                     </div>
                     <div class="col-xs-6">
-                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.reasonForRefundMandatory" [value] ="true"  name="reasonForRefundMandatory"> Mandatory</label>
+                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.refundAmountMandatory" [value] ="true"  name="refundAmountMandatory"> {{'refundRequest_mandatory' | translate }}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group" >
+            <div class="col-md-3">
+                <label class="control-label">{{'refundRequest_reasonForRefund' | translate }}</label>
+            </div>
+            <div class="col-md-6 col-xs-12">
+                <div class="col-md-6 col-xs-12 list-group-item" >
+                    <div class="col-xs-6">
+                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.reasonForRefundVisible" [value] = "false" name="reasonForRefundVisible"> {{'refundRequest_hidden' | translate }}</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.reasonForRefundVisible" [value] = "true"  name="reasonForRefundVisible"> {{'refundRequest_displayed' | translate }}</label>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xs-12 list-group-item" >
+                    <div class="col-xs-6">
+                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.reasonForRefundMandatory" [value] = "false"  name="reasonForRefundMandatory"> {{'refundRequest_optional' | translate }}</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.reasonForRefundMandatory" [value] ="true"  name="reasonForRefundMandatory"> {{'refundRequest_mandatory' | translate }}</label>
                     </div>
                 </div>
 
