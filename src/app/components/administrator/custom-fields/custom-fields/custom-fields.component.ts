@@ -10,14 +10,14 @@ import {
 } from '../../../../core/administrator.service';
 import {PageSettings} from '../../../controls/data-table/classes/Paging';
 import {CustomFieldsSettingComponent} from '../../custom-fields/custom-fields-setting/custom-fields-setting.component';
-import {ReasonForRefundValidatorService} from '../../../../validator/administrator/reason-for-refund/reason-for-refund-validator.service';
+import {CustomFieldsValidatorService} from '../../../../validator/administrator/custom-fields/custom-fields-validator.service';
 import {take} from 'rxjs/operators';
 import {createSelector, select, Store} from '@ngrx/store';
 import {State} from '../../../../reducers';
 import {ActionButton, ActionMenuComponent} from '../../../controls/action-menu/action-menu.component';
 import * as _ from 'lodash';
 import {RefdataService} from '../../../../core/refdata.service';
-import {FormGroup} from "@angular/forms";
+import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-custom-fields',
@@ -38,7 +38,7 @@ export class CustomFieldsComponent implements OnInit {
     this.updateCustomFieldsTable();
   });
 
-  constructor(private adminService: AdministratorService, private CFR: ComponentFactoryResolver, private validator: ReasonForRefundValidatorService, private store: Store<State>, private refdataService: RefdataService) {
+  constructor(private adminService: AdministratorService, private CFR: ComponentFactoryResolver, private validator: CustomFieldsValidatorService, private store: Store<State>, private refdataService: RefdataService) {
     this.setupCustomFieldColDef();
     this.customFieldsExpansionSettings = this.setupCustomFieldsExpansionSettings();
   }
@@ -74,7 +74,7 @@ export class CustomFieldsComponent implements OnInit {
         // to prevent memory leaks.
         let component = viewContainerRef.createComponent(componentResolve);
         component.instance.customFieldsSettings = rowData;
-       // this.editRefundSettingForm = this.validator.reasonForRefundSettingValidator();
+        // this.editCustomFieldsSettingForm = this.validator.customFieldsSettingValidator();
         component.instance.formName = this.editCustomFieldsSettingForm;
         component.instance.editMode = true;
         component.instance.validationExpressions = this.validationExpressions;
@@ -97,9 +97,9 @@ export class CustomFieldsComponent implements OnInit {
       {key: "display", className: "data_grid_left_align", header: "Displayed", formatter: (data) => {
           return data ? 'Yes' : 'No';
         }},
-      {key: "fieldName", className: "data_grid_center_align", header: "FieldName"},
+      {key: "fieldName", className: "data_grid_center_align", header: "Field Name"},
       {key: "description", className: "data_grid_center_align", header: "Description"},
-      {key: "fieldType", className: "data_grid_center_align", header: "FieldType"},
+      {key: "fieldType", className: "data_grid_center_align", header: "Field Type"},
       {key: "mandatory", className: "data_grid_center_align", header: "Mandatory", formatter: (data) => {
           return data ? 'Yes' : 'No';
         }},

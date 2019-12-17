@@ -3,7 +3,7 @@ import {FormGroup} from "@angular/forms";
 import {
   AdministratorService,
   CustomFieldsSettings,
-  CustomFieldsView, ValidationsExpressions
+  CustomFieldsView, TextElementView, ValidationsExpressions
 } from '../../../../core/administrator.service';
 import {BehaviorSubject} from "rxjs";
 import {Store} from "@ngrx/store";
@@ -40,12 +40,19 @@ export class CustomFieldsSettingComponent implements OnInit {
   ngOnInit() {
     this.gridWidth = this.editMode ? 'col-md-3' : 'col-md-4';
     this.updateTables();
+    // this.updateForm();
   }
 
   updateTables() {
    this.adminService.getAllCustomFieldDetails(this.customFieldsSettings.clientId, this.customFieldsSettings.fieldName).subscribe(data => {
      this.customFieldsView = data;
    });
+  }
+
+  updateForm() {
+    this.formName.patchValue({
+      description: this.customFieldsView.description
+    });
   }
 
   onCancel() {

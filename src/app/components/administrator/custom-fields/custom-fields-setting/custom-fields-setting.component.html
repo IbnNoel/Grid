@@ -1,4 +1,5 @@
 <!--Check Boxes -->
+<div align = "center">
 <div class="row">
   <div class="col-md-12">
     <div class="form-group">
@@ -19,53 +20,34 @@
     </div>
   </div>
 </div>
+</div>
+<br>
 <!--Field Details -->
 <div class="row">
-  <div class="form-group col-md-12 ">
-    <div class="form-group col-md-12">
-      <label class="control-label" translate="description">Description</label>
+  <div class="form-group col-md-4">
+    <div class="form-group col-md-6">
+      <label class="control-label" translate="Description"></label>
     </div>
     <div class="form-group col-md-3" style="width:100%;">
       <input type="text" name="description" [(ngModel)]="customFieldsView.description" class="form-control col-md-9 "/>
     </div>
   </div>
-  <div class="form-group col-md-4">
-    <div class="form-group col-md-6">
+
+  <div [hidden]="!showOnText()" class="form-group col-md-4 ">
+    <div class="form-group col-md-6 " [hidden]="!showOnText()">
       <div [hidden]="!showOnText()">
-        <label class="control-label" translate="fieldType">Field Type</label>
-      </div>
-      <div>
-        <app-dropdown [(ngModel)]="customFieldsView.fieldType">
-          <div class="item" [attr.data-value]="fieldType"
-               *ngFor="let fieldType of allFieldTypes |async">{{ fieldType | translate}}</div>
-        </app-dropdown>
-      </div>
-    </div>
-  </div>
-  <div [hidden]="!showOnText()" class="form-group col-md-8 ">
-    <div class="form-group col-md-4 " [hidden]="!showOnText()">
-      <div [hidden]="!showOnText()">
-        <label class="control-label" translate="minLength">Minimum Length</label>
+        <label class="control-label" translate="Minimum Length"></label>
       </div>
       <div [hidden]="!showOnText()">
         <input type="text" name="minLength" [(ngModel)]="customFieldsView.minLength" class="form-control col-md-4 "/>
       </div>
     </div>
   </div>
-  <div [hidden]="!showOnText()" class="form-group col-md-8 ">
-    <div class="form-group col-md-4 " [hidden]="!showOnText()">
+
+  <div class="form-group col-md-4">
+    <div class="form-group col-md-6">
       <div [hidden]="!showOnText()">
-        <label class="control-label" translate="maxLength">Maximum Length</label>
-      </div>
-      <div [hidden]="!showOnText()">
-        <input type="text" name="maxLength" [(ngModel)]="customFieldsView.maxLength" class="form-control col-md-4 "/>
-      </div>
-    </div>
-  </div>
-  <div [hidden]="!showOnText()">
-    <div class="form-group col-md-6" [hidden]="!showOnText()">
-      <div class="form-group col-md-6" [hidden]="!showOnText()">
-        <label class="control-label" translate="validationExpression">Validation Expression</label>
+        <label class="control-label" translate="Validation Expression"></label>
         <app-dropdown [(ngModel)]="customFieldsView.validationExpression">
           <div class="item" [attr.data-value]="valExpr.id"
                *ngFor="let valExpr of validationExpressions |async">{{ valExpr.description | translate}}</div>
@@ -74,11 +56,44 @@
     </div>
   </div>
 </div>
+
+<br>
+<div class="row">
+  <div class="form-group col-md-4">
+    <div class="form-group col-md-6">
+      <label class="control-label" translate="Field Type"></label>
+      <div>
+        <app-dropdown [(ngModel)]="customFieldsView.fieldType">
+          <div class="item" [attr.data-value]="fieldType"
+               *ngFor="let fieldType of allFieldTypes |async">{{ fieldType | translate}}</div>
+        </app-dropdown>
+      </div>
+    </div>
+  </div>
+
+  <div [hidden]="!showOnText()" class="form-group col-md-4 ">
+    <div class="form-group col-md-6 " [hidden]="!showOnText()">
+      <div [hidden]="!showOnText()">
+        <label class="control-label" translate="Maximum Length"></label>
+      </div>
+      <div [hidden]="!showOnText()">
+        <input type="text" name="maxLength" [(ngModel)]="customFieldsView.maxLength" class="form-control col-md-4 "/>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
 <!--Label Text-->
+<br>
 <div class="row">
   <div class="form-group col-md-4">
     <div >
-      <label class="control-label" translate="labelText">Label Text</label>
+      <label class="control-label" translate="Label Text"></label>
     </div>
     <div class="row" *ngIf="customFieldsView.labelText.length==0 || !showLabelI18Grid()" >
       <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1"
@@ -107,24 +122,41 @@
         </div>
       </div>
     </div>
-  <app-overlay name="addLabelTextOverlay" #addLabelTextOverlay header="addLabelText">
-    <div *ngFor="let text of customFieldsView.labelText">
-      <app-custom-fields-text [textElementView]="text"></app-custom-fields-text>
-      <button class="btn btn-default" type="button" (click)="removeLabelText(text.locale)" translate="DELETE"></button>
-    </div>
-    <div>
-      <button class="btn btn-default" type="button" (click)="additionalLabelText()" translate="ADD"></button>
-      <button class="btn btn-default pull-right" type="button" (click)="closeAddLabelText(addLabelTextOverlay.name)"
-              translate="OK"></button>
-    </div>
-  </app-overlay>
+    <app-overlay name="addLabelTextOverlay" #addLabelTextOverlay header="Edit">
+      <div class="row">
+        <div class="form-group col-md-4">
+          <label class="control-label" translate="Language"></label>
+        </div>
+        <div class="form-group col-md-4">
+          <label class="control-label" translate="Text"></label>
+        </div>
+      </div>
+      <div class="row" *ngFor="let text of customFieldsView.labelText">
+        <app-custom-fields-text [textElementView]="text"></app-custom-fields-text>
+        <div class="form-group col-md-4">
+          <button class="btn btn-default" type="button" (click)="removeLabelText(text.locale)"
+                  translate="DELETE"></button>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="form-group col-md-4">
+          <button class="btn btn-default pull-left" type="button" (click)="additionalLabelText()" translate="ADD"></button>
+        </div>
+        <div class="form-group col-md-4 pull-right">
+          <button class="btn btn-default pull-right" type="button" (click)="closeAddLabelText(addLabelTextOverlay.name)"
+                  translate="OK"></button>
+        </div>
+      </div>
+    </app-overlay>
   </div>
 </div>
+<br>
 <!--Error text-->
 <div class="row">
   <div class="form-group col-md-4 ">
     <div>
-      <label class="control-label" translate="errorText">Error Text</label>
+      <label class="control-label" translate="Error Text"></label>
     </div>
 
     <div class="row" *ngIf="customFieldsView.errorText.length==0 || !showErrorI18Grid()">
@@ -153,23 +185,40 @@
       </div>
     </div>
   </div>
-  <app-overlay name="addErrorTextOverlay" #addErrorTextOverlay header="addErrorText">
-    <div *ngFor="let text of customFieldsView.errorText">
-      <app-custom-fields-text [textElementView]="text"></app-custom-fields-text>
-      <button class="btn btn-default" type="button" (click)="removeErrorText(text.locale)" translate="DELETE"></button>
+  <app-overlay name="addErrorTextOverlay" #addErrorTextOverlay header="Edit">
+    <div class="row">
+      <div class="form-group col-md-4">
+        <label class="control-label" translate="Language"></label>
+      </div>
+      <div class="form-group col-md-4">
+        <label class="control-label" translate="Text"></label>
+      </div>
     </div>
-    <div>
-      <button class="btn btn-default" type="button" (click)="additionalErrorText()" translate="ADD"></button>
-      <button class="btn btn-default pull-right" type="button" (click)="closeAddErrorText(addErrorTextOverlay.name)"
-              translate="OK"></button>
+    <div class="row" *ngFor="let text of customFieldsView.errorText">
+      <app-custom-fields-text [textElementView]="text"></app-custom-fields-text>
+      <div class="form-group col-md-4">
+        <button class="btn btn-default" type="button" (click)="removeErrorText(text.locale)"
+                translate="DELETE"></button>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="form-group col-md-4">
+        <button class="btn btn-default" type="button" (click)="additionalErrorText()" translate="ADD"></button>
+      </div>
+      <div class="form-group col-md-4 pull-right">
+        <button class="btn btn-default pull-right" type="button" (click)="closeAddErrorText(addErrorTextOverlay.name)"
+                translate="OK"></button>
+      </div>
     </div>
   </app-overlay>
 </div>
+<br>
 <!--Help Text-->
 <div class="row">
   <div class="form-group col-md-4 ">
     <div>
-      <label class="control-label" translate="helpText">Help Text</label>
+      <label class="control-label" translate="Help Text"></label>
     </div>
 
     <div class="row" *ngIf="customFieldsView.helpText.length==0 || !showHelpI18Grid()">
@@ -200,16 +249,32 @@
       </div>
     </div>
   </div>
-  <app-overlay name="addHelpTextOverlay" #addHelpTextOverlay header="addHelpText">
-    <div  *ngFor="let text of customFieldsView.helpText">
-      <app-custom-fields-text [textElementView]="text"></app-custom-fields-text>
-      <button class="btn btn-default" type="button" (click)="removeHelpText(text.locale)" translate="DELETE"></button>
+  <app-overlay name="addHelpTextOverlay" #addHelpTextOverlay header="Edit">
+    <div class="row">
+      <div class="form-group col-md-4">
+        <label class="control-label" translate="Language"></label>
+      </div>
+      <div class="form-group col-md-4">
+        <label class="control-label" translate="Text"></label>
+      </div>
     </div>
-    <div>
-      <button class="btn btn-default" type="button" (click)="additionalHelpText()" translate="ADD"></button>
-      <button class="btn btn-default pull-right" type="button" (click)="closeAddHelpText(addHelpTextOverlay.name)"
-              translate="OK"></button>
+    <div class="row" *ngFor="let text of customFieldsView.helpText">
+      <app-custom-fields-text [textElementView]="text"></app-custom-fields-text>
+      <div class="form-group col-md-4">
+        <button class="btn btn-default" type="button" (click)="removeHelpText(text.locale)" translate="DELETE"></button>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="form-group col-md-4">
+        <button class="btn btn-default" type="button" (click)="additionalHelpText()" translate="ADD"></button>
+      </div>
+      <div class="form-group col-md-4 pull-right">
+        <button class="btn btn-default pull-right" type="button" (click)="closeAddHelpText(addHelpTextOverlay.name)"
+                translate="OK"></button>
+      </div>
     </div>
   </app-overlay>
 </div>
 <app-operation-buttons (onCancel)="onCancel()" (onSave)="onSave()"></app-operation-buttons>
+

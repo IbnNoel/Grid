@@ -3,6 +3,7 @@ import {TextElementView} from '../../../../core/administrator.service';
 import {Observable, of} from "rxjs";
 import {RefdataService} from "../../../../core/refdata.service";
 import * as _ from "lodash";
+import {FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-custom-fields-text',
@@ -11,6 +12,7 @@ import * as _ from "lodash";
 })
 export class CustomFieldsTextComponent implements OnInit {
   @Input() textElementView: TextElementView;
+  @Input() formName: FormGroup;
   languages$: Observable<Array<string>>;
 
   constructor(private refdataService: RefdataService) { }
