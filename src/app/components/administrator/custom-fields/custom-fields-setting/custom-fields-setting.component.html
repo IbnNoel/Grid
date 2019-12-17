@@ -48,6 +48,7 @@
     <div class="form-group col-md-6">
       <div [hidden]="!showOnText()">
         <label class="control-label" translate="Validation Expression"></label>
+        <div>
         <app-dropdown [(ngModel)]="customFieldsView.validationExpression">
           <div class="item" [attr.data-value]="valExpr.id"
                *ngFor="let valExpr of validationExpressions |async">{{ valExpr.description | translate}}</div>
@@ -55,6 +56,7 @@
       </div>
     </div>
   </div>
+</div>
 </div>
 
 <br>
@@ -95,6 +97,7 @@
     <div >
       <label class="control-label" translate="Label Text"></label>
     </div>
+
     <div class="row" *ngIf="customFieldsView.labelText.length==0 || !showLabelI18Grid()" >
       <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1"
                                       disabled></textarea>
@@ -105,9 +108,7 @@
       <div class="col-md-4">
         <button class="btn btn-default" type="button" (click)="addLabelTextDefault()" translate="..."></button>
       </div>
-
     </div>
-
     <div *ngIf="showLabelI18Grid()">
       <div class="row" *ngFor="let labelText of customFieldsView.labelText">
         <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1"
@@ -122,34 +123,34 @@
         </div>
       </div>
     </div>
-    <app-overlay name="addLabelTextOverlay" #addLabelTextOverlay header="Edit">
-      <div class="row">
-        <div class="form-group col-md-4">
-          <label class="control-label" translate="Language"></label>
-        </div>
-        <div class="form-group col-md-4">
-          <label class="control-label" translate="Text"></label>
-        </div>
-      </div>
-      <div class="row" *ngFor="let text of customFieldsView.labelText">
-        <app-custom-fields-text [textElementView]="text"></app-custom-fields-text>
-        <div class="form-group col-md-4">
-          <button class="btn btn-default" type="button" (click)="removeLabelText(text.locale)"
-                  translate="DELETE"></button>
-        </div>
-      </div>
-      <br>
-      <div class="row">
-        <div class="form-group col-md-4">
-          <button class="btn btn-default pull-left" type="button" (click)="additionalLabelText()" translate="ADD"></button>
-        </div>
-        <div class="form-group col-md-4 pull-right">
-          <button class="btn btn-default pull-right" type="button" (click)="closeAddLabelText(addLabelTextOverlay.name)"
-                  translate="OK"></button>
-        </div>
-      </div>
-    </app-overlay>
   </div>
+  <app-overlay name="addLabelTextOverlay" #addLabelTextOverlay header="Edit">
+    <div class="row">
+      <div class="form-group col-md-4">
+        <label class="control-label" translate="Language"></label>
+      </div>
+      <div class="form-group col-md-4">
+        <label class="control-label" translate="Text"></label>
+      </div>
+    </div>
+    <div class="row" *ngFor="let text of customFieldsView.labelText">
+      <app-custom-fields-text [textElementView]="text"></app-custom-fields-text>
+      <div class="form-group col-md-4">
+        <button class="btn btn-default" type="button" (click)="removeLabelText(text.locale)"
+                translate="DELETE"></button>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="form-group col-md-4">
+        <button class="btn btn-default" type="button" (click)="additionalLabelText()" translate="ADD"></button>
+      </div>
+      <div class="form-group col-md-4 pull-right">
+        <button class="btn btn-default pull-right" type="button" (click)="closeAddLabelText(addLabelTextOverlay.name)"
+                translate="OK"></button>
+      </div>
+    </div>
+  </app-overlay>
 </div>
 <br>
 <!--Error text-->
