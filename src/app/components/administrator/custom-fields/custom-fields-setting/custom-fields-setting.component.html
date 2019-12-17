@@ -120,13 +120,13 @@
 <!--Label Text-->
 <br>
 <div class="row">
-  <div class="form-group col-md-4">
+  <div class="form-group col-md-6">
     <div >
       <label class="control-label" translate="Label Text"></label>
     </div>
 
     <div class="row" *ngIf="customFieldsView.labelText.length==0 || !showLabelI18Grid()" >
-      <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1"
+      <div class="col-md-2"><textarea class="form-control" style="resize: none; width:100%;" rows="1"
                                       disabled></textarea>
       </div>
       <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1"
@@ -138,7 +138,7 @@
     </div>
     <div *ngIf="showLabelI18Grid()">
       <div class="row" *ngFor="let labelText of customFieldsView.labelText">
-        <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1"
+        <div class="col-md-2"><textarea class="form-control" style="resize: none; width:100%;" rows="1"
                                         disabled>{{labelText.locale}}</textarea>
         </div>
         <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1"
@@ -182,13 +182,13 @@
 <br>
 <!--Error text-->
 <div class="row">
-  <div class="form-group col-md-4 ">
+  <div class="form-group col-md-6 ">
     <div>
       <label class="control-label" translate="Error Text"></label>
     </div>
 
     <div class="row" *ngIf="customFieldsView.errorText.length==0 || !showErrorI18Grid()">
-      <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1"
+      <div class="col-md-2"><textarea class="form-control" style="resize: none; width:100%;" rows="1"
                                       disabled></textarea>
       </div>
       <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1"
@@ -200,7 +200,7 @@
     </div>
     <div *ngIf="showErrorI18Grid()">
       <div class="row" *ngFor="let errorText of customFieldsView.errorText">
-        <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1"
+        <div class="col-md-2"><textarea class="form-control" style="resize: none; width:100%;" rows="1"
                                         disabled>{{errorText.locale}}</textarea>
         </div>
         <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1"
@@ -244,13 +244,13 @@
 <br>
 <!--Help Text-->
 <div class="row">
-  <div class="form-group col-md-4 ">
+  <div class="form-group col-md-6 ">
     <div>
       <label class="control-label" translate="Help Text"></label>
     </div>
 
     <div class="row" *ngIf="customFieldsView.helpText.length==0 || !showHelpI18Grid()">
-      <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1"
+      <div class="col-md-2"><textarea class="form-control" style="resize: none; width:100%;" rows="1"
                                       disabled></textarea>
       </div>
       <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1"
@@ -264,7 +264,7 @@
 
     <div *ngIf="showHelpI18Grid()">
       <div class="row" *ngFor="let helpText of customFieldsView.helpText">
-        <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1"
+        <div class="col-md-2"><textarea class="form-control" style="resize: none; width:100%;" rows="1"
                                         disabled>{{helpText.locale}}</textarea>
         </div>
         <div class="col-md-4"><textarea class="form-control" style="resize: none; width:100%;" rows="1"
