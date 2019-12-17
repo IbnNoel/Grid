@@ -46,7 +46,7 @@ export class ClientSettingsComponent implements OnInit {
 
   onSave(onEmit) {
     this.adminService.setClientSettings(this.clientSettings).subscribe(response => {
-        let messageStatus = new MessageStatus( MessageType.Success, "", "MSG_ONADMINTABSAVE" );
+        let messageStatus = new MessageStatus( MessageType.Success, "adminSettingStatus", "onClientSettingsSave");
         this.store.dispatch(new SaveClientSettingsAction(response.data));
         onEmit(messageStatus);
     })

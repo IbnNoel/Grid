@@ -104,7 +104,7 @@ export class DirectRejectRequestComponent implements OnInit {
 
   onSave(onEmit) {
     this.adminService.setRefundRequestSettings(this.refundRequestSettings).subscribe(response => {
-      let messageStatus = new MessageStatus(MessageType.Success, "", "MSG_ONADMINTABSAVE" );
+      let messageStatus = new MessageStatus(MessageType.Success, "adminSettingStatus", "onRefundRequestSave");
       this.store.dispatch(new SaveRefundRequestSettingAction(response.data));
       onEmit(messageStatus);
     })
