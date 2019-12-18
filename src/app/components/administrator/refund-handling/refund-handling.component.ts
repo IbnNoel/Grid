@@ -53,9 +53,9 @@ export class RefundHandlingComponent implements OnInit {
     });
   }
 
-  onSave(onEmit) {
-    this.adminService.setRefundHandling(this.refundHandling).subscribe(response => {
-      const messageStatus = new MessageStatus(MessageType.Success, '', 'MSG_ONADMINTABSAVE' );
+  onSave(onEmit){
+    this.adminService.setRefundHandling(this.refundHandling).subscribe(response =>{
+      let messageStatus = new MessageStatus(MessageType.Success, "adminSettingStatus", "onRefundHandlingSave" );
       this.store.dispatch(new SaveRefundHandlingSettingAction(response.data));
       onEmit(messageStatus);
     });
@@ -104,7 +104,6 @@ export class RefundHandlingComponent implements OnInit {
         this.selectedData.paymentTypeId = '';
         this.selectedData.currency = '';
         this.updateClientPymntTypeCurrTable();
-    //    alert("PT : "+this.selectedData.paymentTypeId + '   ' +" CR : "+ this.selectedData.currency);
       },
       error => {
         this.selectedData.paymentTypeId = '';
@@ -125,8 +124,6 @@ export class RefundHandlingComponent implements OnInit {
   }
 
   updateClientPymntTypeCurrTable() {
-    // tslint:disable-next-line:max-line-length
-
     this.adminService.getClientPymntTypeCurrList(this.selectedData.clientId, this.pageSettings.currentPage, this.pageSettings.pageSize).subscribe(value => {
       this.pageSettings.setTotalRecords(value.totalElements);
       this.data.next(value.list);
