@@ -21,25 +21,25 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./data-table.component.scss'],
 })
 export class DataTableComponent implements OnInit, AfterViewInit {
-  @ViewChild("table", {static: true}) tableHtml: ElementRef;
+  @ViewChild('table', {static: true}) tableHtml: ElementRef;
   @ViewChild('table', {static: true, read: ViewContainerRef}) VCR: ViewContainerRef;
 
   @Input() Data: Observable<Array<any>>;
   @Input() Columns: Array<ColumnDefs>;
   @Input() PageSettings?: PageSettings;
-  @Input() ExpansionSettings? : ExpansionSettings;
-  @Input() CollapseOnRender?: boolean = true;
+  @Input() ExpansionSettings?: ExpansionSettings;
+  @Input() CollapseOnRender = true;
 
   dataTableApi: DataTables.Api;
   dataTableSettings: DataTables.Settings;
-  columnSettings: DataTables.ColumnSettings
+  columnSettings: DataTables.ColumnSettings;
   columnDef: DataTables.ColumnDefsSettings;
   pagingHelper: PagingHelper;
   pageChangeData: Observable<any>;
   tableSettings: DataTables.Settings;
-  expansionSettingsHandler : ExpansionSettingsHandler = new ExpansionSettingsHandler();;
+  expansionSettingsHandler: ExpansionSettingsHandler = new ExpansionSettingsHandler();
   renderedResponsiveCollapsedHelper: RenderedResponsiveCollapsedHelper = new RenderedResponsiveCollapsedHelper();
-  onGridInit$ = new BehaviorSubject<{api:DataTables.Api, tableDom:any}>(null);
+  onGridInit$ = new BehaviorSubject<{api: DataTables.Api, tableDom: any}>(null);
   translateService: TranslateService;
 
   constructor(public CFR: ComponentFactoryResolver, translate: TranslateService) {
@@ -60,14 +60,14 @@ export class DataTableComponent implements OnInit, AfterViewInit {
       this.initTable(data);
     });
 
-    this.dataTableApi.on('draw',(param) => {
+    this.dataTableApi.on('draw', (param) => {
       /** Todo :- create a generic event function with speck enum valuesa */
-      //this.onGridInit$.next({api: this.dataTableApi, tableDom: this.tableHtml.nativeElement});
+      // this.onGridInit$.next({api: this.dataTableApi, tableDom: this.tableHtml.nativeElement});
     });
   }
 
   constructTableSettings = () => {
-    let columnSettings = this.constructColumnSettings();
+    const columnSettings = this.constructColumnSettings();
 
     this.tableSettings = {
       columns: columnSettings,
@@ -75,13 +75,13 @@ export class DataTableComponent implements OnInit, AfterViewInit {
       ordering: false,
       searching: false,
       language: {
-        lengthMenu: "_MENU_"
+        lengthMenu: '_MENU_'
       },
       paging: !!(this.PageSettings),
-      dom: (this.PageSettings) ? "<'responsive-tables p20'<'container-fluid'<'row gpfiPageLengthControl' <'clearfix'> l><'row't><'row'p>>>" :
-        "<'responsive-tables p20'<'container-fluid'<'row't>>>",
-      lengthMenu: [[10, 20, 30, 50], ["Show 10 per page", "Show 20 per page", "Show 30 per page", "Show 50 per page"]]
-    }
+      dom: (this.PageSettings) ? '<\'responsive-tables p20\'<\'container-fluid\'<\'row gpfiPageLengthControl\' <\'clearfix\'> l><\'row\'t><\'row\'p>>>' :
+        '<\'responsive-tables p20\'<\'container-fluid\'<\'row\'t>>>',
+      lengthMenu: [[10, 20, 30, 50], ['Show 10 per page', 'Show 20 per page', 'Show 30 per page', 'Show 50 per page']]
+    };
   }
 
   private initTable(data) {
@@ -91,7 +91,7 @@ export class DataTableComponent implements OnInit, AfterViewInit {
         /*  if (!update || !ctrl.detailRow) {
               table.draw(false);
          }*/
-      })
+      });
     } else {
       this.createTable(data);
       /*  if (!update || !ctrl.detailRow) {
@@ -106,8 +106,8 @@ export class DataTableComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private initRenderOnCollapse(){
-    if(this.CollapseOnRender){
+  private initRenderOnCollapse() {
+    if (this.CollapseOnRender) {
       this.renderedResponsiveCollapsedHelper.init(this);
     }
   }
@@ -118,18 +118,18 @@ export class DataTableComponent implements OnInit, AfterViewInit {
     this.dataTableApi.draw();
   }
 
-  private initExpansionHandler(){
-    if(this.CollapseOnRender || this.ExpansionSettings){
+  private initExpansionHandler() {
+    if (this.CollapseOnRender || this.ExpansionSettings) {
       this.expansionSettingsHandler.init(this);
-      if(this.ExpansionSettings){
+      if (this.ExpansionSettings) {
         this.ExpansionSettings._expansionSettingHandler = this.expansionSettingsHandler;
       }
-    } 
+    }
   }
 
   private constructColumnSettings(): Array<DataTables.ColumnSettings> {
-    return _.map(this.Columns, (setting) => { 
-      return new HandleColumnSettings(setting, this).getDataTablesColumns()});
+    return _.map(this.Columns, (setting) => {
+      return new HandleColumnSettings(setting, this).getDataTablesColumns(); });
   }
 
   ngOnInit() {
