@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Gp2Service} from './gp2.service';
 import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree, Router} from '@angular/router';
 import {combineLatest, Observable, of} from 'rxjs';
-import {filter, first, flatMap, map, tap} from 'rxjs/operators';
+import {filter, first, flatMap, map, tap, share} from 'rxjs/operators';
 import * as _ from 'lodash';
 import {HttpClient, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse, HttpErrorResponse} from '@angular/common/http';
 import { StatusMessageService } from '../status-message.service';
@@ -52,14 +52,15 @@ export class AppHttpInterceptor implements HttpInterceptor {
         }
       });
     }
-    let subscription = next.handle(req);
+    let subscription = next.handle(req).pipe(share());
     subscription.subscribe(null, (resp) =>{
       if (resp instanceof HttpErrorResponse){
         if(_.has([500,404,0],resp.status)){
-          this.translate.get(["unexpectedServerError","errorReferenceCodeExplanation"]).subscribe((trans) => {
+          const transSub = this.translate.get(["unexpectedServerError","errorReferenceCodeExplanation"]).subscribe((trans) => {
             this.statusMessageService.SetMessage(new MessageStatus(MessageType.Error, "", [trans.unexpectedServerError + ":" + resp.status,
              trans.errorReferenceCodeExplanation]));
           });
+          transSub.unsubscribe();
         }else{
           this.statusMessageService.ClearMessage();
         }
