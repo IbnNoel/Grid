@@ -4,7 +4,7 @@
       <label class="control-label " translate="language"></label>
     </div>
     <div>
-      <app-dropdown formControlName="locale">
+      <app-dropdown formControlName="locale" *ngIf="!editMode">
         <div class="item" [attr.data-value]="l" *ngFor="let l of languages">{{l | translate}}</div>
       </app-dropdown>
       <label class="control-label " *ngIf="editMode">{{customRfRI18N.locale | translate}}</label>
