@@ -53,30 +53,34 @@ export class RefundHandlingComponent implements OnInit {
     });
   }
 
-  onSave(onEmit){
-    this.adminService.setRefundHandling(this.refundHandling).subscribe(response =>{
-      let messageStatus = new MessageStatus(MessageType.Success, "", "MSG_ONADMINTABSAVE" );
+  onSave(onEmit) {
+    this.adminService.setRefundHandling(this.refundHandling).subscribe(response => {
+      const messageStatus = new MessageStatus(MessageType.Success, '', 'MSG_ONADMINTABSAVE' );
       this.store.dispatch(new SaveRefundHandlingSettingAction(response.data));
       onEmit(messageStatus);
-    })
+    });
   }
 
-  setRefundHandlingState(){
-    this.store.pipe(take(1),select(createSelector((state) => state.adminSettings,
-    (adminSettings) => adminSettings.refundHandling))).subscribe((settings) =>{
+  setRefundHandlingState() {
+    this.store.pipe(take(1), select(createSelector((state) => state.adminSettings,
+    (adminSettings) => adminSettings.refundHandling))).subscribe((settings) => {
       this.refundHandling =  Object.assign({}, settings);
     });
   }
 
-  setSelectedData(){
+  setSelectedData() {
     this.store.pipe(take(1), select(createSelector((state) => state.adminSettings,
-      (adminSettings) => adminSettings.selectedData))).subscribe((settings) =>{
+      (adminSettings) => adminSettings.selectedData))).subscribe((settings) => {
       this.selectedData =  Object.assign({}, settings);
     });
   }
 
-  onCancel(){
+  onCancel() {
     this.setRefundHandlingState();
+  }
+
+  onChange(selectedData) {
+    selectedData.currency = '';
   }
 
   addPymntTypeAndCurr(selectedData) {
@@ -100,8 +104,12 @@ export class RefundHandlingComponent implements OnInit {
         this.selectedData.paymentTypeId = '';
         this.selectedData.currency = '';
         this.updateClientPymntTypeCurrTable();
+    //    alert("PT : "+this.selectedData.paymentTypeId + '   ' +" CR : "+ this.selectedData.currency);
       },
       error => {
+        this.selectedData.paymentTypeId = '';
+        this.selectedData.currency = '';
+        this.updateClientPymntTypeCurrTable();
         console.error(error);
       });
   }
@@ -117,6 +125,8 @@ export class RefundHandlingComponent implements OnInit {
   }
 
   updateClientPymntTypeCurrTable() {
+    // tslint:disable-next-line:max-line-length
+
     this.adminService.getClientPymntTypeCurrList(this.selectedData.clientId, this.pageSettings.currentPage, this.pageSettings.pageSize).subscribe(value => {
       this.pageSettings.setTotalRecords(value.totalElements);
       this.data.next(value.list);
