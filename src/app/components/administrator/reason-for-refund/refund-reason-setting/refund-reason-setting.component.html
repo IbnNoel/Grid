@@ -1,11 +1,11 @@
 <div [formGroup]="formName">
-  <div class="form-group required" [ngClass]="gridWidth">
+  <div class="form-group" [ngClass]="{'required col-md-4': !editMode, 'col-md-3':editMode}">
     <div>
       <label class="control-label" translate="reasonCode"></label>
     </div>
     <div>
       <input type="text" name="reasonCode" class="form-control" formControlName="reasonCode" *ngIf="!editMode"/>
-      <label class="control-label" *ngIf="editMode">{{customRfRSetting.reasonCode}}</label>
+      <label style="font-weight: normal" *ngIf="editMode">{{customRfRSetting.reasonCode}}</label>
     </div>
     <div *ngIf="(formName.controls.reasonCode.touched) && formName.controls.reasonCode.errors">
       <span *ngIf="formName.controls.reasonCode.invalid" class="msg-error" translate="reasonCodeRequired"></span>
