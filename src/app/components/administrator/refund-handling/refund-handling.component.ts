@@ -53,9 +53,9 @@ export class RefundHandlingComponent implements OnInit {
     });
   }
 
-  onSave(onEmit){
-    this.adminService.setRefundHandling(this.refundHandling).subscribe(response =>{
-      let messageStatus = new MessageStatus(MessageType.Success, "adminSettingStatus", "onRefundHandlingSave" );
+  onSave(onEmit) {
+    this.adminService.setRefundHandling(this.refundHandling).subscribe(response => {
+      const messageStatus = new MessageStatus(MessageType.Success, 'adminSettingStatus', 'onRefundHandlingSave' );
       this.store.dispatch(new SaveRefundHandlingSettingAction(response.data));
       onEmit(messageStatus);
     });
