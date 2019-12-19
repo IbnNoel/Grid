@@ -3,7 +3,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {ApiResponse} from './auth.guard.service';
 import {flatMap, map} from 'rxjs/operators';
 import {of, OperatorFunction, throwError} from 'rxjs';
-import {PagedResponse} from "./refund.service";
+import {List, PagedResponse} from "./refund.service";
 import {settings} from "cluster";
 import { StatusMessageService } from '../status-message.service';
 
@@ -36,6 +36,11 @@ export class AdministratorService {
   private readonly DELETE_RFR = `${this.ROUTE_URL}/client/reasonForRefunds/delete`;
   private readonly ADD_RFR_I18N = `${this.ROUTE_URL}/client/reasonForRefunds/I18N/add`;
   private readonly RESET_TO_STANDARD = `${this.ROUTE_URL}/client/reasonForRefunds/resetToStandard`;
+  private readonly GET_CUSTOMFIELDS = `${this.ROUTE_URL}/customFields/`;
+  private readonly GET_VALIDATION_EXPRESSION = `${this.ROUTE_URL}/customFields/validation/expression/`;
+  private readonly GET_ALL_FIELD_TYPES = `${this.ROUTE_URL}/customFields/fieldTypes`;
+  private readonly GET_ALL_CUSTOMFIELDS = `${this.ROUTE_URL}/customFields/details`;
+  private readonly UPDATE_CUSTOMFIELD = `${this.ROUTE_URL}/customFields/update`;
 
   private apiResponseMap: OperatorFunction<ApiResponse<any>, any> = flatMap(response => {
     if (response.success) {
@@ -143,6 +148,28 @@ export class AdministratorService {
     return this.httpClient.request("delete", this.RESET_TO_STANDARD, {body: data}).pipe(this.apiResponseMap);
   }
 
+  getCustomFields(id, pageNo, size) {
+    const params = new HttpParams().set('page', pageNo).set('size', size);
+    return this.httpClient.get<ApiResponse<PagedResponse<CustomFieldsSettings>>>(this.GET_CUSTOMFIELDS + id, {params}).pipe(this.apiResponseMap);
+  }
+
+  getValidationExpressions(id) {
+    return this.httpClient.get<ApiResponse<List<ValidationsExpressions>>>(this.GET_VALIDATION_EXPRESSION + id, ).pipe(this.apiResponseMap);
+  }
+
+  getAllFieldTypes() {
+    return this.httpClient.get<ApiResponse<List<string>>>(this.GET_ALL_FIELD_TYPES).pipe(this.apiResponseMap);
+  }
+
+  getAllCustomFieldDetails(id, fieldName) {
+    const params = new HttpParams().set('clientId', id).set('fieldName', fieldName);
+    return this.httpClient.get<ApiResponse<CustomFieldsView>>(this.GET_ALL_CUSTOMFIELDS, {params}).pipe(map(response => response.data));
+  }
+
+  updateCustomFieldForClient(data: CustomFieldsView) {
+    return this.httpClient.put<ApiResponse<CustomFieldsView>>(this.UPDATE_CUSTOMFIELD, data).pipe(this.apiResponseMap);
+  }
+
   /*getClients(name : string, pageNo, size){
     let GET_CLIENT_URL = `${this.ROUTE_URL}/client/search`;
     const params = new HttpParams().set('name', name)
@@ -176,13 +203,13 @@ export interface ClientSettings {
   convenienceUrl?: string;
   countrySegment?: string;
   industrySegment?: string;
-  industryTemplateId?: string,
+  industryTemplateId?: string;
   name?: string;
   portalDefaultLanguage?: string;
   refundConfigured?: boolean;
   refundPortalDomain?: string;
   securityChallengeEnabled?: boolean;
-  customRfr?: boolean
+  customRfr?: boolean;
 }
 
 export interface RefundHandling {
@@ -193,7 +220,7 @@ export interface RefundHandling {
 }
 
 export interface AdminSettings {
-  clientId: Number;
+  clientId: number;
   clientSettings: ClientSettings;
   refundRequestSettings: RefundRequestSettings;
   customRfrSettings: Array<CustomRfRSettings>;
@@ -254,7 +281,58 @@ export interface ToggleRfrResponse {
 
 export interface DeleteI18NRfR {
   clientId: number;
-  reasonCode: String;
-  locale: String;
+  reasonCode: string;
+  locale: string;
 }
 
+export interface CustomFieldsSettings {
+  id: number;
+  clientId?: number;
+  display?: boolean;
+  fieldName?: string;
+  description?: string;
+  fieldType?: string;
+  mandatory?: boolean;
+}
+
+export interface ValidationsExpressions {
+  id: number;
+  description: string;
+  expression: string;
+  scriptBased: boolean;
+  clientId: number;
+}
+
+export interface CustomFieldsView {
+  id?: number;
+  clientId?: number;
+  display?: boolean;
+  fieldName?: string;
+  description?: string;
+  fieldType?: string;
+  mandatory?: boolean;
+  valueOptions?: string;
+  maxLength?: number;
+  minLength?: number;
+  fieldLimit?: number;
+  minDate?: number;
+  maxDate?: number;
+  validationId?: number;
+  validationExpression?: string;
+  scriptBasedValidation?: boolean;
+  standard?: boolean;
+  fullyConfigurable?: boolean;
+  fieldTypeEditable?: boolean;
+  labelText?: Array<TextElementView>;
+  errorText?: Array<TextElementView>;
+  helpText?: Array<TextElementView>;
+  indexOrder?: number;
+  optionsText?: Array<TextElementView>;
+  flowLayout?: boolean;
+}
+
+export interface TextElementView {
+  key?: string;
+  locale?: string;
+  text?: string;
+}

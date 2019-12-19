@@ -6,9 +6,9 @@ import {CreateRefundsComponent} from '../components/create-refunds/create-refund
 import {AdministratorComponent} from '../components/administrator/administrator.component';
 import {ClientSettingsComponent} from '../components/administrator/client-settings/client-settings.component';
 import {DirectRejectRequestComponent} from '../components/administrator/direct-reject-request/direct-reject-request.component';
-import {ReasonForRefundComponent} from "../components/administrator/reason-for-refund/reason-for-refund/reason-for-refund.component";
+import {ReasonForRefundComponent} from '../components/administrator/reason-for-refund/reason-for-refund/reason-for-refund.component';
 import {RefundHandlingComponent} from '../components/administrator/refund-handling/refund-handling.component';
-
+import {CustomFieldsComponent} from '../components/administrator/custom-fields/custom-fields/custom-fields.component';
 const routes: Routes = [
   {
     path: 'refunds',
@@ -35,6 +35,10 @@ const routes: Routes = [
           {
             path: 'reasonForRefund',
             component: ReasonForRefundComponent
+          },
+          {
+            path: 'customFields',
+            component: CustomFieldsComponent
           }
         ]
       },

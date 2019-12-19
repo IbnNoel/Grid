@@ -39,3 +39,6 @@ export interface PagedResponse<T> {
   totalPages: number;
   list: T[];
 }
+export class List<T> {
+}
+
