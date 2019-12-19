@@ -53,30 +53,34 @@ export class RefundHandlingComponent implements OnInit {
     });
   }
 
-  onSave(onEmit){
-    this.adminService.setRefundHandling(this.refundHandling).subscribe(response =>{
-      let messageStatus = new MessageStatus(MessageType.Success, "", "MSG_ONADMINTABSAVE" );
+  onSave(onEmit) {
+    this.adminService.setRefundHandling(this.refundHandling).subscribe(response => {
+      const messageStatus = new MessageStatus(MessageType.Success, 'adminSettingStatus', 'onRefundHandlingSave' );
       this.store.dispatch(new SaveRefundHandlingSettingAction(response.data));
       onEmit(messageStatus);
-    })
+    });
   }
 
-  setRefundHandlingState(){
-    this.store.pipe(take(1),select(createSelector((state) => state.adminSettings,
-    (adminSettings) => adminSettings.refundHandling))).subscribe((settings) =>{
+  setRefundHandlingState() {
+    this.store.pipe(take(1), select(createSelector((state) => state.adminSettings,
+    (adminSettings) => adminSettings.refundHandling))).subscribe((settings) => {
       this.refundHandling =  Object.assign({}, settings);
     });
   }
 
-  setSelectedData(){
+  setSelectedData() {
     this.store.pipe(take(1), select(createSelector((state) => state.adminSettings,
-      (adminSettings) => adminSettings.selectedData))).subscribe((settings) =>{
+      (adminSettings) => adminSettings.selectedData))).subscribe((settings) => {
       this.selectedData =  Object.assign({}, settings);
     });
   }
 
-  onCancel(){
+  onCancel() {
     this.setRefundHandlingState();
+  }
+
+  onChange(selectedData) {
+    selectedData.currency = '';
   }
 
   addPymntTypeAndCurr(selectedData) {
@@ -102,6 +106,9 @@ export class RefundHandlingComponent implements OnInit {
         this.updateClientPymntTypeCurrTable();
       },
       error => {
+        this.selectedData.paymentTypeId = '';
+        this.selectedData.currency = '';
+        this.updateClientPymntTypeCurrTable();
         console.error(error);
       });
   }
