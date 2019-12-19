@@ -16,6 +16,7 @@ import {ReasonForRefundValidatorService} from "../../../../validator/administrat
 import {ConfirmationAction, ConfirmationBoxComponent} from "../../../controls/confirmation-box/confirmation-box.component";
 import {ExpansionSettings} from 'src/app/components/controls/data-table/classes/Expansion';
 import {RefdataService} from "../../../../core/refdata.service";
+import {SaveClientSettingsAction} from "../../../../actions/refundAction";
 
 
 @Component({
@@ -30,7 +31,6 @@ export class ReasonForRefundComponent implements OnInit {
   customRfR: AddCustomRfR;
   reasonCodeColDef: Array<ColumnDefs>;
   reasonCodeI18NColDef: Array<ColumnDefs>;
-  clientSettings: Observable<ClientSettings>;
   clientId: number;
   isStandardRfREnabled: boolean;
   reasonCodes = new BehaviorSubject<Array<CustomRfRSettings>>([]);
@@ -50,6 +50,7 @@ export class ReasonForRefundComponent implements OnInit {
   private editRefundSettingForm: FormGroup;
   private editRefundI18nForm: FormGroup;
   errorMessage: string;
+  clientSettings:ClientSettings;
 
   constructor(private adminService: AdministratorService, private store: Store<State>, private router: Router, private route: ActivatedRoute, private viewContainerRef: ViewContainerRef, private CFR: ComponentFactoryResolver, private validator: ReasonForRefundValidatorService, private fb: FormBuilder,private refdataService:RefdataService) {
     this.reasonCodeExpansionSettings = this.setupReasonCodeExpansionSettings();
@@ -90,6 +91,7 @@ export class ReasonForRefundComponent implements OnInit {
       this.isStandardRfREnabled = !data.clientSettings.customRfr;
       this.clientId = data.clientSettings.clientId;
       this.customRfR = {clientId: this.clientId};
+      this.clientSettings=_.cloneDeep(data.clientSettings);
       this.updateTables();
     }, error => {
       console.error(error);
@@ -232,6 +234,8 @@ export class ReasonForRefundComponent implements OnInit {
   toggleRfR() {
     this.adminService.toggleRfR(this.clientId).subscribe(value => {
       this.isStandardRfREnabled = !value.isCustomRfr;
+      this.clientSettings.customRfr=value.isCustomRfr;
+      this.store.dispatch(new SaveClientSettingsAction(this.clientSettings));
       this.updateTables();
     });
   }
