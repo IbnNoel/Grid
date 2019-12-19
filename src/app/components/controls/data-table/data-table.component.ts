@@ -14,6 +14,7 @@ import {ColumnDefs, HandleColumnSettings} from './classes/Columns';
 import { ExpansionSettings, ExpansionSettingsHandler } from './classes/Expansion';
 import { RenderedResponsiveCollapsedHelper } from './classes/CollapsedResponsive';
 import { TranslateService } from '@ngx-translate/core';
+import { CheckBoxSettings, CheckBoxHelper } from './classes/CheckBox';
 
 @Component({
   selector: 'app-data-table',
@@ -28,6 +29,7 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   @Input() Columns: Array<ColumnDefs>;
   @Input() PageSettings?: PageSettings;
   @Input() ExpansionSettings?: ExpansionSettings;
+  @Input() CheckBoxSettings?: CheckBoxSettings;
   @Input() CollapseOnRender = true;
 
   dataTableApi: DataTables.Api;
@@ -128,6 +130,10 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   }
 
   private constructColumnSettings(): Array<DataTables.ColumnSettings> {
+    if(this.CheckBoxSettings){
+      let cbHelper = new CheckBoxHelper(this);
+      this.Columns.unshift(cbHelper.setUpCheckBoxCell());
+    }
     return _.map(this.Columns, (setting) => {
       return new HandleColumnSettings(setting, this).getDataTablesColumns(); });
   }

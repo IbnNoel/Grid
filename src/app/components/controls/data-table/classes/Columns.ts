@@ -3,6 +3,7 @@ import {ComponentFactoryResolver, ComponentRef, ViewContainerRef} from "@angular
 import { DataTableComponent } from '../data-table.component';
 import { RenderedResponsiveCollapsedHelper } from './CollapsedResponsive';
 import { TranslateService } from '@ngx-translate/core';
+import { CheckBoxHelper } from './CheckBox';
 
 export class HandleColumnSettings {
 
@@ -15,11 +16,14 @@ export class HandleColumnSettings {
   componentFactory: ComponentFactoryResolver;
   viewContainerRef: ViewContainerRef;
   translateService: TranslateService;
+  dataTableComponent: DataTableComponent;
 
   constructor(setting: ColumnDefs, dtComponent: DataTableComponent) {
     this.colSettings.className = "key_" + setting.key;
     this.colSettings.title = setting.key;
     this.columnDefinition = setting;
+    this.dataTableComponent = dtComponent
+    //TODO:- REFACTOR!
     this.renderedResponseCollapsedHelper = dtComponent.renderedResponsiveCollapsedHelper;
     this.componentFactory = dtComponent.CFR;
     this.viewContainerRef = dtComponent.VCR;
@@ -73,7 +77,7 @@ export class HandleColumnSettings {
     this.colSettings.defaultContent = "";
     this.colSettings.createdCell = (cell, cellData, rowData, row, col) => {
 
-      var elementValue = func(cellData, rowData, row, col);
+      var elementValue = func(cellData, rowData, row, col, cell);
       if (elementValue instanceof GPFIButton) {
         var button = elementValue as GPFIButton;
         button.Html.click(rowData, (e) => {
@@ -171,7 +175,7 @@ export interface ColumnDefs {
 
 }
 
-type FunctionCellElement = (cellData?: any, rowData?: any, row?: number, col?: number) => HTMLButtonElement | HTMLElement | GPFIButton | ActionMenuComponent | string;
+type FunctionCellElement = (cellData?: any, rowData?: any, row?: number, col?: number, td?:any) => HTMLButtonElement | HTMLElement | GPFIButton | ActionMenuComponent | string | void;
 
 export class GPFIButton {
   private html: JQuery<HTMLElement>;
