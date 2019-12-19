@@ -27,7 +27,7 @@ export class RefundReasonLanguageComponent implements OnInit {
 
   ngOnInit() {
     this.updateForm();
-    this.class = (this.refDataService.isDefaultLanguage(this.customRfRI18N.locale)) ? "required" : "";
+    this.class = (this.refDataService.isDefaultLanguage(this.customRfRI18N.locale)) ? "required" : "required";
   }
 
   updateForm() {

@@ -43,7 +43,11 @@ import {CustomTranslationsLoader} from './core/translations.service';
 import { WidgetsModule } from './modules/widgets.module';
 import { DataTableModule } from './modules/dataTables.module';
 import { ConfirmationBoxComponent } from './components/controls/confirmation-box/confirmation-box.component';
-import { CustomFieldsComponent } from './components/administrator/custom-fields/custom-fields.component';
+import { MessageComponent } from './components/controls/message/message.component';
+import { CustomFieldsComponent } from './components/administrator/custom-fields/custom-fields/custom-fields.component';
+import { CustomFieldsSettingComponent } from './components/administrator/custom-fields/custom-fields-setting/custom-fields-setting.component';
+import { CustomFieldsTextComponent } from './components/administrator/custom-fields/custom-fields-text/custom-fields-text.component';
+import {AppDropdownComponent} from './components/controls/dropdown/app.dropdown.component';
 
 
 export function CustomTranslationsFactory(gp2Service: Gp2Service) {
@@ -52,7 +56,11 @@ export function CustomTranslationsFactory(gp2Service: Gp2Service) {
 
 @NgModule({
   declarations: [
-    AppComponent, RefundsComponent, CreateRefundsComponent, ManageRefundsComponent, AdministratorComponent, ClientSettingsComponent, DirectRejectRequestComponent, OperationButtonsComponent, GpfiModalComponent, LoadingDirective, ReasonForRefundComponent,   RefundReasonLanguageComponent, ActionMenuComponent, RefundReasonSettingComponent, RefundHandlingComponent, EditRfRI18NComponent, OverlayComponent, ConfirmationBoxComponent, CustomFieldsComponent
+    AppComponent, RefundsComponent, CreateRefundsComponent, ManageRefundsComponent, AdministratorComponent, ClientSettingsComponent,
+    DirectRejectRequestComponent, OperationButtonsComponent, GpfiModalComponent,
+    LoadingDirective, ReasonForRefundComponent,   RefundReasonLanguageComponent, ActionMenuComponent,
+    RefundReasonSettingComponent, RefundHandlingComponent, EditRfRI18NComponent, OverlayComponent, ConfirmationBoxComponent,
+    MessageComponent, AppDropdownComponent, CustomFieldsComponent, CustomFieldsSettingComponent, CustomFieldsTextComponent
   ],
   imports: [
     BrowserModule,
@@ -83,7 +91,7 @@ export function CustomTranslationsFactory(gp2Service: Gp2Service) {
   providers: [WINDOW_PROVIDERS, Gp2Service, AuthGuardService, AuthService, RefundService, AdministratorService, RoleAuthGuard, LoaderService, LoaderInterceptor,
     {provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true}],
-  entryComponents: [RefundReasonLanguageComponent, ActionMenuComponent, EditRfRI18NComponent,  RefundReasonSettingComponent],
+  entryComponents: [RefundReasonLanguageComponent, ActionMenuComponent, EditRfRI18NComponent,  RefundReasonSettingComponent, CustomFieldsSettingComponent, CustomFieldsTextComponent],
   bootstrap: [AppComponent]
 
 })

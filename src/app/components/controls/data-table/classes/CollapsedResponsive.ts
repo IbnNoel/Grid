@@ -37,7 +37,7 @@ import { ExpansionSettingsHandler } from './Expansion';
 
         this._dataTableHtml = dtComponent.tableHtml;
         this._dataTableSettings = dtComponent.tableSettings;
-        this._isDetailRowEnabled = !!dtComponent.ExpansionSettings;
+        this._isDetailRowEnabled = (!!dtComponent.ExpansionSettings) ? dtComponent.ExpansionSettings._isDetailRow : false;
         this._expandHelper = dtComponent.expansionSettingsHandler;
         this._dataTableSettings.dom = (this._dataTableSettings.paging) ? "<'container-fluid'<'row gpfiPageLengthControl' <'clearfix'> l><'row't><'row'p>>" : "<'container-fluid'<'row't>>";
         this._dataTableSettings.responsive = {
@@ -98,7 +98,7 @@ import { ExpansionSettingsHandler } from './Expansion';
             }
         }
     }
-    
+
     /**
      * If table collapsed the hidden columns need to be rendered before the expansion or collapse row functionaility can take place
      */
@@ -124,7 +124,7 @@ import { ExpansionSettingsHandler } from './Expansion';
         let columnTable = $("<table class='detailItems table tblBreakWords'/>").append(responsiveCellRows);
         let currentRow =  $(tableApi.row(index).node());
 
-        // if the table or row does'nt have detail row capability 
+        // if the table or row does'nt have detail row capability
         if (!this._isDetailRowEnabled || currentRow.attr("detailenabled") == "false") {
             // if no columns are hidden
             if (columnTable.find('tr').length == 0) {
@@ -132,7 +132,7 @@ import { ExpansionSettingsHandler } from './Expansion';
             }
             return columnTable;
         }
-        
+
         this._expandHelper.setResponsiveExpansiveColsDisplayed(index, columnTable);
 
         let expandedRow = currentRow.next();
@@ -170,13 +170,13 @@ import { ExpansionSettingsHandler } from './Expansion';
             let columnIdx = col.columnIndex;
             // is this column the one that contains the expansion button?
             let isExpansionCol = $(tableApi.column(columnIdx).header()).hasClass("control");
-            // has the custom 'hide collapsed' class been assigned to this column from outside of dataTable 
+            // has the custom 'hide collapsed' class been assigned to this column from outside of dataTable
             let isColHiddenInExpandedRow = $(tableApi.cell(rowIndex,columnIdx).node()).hasClass("hideCollapsed");
 
             if ((col.hidden || !tableApi.column(columnIdx).visible()) && !isExpansionCol && !isColHiddenInExpandedRow){
                 // check that row does not belong to excluded list of columns specified in column definition
                 let excludedColumns = this.getExcludedColumns();
-                
+
                 // TODO:- Refactor !
                 if (excludedColumns.length > 0) {
                     let excludedColsMatch = $.grep(excludedColumns, function (n) {

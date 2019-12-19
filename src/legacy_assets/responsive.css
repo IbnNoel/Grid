@@ -1,0 +1,35 @@
+@media(max-width: 768px) {
+    h1,h2,h3,td,p,label,span,div {
+        word-wrap:break-word
+    }
+
+    button {
+        margin-left: 10px !important;
+        margin-right: 15px !important;
+        width: calc(100% - 25px)
+    }
+
+    .force-fixed-width {
+        width: auto
+    }
+
+    .pull-left {
+        float: none !important
+    }
+
+    .pull-right {
+        float: none !important
+    }
+
+    .btn-primary {
+        margin-left: 0 !important;
+        margin-right: 15px !important;
+        width: calc(100%)
+    }
+
+    .btn-default {
+        margin-left: 0 !important;
+        margin-right: 15px !important;
+        width: calc(100%)
+    }
+}

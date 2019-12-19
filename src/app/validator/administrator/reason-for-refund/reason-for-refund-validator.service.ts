@@ -28,10 +28,8 @@ export class ReasonForRefundValidatorService {
     return _.cloneDeep(this.fb.group({
       locale: new FormControl({value: '', disabled: disable}, Validators.required),
       hint: new FormControl('', Validators.maxLength(255)),
-      reasonForRefund: new FormControl('', [Validators.maxLength(80)])
-    }, {
-      validator: RequiredForDefaultLanguage("reasonForRefund", "locale", this.refdataService.getDefaultLanguage())
-    }))
+      reasonForRefund: new FormControl('', [Validators.maxLength(80), Validators.required])
+    }));
   }
 }
 

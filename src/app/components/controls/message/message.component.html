@@ -1,0 +1,31 @@
+<div *ngIf="messageStatus$ | async as msgStatus">
+    <div class="status-msg" [ngClass]="{'alert-msg': msgStatus.MessageType == 1}">
+        <div class="container-fluid">
+            <button class="gpfiCloseButton" (click)="onClose()" aria-hidden="true">&times;</button>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-md-3 col-sm-12 col-xs-12 text-left">
+                    <small *ngIf="msgStatus.MessageType != 1">{{ msgStatus.Title  | translate}}</small>
+                    <small *ngIf="msgStatus.MessageType == 1">{{ 'note' | translate}}</small>
+                    <div class="statusMsgHolder">
+                        <p *ngIf="msgStatus.MessageType == 0" class="lead tick-msg">
+                            <span class="text-success">{{ 'Success' | translate}}</span>
+                        </p>
+                        <p *ngIf="msgStatus.MessageType == 2" class="lead">
+                            <span class="glyphicon glyphicon-alert" aria-hidden="true"></span>
+                        </p>
+                        <p class="text-danger lead" *ngIf="msgStatus.MessageType == 1">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                            {{'Error' | translate}}
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-9 col-sm-11 col-xs-12 text-left">
+                    <small>{{ 'description' | translate }}</small>
+                    <div class="descriptionMsgHolder">
+                        <p *ngFor="let description of msgStatus.Description" class="text-left ">{{ description  | translate}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

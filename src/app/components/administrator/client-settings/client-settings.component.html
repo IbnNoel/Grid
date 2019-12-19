@@ -2,12 +2,10 @@
     <div class="col-md-3">
         <div class="form-group">
             <!-- readd control-label class-->
-            <label class="control-label">Industry Segment</label>
-            <select class="wuselect form-control" [(ngModel)]="clientSettings.industryTemplateId">
-                <option value={{indSeg.templateId}} *ngFor="let indSeg of industrySegments$ |async">
-                    {{ indSeg.templateId | translate}}
-                </option>
-            </select>
+            <label class="control-label" translate="industrySegments"></label>
+            <app-dropdown [(ngModel)]="clientSettings.industryTemplateId">
+                <div class="item" [attr.data-value]="indSeg.templateId" *ngFor="let indSeg of industrySegments$ |async">{{indSeg.templateId | translate}}</div>
+            </app-dropdown>
         </div>
     </div>
     <!--<div class="col-md-12">
@@ -19,7 +17,7 @@
     <div class="col-md-12">
         <div class="form-group">
             <mat-checkbox class="example-margin control-label" [(ngModel)]="clientSettings.securityChallengeEnabled">
-                Enable Security Challange / Capture</mat-checkbox>
+                {{ 'clientSetting_enableSecurityChallenge' | translate }}</mat-checkbox>
         </div>
     </div>
 </div>
