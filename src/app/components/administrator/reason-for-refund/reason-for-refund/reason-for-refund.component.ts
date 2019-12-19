@@ -5,7 +5,7 @@ import {State} from "../../../../reducers";
 import {ActivatedRoute, Router} from "@angular/router";
 import {take} from "rxjs/operators";
 import {ColumnDefs} from "../../../controls/data-table/classes/Columns";
-import {BehaviorSubject, forkJoin, Observable} from "rxjs";
+import {BehaviorSubject, forkJoin} from "rxjs";
 import {ActionButton, ActionMenuComponent} from "../../../controls/action-menu/action-menu.component";
 import {PageSettings} from "../../../controls/data-table/classes/Paging";
 import {EditRfRI18NComponent} from "../custom/edit-rf-ri18-n/edit-rf-ri18-n.component";
@@ -50,9 +50,9 @@ export class ReasonForRefundComponent implements OnInit {
   private editRefundSettingForm: FormGroup;
   private editRefundI18nForm: FormGroup;
   errorMessage: string;
-  clientSettings:ClientSettings;
+  clientSettings: ClientSettings;
 
-  constructor(private adminService: AdministratorService, private store: Store<State>, private router: Router, private route: ActivatedRoute, private viewContainerRef: ViewContainerRef, private CFR: ComponentFactoryResolver, private validator: ReasonForRefundValidatorService, private fb: FormBuilder,private refdataService:RefdataService) {
+  constructor(private adminService: AdministratorService, private store: Store<State>, private router: Router, private route: ActivatedRoute, private viewContainerRef: ViewContainerRef, private CFR: ComponentFactoryResolver, private validator: ReasonForRefundValidatorService, private fb: FormBuilder, private refdataService: RefdataService) {
     this.reasonCodeExpansionSettings = this.setupReasonCodeExpansionSettings();
     this.reasonCodeI18ExpansionSettings = this.setupI18ReasonCodeExpSettings();
     this.setupReasonCodeColDef();
@@ -85,13 +85,13 @@ export class ReasonForRefundComponent implements OnInit {
         select(
           createSelector((state) => state.adminSettings,
             (adminSettings) => adminSettings.clientSettings))),
-      languages:  this.refdataService.getLocales()
+      languages: this.refdataService.getLocales()
     }).subscribe(data => {
-      this.languages = data.languages.map(l=>l.locale);
+      this.languages = data.languages.map(l => l.locale);
       this.isStandardRfREnabled = !data.clientSettings.customRfr;
       this.clientId = data.clientSettings.clientId;
       this.customRfR = {clientId: this.clientId};
-      this.clientSettings=_.cloneDeep(data.clientSettings);
+      this.clientSettings = _.cloneDeep(data.clientSettings);
       this.updateTables();
     }, error => {
       console.error(error);
@@ -234,8 +234,10 @@ export class ReasonForRefundComponent implements OnInit {
   toggleRfR() {
     this.adminService.toggleRfR(this.clientId).subscribe(value => {
       this.isStandardRfREnabled = !value.isCustomRfr;
-      this.clientSettings.customRfr=value.isCustomRfr;
-      this.store.dispatch(new SaveClientSettingsAction(this.clientSettings));
+      this.clientSettings.customRfr = value.isCustomRfr;
+      this.store.dispatch(new SaveClientSettingsAction(Object.assign({}, this.clientSettings, {
+        customRfr: value.isCustomRfr
+      })));
       this.updateTables();
     });
   }
