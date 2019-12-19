@@ -1,22 +1,22 @@
 import {Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
-import {AddCustomRfR, AdministratorService, ClientSettings, CustomRfRI18N, CustomRfRSettings} from "../../../../core/administrator.service";
-import {createSelector, select, Store} from "@ngrx/store";
-import {State} from "../../../../reducers";
-import {ActivatedRoute, Router} from "@angular/router";
-import {take} from "rxjs/operators";
-import {ColumnDefs} from "../../../controls/data-table/classes/Columns";
-import {BehaviorSubject, forkJoin, Observable} from "rxjs";
-import {ActionButton, ActionMenuComponent} from "../../../controls/action-menu/action-menu.component";
-import {PageSettings} from "../../../controls/data-table/classes/Paging";
-import {EditRfRI18NComponent} from "../custom/edit-rf-ri18-n/edit-rf-ri18-n.component";
-import {RefundReasonSettingComponent} from "../refund-reason-setting/refund-reason-setting.component";
+import {AddCustomRfR, AdministratorService, ClientSettings, CustomRfRI18N, CustomRfRSettings} from '../../../../core/administrator.service';
+import {createSelector, select, Store} from '@ngrx/store';
+import {State} from '../../../../reducers';
+import {ActivatedRoute, Router} from '@angular/router';
+import {take} from 'rxjs/operators';
+import {ColumnDefs} from '../../../controls/data-table/classes/Columns';
+import {BehaviorSubject, forkJoin, Observable} from 'rxjs';
+import {ActionButton, ActionMenuComponent} from '../../../controls/action-menu/action-menu.component';
+import {PageSettings} from '../../../controls/data-table/classes/Paging';
+import {EditRfRI18NComponent} from '../custom/edit-rf-ri18-n/edit-rf-ri18-n.component';
+import {RefundReasonSettingComponent} from '../refund-reason-setting/refund-reason-setting.component';
 import * as _ from 'lodash';
-import {FormArray, FormBuilder, FormGroup} from "@angular/forms";
-import {ReasonForRefundValidatorService} from "../../../../validator/administrator/reason-for-refund/reason-for-refund-validator.service";
-import {ConfirmationAction, ConfirmationBoxComponent} from "../../../controls/confirmation-box/confirmation-box.component";
+import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {ReasonForRefundValidatorService} from '../../../../validator/administrator/reason-for-refund/reason-for-refund-validator.service';
+import {ConfirmationAction, ConfirmationBoxComponent} from '../../../controls/confirmation-box/confirmation-box.component';
 import {ExpansionSettings} from 'src/app/components/controls/data-table/classes/Expansion';
-import {RefdataService} from "../../../../core/refdata.service";
-import {SaveClientSettingsAction} from "../../../../actions/refundAction";
+import {RefdataService} from '../../../../core/refdata.service';
+import {SaveClientSettingsAction} from '../../../../actions/refundAction';
 
 
 @Component({
@@ -25,7 +25,19 @@ import {SaveClientSettingsAction} from "../../../../actions/refundAction";
   styleUrls: ['./reason-for-refund.component.scss']
 })
 export class ReasonForRefundComponent implements OnInit {
-  @ViewChild("confirmationBox", {static: true}) confirmationBox: ConfirmationBoxComponent = new ConfirmationBoxComponent();
+
+  constructor(private adminService: AdministratorService, private store: Store<State>, private router: Router, private route: ActivatedRoute, private viewContainerRef: ViewContainerRef, private CFR: ComponentFactoryResolver, private validator: ReasonForRefundValidatorService, private fb: FormBuilder, private refdataService: RefdataService) {
+    this.reasonCodeExpansionSettings = this.setupReasonCodeExpansionSettings();
+    this.reasonCodeI18ExpansionSettings = this.setupI18ReasonCodeExpSettings();
+    this.setupReasonCodeColDef();
+    this.setupReasonCodeI18NColDef();
+    this.createAddCustomRfRForm();
+    this.createAddLanguageForm();
+    this.customRfR = {clientId: this.clientId};
+  }
+
+
+  @ViewChild('confirmationBox', {static: true}) confirmationBox: ConfirmationBoxComponent = new ConfirmationBoxComponent();
   languages: Array<string>;
   languagesList: Array<string>;
   customRfR: AddCustomRfR;
@@ -47,34 +59,27 @@ export class ReasonForRefundComponent implements OnInit {
   addCustomRfRForm: FormGroup;
   private i18nArray: FormArray;
   addLanguageForm: FormGroup;
-  private editRefundSettingForm: FormGroup;
-  private editRefundI18nForm: FormGroup;
+  editRefundSettingForm: FormGroup;
+  editRefundI18nForm: FormGroup;
   errorMessage: string;
-  clientSettings:ClientSettings;
+  clientSettings: ClientSettings;
 
-  constructor(private adminService: AdministratorService, private store: Store<State>, private router: Router, private route: ActivatedRoute, private viewContainerRef: ViewContainerRef, private CFR: ComponentFactoryResolver, private validator: ReasonForRefundValidatorService, private fb: FormBuilder,private refdataService:RefdataService) {
-    this.reasonCodeExpansionSettings = this.setupReasonCodeExpansionSettings();
-    this.reasonCodeI18ExpansionSettings = this.setupI18ReasonCodeExpSettings();
-    this.setupReasonCodeColDef();
-    this.setupReasonCodeI18NColDef();
-    this.createAddCustomRfRForm();
-    this.createAddLanguageForm();
-    this.customRfR = {clientId: this.clientId};
-  }
+  actionButtons: Array<ActionButton>;
+  confirmationAction: ConfirmationAction;
 
   createAddCustomRfRForm() {
     this.addCustomRfRForm = this.fb.group({
       refundSetting: this.validator.reasonForRefundSettingValidator(),
       i18n: new FormArray([this.validator.reasonForRefundI18NValidator(true)])
     });
-    this.i18nArray = this.addCustomRfRForm.get("i18n") as FormArray;
+    this.i18nArray = this.addCustomRfRForm.get('i18n') as FormArray;
   }
 
   createAddLanguageForm() {
     this.addLanguageForm = this.fb.group({
       i18n: new FormArray([this.validator.reasonForRefundI18NValidator(false)])
     });
-    this.i18nArray = this.addLanguageForm.get("i18n") as FormArray;
+    this.i18nArray = this.addLanguageForm.get('i18n') as FormArray;
   }
 
 
@@ -87,25 +92,22 @@ export class ReasonForRefundComponent implements OnInit {
             (adminSettings) => adminSettings.clientSettings))),
       languages:  this.refdataService.getLocales()
     }).subscribe(data => {
-      this.languages = data.languages.map(l=>l.locale);
+      this.languages = data.languages.map(l => l.locale);
       this.isStandardRfREnabled = !data.clientSettings.customRfr;
       this.clientId = data.clientSettings.clientId;
       this.customRfR = {clientId: this.clientId};
-      this.clientSettings=_.cloneDeep(data.clientSettings);
+      this.clientSettings = _.cloneDeep(data.clientSettings);
       this.updateTables();
     }, error => {
       console.error(error);
-    })
+    });
   }
-
-  actionButtons: Array<ActionButton>;
-  confirmationAction: ConfirmationAction;
 
 
   generateActionButtonForAddCustomRfR(languages, disable) {
     this.actionButtons = [];
     languages.forEach(value => {
-      let button = new ActionButton();
+      const button = new ActionButton();
       button.data = value;
       button.label = value;
       button.action = (data => this.addLanguage(data, disable));
@@ -115,15 +117,15 @@ export class ReasonForRefundComponent implements OnInit {
   }
 
   generateActionMenuForRfRI18N(cellData, rowData, row) {
-    let menu = new ActionMenuComponent();
-    let editButton = new ActionButton();
-    editButton.label = "edit";
+    const menu = new ActionMenuComponent();
+    const editButton = new ActionButton();
+    editButton.label = 'edit';
     editButton.data = rowData;
     editButton.action = (data) => {
       this.reasonCodeI18ExpansionSettings.ExpandGrid(row);
     };
-    let deleteButton = new ActionButton();
-    deleteButton.label = "delete";
+    const deleteButton = new ActionButton();
+    deleteButton.label = 'delete';
     deleteButton.data = rowData;
     deleteButton.action = (data => {
       this.deleteI18N(data);
@@ -133,24 +135,23 @@ export class ReasonForRefundComponent implements OnInit {
       menu.buttons.push(deleteButton);
     }
     return menu;
-  };
-
+  }
   generateActionMenuForRfr(cellData, rowData, row) {
-    let menu = new ActionMenuComponent();
-    let editButton = new ActionButton();
-    editButton.label = "edit";
+    const menu = new ActionMenuComponent();
+    const editButton = new ActionButton();
+    editButton.label = 'edit';
     editButton.data = rowData;
     editButton.action = (data) => {
       this.reasonCodeExpansionSettings.ExpandGrid(row);
     };
-    let deleteButton = new ActionButton();
-    deleteButton.label = "delete";
+    const deleteButton = new ActionButton();
+    deleteButton.label = 'delete';
     deleteButton.data = rowData;
     deleteButton.action = (data => {
       this.deleteRfR(data);
     });
-    let addLanguage = new ActionButton();
-    addLanguage.label = "addLanguage";
+    const addLanguage = new ActionButton();
+    addLanguage.label = 'addLanguage';
     addLanguage.data = rowData;
     addLanguage.action = (data => {
       this.createAddLanguageOverlay(data);
@@ -160,12 +161,11 @@ export class ReasonForRefundComponent implements OnInit {
       menu.buttons.push(deleteButton, addLanguage);
     }
     return menu;
-  };
-
+  }
   createAddLanguageOverlay(data: CustomRfRSettings) {
     this.createAddLanguageForm();
     this.errorMessage = null;
-    let existingLocale = this.reasonCodesI18N.getValue().filter(i18n => i18n.reasonCode == data.reasonCode).map(value => value.locale);
+    const existingLocale = this.reasonCodesI18N.getValue().filter(i18n => i18n.reasonCode == data.reasonCode).map(value => value.locale);
     this.languagesList = _.filter(this.languages, l => {
       return !(existingLocale.indexOf(l) > -1);
     });
@@ -173,33 +173,33 @@ export class ReasonForRefundComponent implements OnInit {
     this.customRfR.reasonForRefundList = [];
     this.customRfR.reasonForRefundList.push({locale: this.languagesList[0]});
     this.generateActionButtonForAddCustomRfR(this.languagesList, false);
-    $("#addNewLanguageOverlay").modal({show: true, backdrop: false});
+    $('#addNewLanguageOverlay').modal({show: true, backdrop: false});
   }
 
   setupReasonCodeColDef() {
     this.reasonCodeColDef = [
-      {key: "reasonCode", className: "data_grid_left_align", header: "reasonCode"},
-      {key: "sortOrder", className: "data_grid_center_align", header: "sortOrder"},
-      {key: "reasonForRefund", className: "data_grid_center_align", header: "reasonForRefund"},
-      {key: "numOfDocument", className: "data_grid_center_align", header: "numOfDocument"},
+      {key: 'reasonCode', className: 'data_grid_left_align', header: 'reasonCode'},
+      {key: 'sortOrder', className: 'data_grid_center_align', header: 'sortOrder'},
+      {key: 'reasonForRefund', className: 'data_grid_center_align', header: 'reasonForRefund'},
+      {key: 'numOfDocument', className: 'data_grid_center_align', header: 'numOfDocument'},
       {
         cellElement: (cellData, rowData, row) => {
           return this.generateActionMenuForRfr(cellData, rowData, row);
-        }, className: "data_grid_center_align"
+        }, className: 'data_grid_center_align'
       }];
   }
 
   setupReasonCodeI18NColDef() {
     this.reasonCodeI18NColDef = [
-      {key: "reasonCode", className: "data_grid_left_align", header: "reasonCode"},
-      {key: "locale", className: "data_grid_center_align", header: "language", translate: true},
-      {key: "sortOrder", className: "data_grid_center_align", header: "sortOrder"},
-      {key: "reasonForRefund", className: "data_grid_center_align", header: "reasonForRefund"},
-      {key: "hint", className: "data_grid_center_align", header: "hint"},
+      {key: 'reasonCode', className: 'data_grid_left_align', header: 'reasonCode'},
+      {key: 'locale', className: 'data_grid_center_align', header: 'language', translate: true},
+      {key: 'sortOrder', className: 'data_grid_center_align', header: 'sortOrder'},
+      {key: 'reasonForRefund', className: 'data_grid_center_align', header: 'reasonForRefund'},
+      {key: 'hint', className: 'data_grid_center_align', header: 'hint'},
       {
         cellElement: (cellData, rowData, row) => {
           return this.generateActionMenuForRfRI18N(cellData, rowData, row);
-        }, className: "data_grid_center_align"
+        }, className: 'data_grid_center_align'
       }];
   }
 
@@ -209,11 +209,11 @@ export class ReasonForRefundComponent implements OnInit {
     this.customRfR.reasonForRefundList = [];
     this.customRfR.reasonForRefundList.push({locale: this.refdataService.getDefaultLanguage()});
     this.generateActionButtonForAddCustomRfR(this.languages, true);
-    $("#addCustomRfROverlay").modal({show: true, backdrop: false});
+    $('#addCustomRfROverlay').modal({show: true, backdrop: false});
   }
 
   close(overlay) {
-    $("#" + overlay).modal("hide");
+    $('#' + overlay).modal('hide');
   }
 
   saveCustomRfRSettings() {
@@ -222,7 +222,7 @@ export class ReasonForRefundComponent implements OnInit {
       Object.assign(this.customRfR.reasonForRefundList, this.addCustomRfRForm.getRawValue().i18n);
       this.adminService.addCustomRfR(this.customRfR).subscribe(response => {
         this.updateTables();
-        this.closeAddCustomOverlay("addCustomRfROverlay");
+        this.closeAddCustomOverlay('addCustomRfROverlay');
       }, error => {
         this.errorMessage = error.code;
       });
@@ -234,7 +234,7 @@ export class ReasonForRefundComponent implements OnInit {
   toggleRfR() {
     this.adminService.toggleRfR(this.clientId).subscribe(value => {
       this.isStandardRfREnabled = !value.isCustomRfr;
-      this.clientSettings.customRfr=value.isCustomRfr;
+      this.clientSettings.customRfr = value.isCustomRfr;
       this.store.dispatch(new SaveClientSettingsAction(this.clientSettings));
       this.updateTables();
     });
@@ -261,7 +261,7 @@ export class ReasonForRefundComponent implements OnInit {
         const componentResolve = this.CFR.resolveComponentFactory(RefundReasonSettingComponent);
         // Data table returns its own view container, so it can manage the removing of its instance on collapse of the grid
         // to prevent memory leaks.
-        let component = viewContainerRef.createComponent(componentResolve);
+        const component = viewContainerRef.createComponent(componentResolve);
         component.instance.customRfRSetting = rowData;
         this.editRefundSettingForm = this.validator.reasonForRefundSettingValidator();
         component.instance.formName = this.editRefundSettingForm;
@@ -277,7 +277,7 @@ export class ReasonForRefundComponent implements OnInit {
     return new ExpansionSettings(false, (viewContainerRef, rowData, row) => {
       return new Promise<any>((resolve) => {
         const componentResolve = this.CFR.resolveComponentFactory(EditRfRI18NComponent);
-        let component = this.viewContainerRef.createComponent(componentResolve);
+        const component = this.viewContainerRef.createComponent(componentResolve);
         this.editRefundI18nForm = this.validator.reasonForRefundI18NValidator();
         component.instance.i18nForm = this.editRefundI18nForm;
         component.instance.data = rowData;
@@ -294,7 +294,7 @@ export class ReasonForRefundComponent implements OnInit {
     data.clientId = this.clientId;
     this.adminService.resetToStandard(data).subscribe(value => {
       this.updateTables();
-    })
+    });
   }
 
   updateTables() {
@@ -308,10 +308,10 @@ export class ReasonForRefundComponent implements OnInit {
       data.clientId = this.clientId;
       data.sortOrder = null;
       this.adminService.updateRfRI18NForClient(data).subscribe(value => {
-        this.reasonCodeI18ExpansionSettings.CollapseGrid({propertyName: "clientId", id: value.clientId});
+        this.reasonCodeI18ExpansionSettings.CollapseGrid({propertyName: 'clientId', id: value.clientId});
         this.updateTables();
 
-      })
+      });
     } else {
       this.editRefundI18nForm.markAllAsTouched();
     }
@@ -319,24 +319,29 @@ export class ReasonForRefundComponent implements OnInit {
   }
 
   private deleteI18N(data: CustomRfRI18N) {
-    let deleteI18NRfR = {locale: data.locale, reasonCode: data.reasonCode, clientId: this.clientId};
-    let action = new ConfirmationAction();
+    const deleteI18NRfR = {locale: data.locale, reasonCode: data.reasonCode, clientId: this.clientId};
+    const action = new ConfirmationAction();
     action.action = () => {
       this.adminService.deleteRfRI18N(deleteI18NRfR).subscribe(value => {
         this.updateTables();
         this.confirmationBox.close();
-      })
+      });
     };
     this.confirmationAction = action;
     this.confirmationBox.show();
   }
 
   addNewLanguages() {
-    Object.assign(this.customRfR.reasonForRefundList, this.addLanguageForm.value.i18n);
-    this.adminService.addLanguages(this.customRfR).subscribe(value => {
-      this.updateTables();
-      this.closeAddCustomOverlay("addNewLanguageOverlay");
-    });
+    if (this.addLanguageForm.valid) {
+      Object.assign(this.customRfR.reasonForRefundList, this.addLanguageForm.value.i18n);
+      this.adminService.addLanguages(this.customRfR).subscribe(value => {
+        this.updateTables();
+        this.closeAddCustomOverlay('addNewLanguageOverlay');
+      });
+    } else {
+      this.addLanguageForm.markAllAsTouched();
+    }
+
 
   }
 
@@ -346,8 +351,8 @@ export class ReasonForRefundComponent implements OnInit {
       Object.assign(request, this.editRefundSettingForm.value);
       this.adminService.updateRfRForClient(request).subscribe(value => {
         this.updateTables();
-        this.reasonCodeExpansionSettings.CollapseGrid({propertyName: "clientId", id: value.clientId});
-      })
+        this.reasonCodeExpansionSettings.CollapseGrid({propertyName: 'clientId', id: value.clientId});
+      });
     } else {
       this.editRefundSettingForm.markAllAsTouched();
     }
@@ -356,20 +361,20 @@ export class ReasonForRefundComponent implements OnInit {
   private deleteRfR(data: CustomRfRSettings) {
     data.clientId = this.clientId;
     this.confirmationBox = new ConfirmationBoxComponent();
-    let action = new ConfirmationAction();
+    const action = new ConfirmationAction();
     action.action = () => {
       this.adminService.deleteRfR(data).subscribe(value => {
         this.updateTables();
         this.confirmationBox.close();
-      })
+      });
     };
     this.confirmationAction = action;
     this.confirmationBox.show();
   }
 
   private addLanguage(locale: string, disable: boolean) {
-    if (!_.find(this.customRfR.reasonForRefundList, {locale: locale})) {
-      this.customRfR.reasonForRefundList.push({locale: locale});
+    if (!_.find(this.customRfR.reasonForRefundList, {locale})) {
+      this.customRfR.reasonForRefundList.push({locale});
       this.i18nArray.push(this.validator.reasonForRefundI18NValidator(disable));
     }
 
