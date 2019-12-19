@@ -25,19 +25,7 @@ import {SaveClientSettingsAction} from '../../../../actions/refundAction';
   styleUrls: ['./reason-for-refund.component.scss']
 })
 export class ReasonForRefundComponent implements OnInit {
-
-  constructor(private adminService: AdministratorService, private store: Store<State>, private router: Router, private route: ActivatedRoute, private viewContainerRef: ViewContainerRef, private CFR: ComponentFactoryResolver, private validator: ReasonForRefundValidatorService, private fb: FormBuilder, private refdataService: RefdataService) {
-    this.reasonCodeExpansionSettings = this.setupReasonCodeExpansionSettings();
-    this.reasonCodeI18ExpansionSettings = this.setupI18ReasonCodeExpSettings();
-    this.setupReasonCodeColDef();
-    this.setupReasonCodeI18NColDef();
-    this.createAddCustomRfRForm();
-    this.createAddLanguageForm();
-    this.customRfR = {clientId: this.clientId};
-  }
-
-
-  @ViewChild('confirmationBox', {static: true}) confirmationBox: ConfirmationBoxComponent = new ConfirmationBoxComponent();
+  @ViewChild("confirmationBox", {static: true}) confirmationBox: ConfirmationBoxComponent = new ConfirmationBoxComponent();
   languages: Array<string>;
   languagesList: Array<string>;
   customRfR: AddCustomRfR;
@@ -64,6 +52,15 @@ export class ReasonForRefundComponent implements OnInit {
   errorMessage: string;
   clientSettings: ClientSettings;
 
+  constructor(private adminService: AdministratorService, private store: Store<State>, private router: Router, private route: ActivatedRoute, private viewContainerRef: ViewContainerRef, private CFR: ComponentFactoryResolver, private validator: ReasonForRefundValidatorService, private fb: FormBuilder, private refdataService: RefdataService) {
+    this.reasonCodeExpansionSettings = this.setupReasonCodeExpansionSettings();
+    this.reasonCodeI18ExpansionSettings = this.setupI18ReasonCodeExpSettings();
+    this.setupReasonCodeColDef();
+    this.setupReasonCodeI18NColDef();
+    this.createAddCustomRfRForm();
+    this.createAddLanguageForm();
+    this.customRfR = {clientId: this.clientId};
+  }
   actionButtons: Array<ActionButton>;
   confirmationAction: ConfirmationAction;
 
@@ -90,7 +87,7 @@ export class ReasonForRefundComponent implements OnInit {
         select(
           createSelector((state) => state.adminSettings,
             (adminSettings) => adminSettings.clientSettings))),
-      languages:  this.refdataService.getLocales()
+      languages: this.refdataService.getLocales()
     }).subscribe(data => {
       this.languages = data.languages.map(l => l.locale);
       this.isStandardRfREnabled = !data.clientSettings.customRfr;
@@ -103,11 +100,14 @@ export class ReasonForRefundComponent implements OnInit {
     });
   }
 
+  actionButtons: Array<ActionButton>;
+  confirmationAction: ConfirmationAction;
+
 
   generateActionButtonForAddCustomRfR(languages, disable) {
     this.actionButtons = [];
     languages.forEach(value => {
-      const button = new ActionButton();
+      let button = new ActionButton();
       button.data = value;
       button.label = value;
       button.action = (data => this.addLanguage(data, disable));
@@ -117,15 +117,15 @@ export class ReasonForRefundComponent implements OnInit {
   }
 
   generateActionMenuForRfRI18N(cellData, rowData, row) {
-    const menu = new ActionMenuComponent();
-    const editButton = new ActionButton();
-    editButton.label = 'edit';
+    let menu = new ActionMenuComponent();
+    let editButton = new ActionButton();
+    editButton.label = "edit";
     editButton.data = rowData;
     editButton.action = (data) => {
       this.reasonCodeI18ExpansionSettings.ExpandGrid(row);
     };
-    const deleteButton = new ActionButton();
-    deleteButton.label = 'delete';
+    let deleteButton = new ActionButton();
+    deleteButton.label = "delete";
     deleteButton.data = rowData;
     deleteButton.action = (data => {
       this.deleteI18N(data);
@@ -137,21 +137,21 @@ export class ReasonForRefundComponent implements OnInit {
     return menu;
   }
   generateActionMenuForRfr(cellData, rowData, row) {
-    const menu = new ActionMenuComponent();
-    const editButton = new ActionButton();
-    editButton.label = 'edit';
+    let menu = new ActionMenuComponent();
+    let editButton = new ActionButton();
+    editButton.label = "edit";
     editButton.data = rowData;
     editButton.action = (data) => {
       this.reasonCodeExpansionSettings.ExpandGrid(row);
     };
-    const deleteButton = new ActionButton();
-    deleteButton.label = 'delete';
+    let deleteButton = new ActionButton();
+    deleteButton.label = "delete";
     deleteButton.data = rowData;
     deleteButton.action = (data => {
       this.deleteRfR(data);
     });
-    const addLanguage = new ActionButton();
-    addLanguage.label = 'addLanguage';
+    let addLanguage = new ActionButton();
+    addLanguage.label = "addLanguage";
     addLanguage.data = rowData;
     addLanguage.action = (data => {
       this.createAddLanguageOverlay(data);
@@ -161,11 +161,12 @@ export class ReasonForRefundComponent implements OnInit {
       menu.buttons.push(deleteButton, addLanguage);
     }
     return menu;
-  }
+  };
+
   createAddLanguageOverlay(data: CustomRfRSettings) {
     this.createAddLanguageForm();
     this.errorMessage = null;
-    const existingLocale = this.reasonCodesI18N.getValue().filter(i18n => i18n.reasonCode == data.reasonCode).map(value => value.locale);
+    let existingLocale = this.reasonCodesI18N.getValue().filter(i18n => i18n.reasonCode == data.reasonCode).map(value => value.locale);
     this.languagesList = _.filter(this.languages, l => {
       return !(existingLocale.indexOf(l) > -1);
     });
@@ -235,7 +236,9 @@ export class ReasonForRefundComponent implements OnInit {
     this.adminService.toggleRfR(this.clientId).subscribe(value => {
       this.isStandardRfREnabled = !value.isCustomRfr;
       this.clientSettings.customRfr = value.isCustomRfr;
-      this.store.dispatch(new SaveClientSettingsAction(this.clientSettings));
+      this.store.dispatch(new SaveClientSettingsAction(Object.assign({}, this.clientSettings, {
+        customRfr: value.isCustomRfr
+      })));
       this.updateTables();
     });
   }
@@ -261,7 +264,7 @@ export class ReasonForRefundComponent implements OnInit {
         const componentResolve = this.CFR.resolveComponentFactory(RefundReasonSettingComponent);
         // Data table returns its own view container, so it can manage the removing of its instance on collapse of the grid
         // to prevent memory leaks.
-        const component = viewContainerRef.createComponent(componentResolve);
+        let component = viewContainerRef.createComponent(componentResolve);
         component.instance.customRfRSetting = rowData;
         this.editRefundSettingForm = this.validator.reasonForRefundSettingValidator();
         component.instance.formName = this.editRefundSettingForm;
@@ -277,7 +280,7 @@ export class ReasonForRefundComponent implements OnInit {
     return new ExpansionSettings(false, (viewContainerRef, rowData, row) => {
       return new Promise<any>((resolve) => {
         const componentResolve = this.CFR.resolveComponentFactory(EditRfRI18NComponent);
-        const component = this.viewContainerRef.createComponent(componentResolve);
+        let component = this.viewContainerRef.createComponent(componentResolve);
         this.editRefundI18nForm = this.validator.reasonForRefundI18NValidator();
         component.instance.i18nForm = this.editRefundI18nForm;
         component.instance.data = rowData;
@@ -319,8 +322,8 @@ export class ReasonForRefundComponent implements OnInit {
   }
 
   private deleteI18N(data: CustomRfRI18N) {
-    const deleteI18NRfR = {locale: data.locale, reasonCode: data.reasonCode, clientId: this.clientId};
-    const action = new ConfirmationAction();
+    let deleteI18NRfR = {locale: data.locale, reasonCode: data.reasonCode, clientId: this.clientId};
+    let action = new ConfirmationAction();
     action.action = () => {
       this.adminService.deleteRfRI18N(deleteI18NRfR).subscribe(value => {
         this.updateTables();
@@ -361,7 +364,7 @@ export class ReasonForRefundComponent implements OnInit {
   private deleteRfR(data: CustomRfRSettings) {
     data.clientId = this.clientId;
     this.confirmationBox = new ConfirmationBoxComponent();
-    const action = new ConfirmationAction();
+    let action = new ConfirmationAction();
     action.action = () => {
       this.adminService.deleteRfR(data).subscribe(value => {
         this.updateTables();
@@ -373,8 +376,8 @@ export class ReasonForRefundComponent implements OnInit {
   }
 
   private addLanguage(locale: string, disable: boolean) {
-    if (!_.find(this.customRfR.reasonForRefundList, {locale})) {
-      this.customRfR.reasonForRefundList.push({locale});
+    if (!_.find(this.customRfR.reasonForRefundList, {locale: locale})) {
+      this.customRfR.reasonForRefundList.push({locale: locale});
       this.i18nArray.push(this.validator.reasonForRefundI18NValidator(disable));
     }
 
