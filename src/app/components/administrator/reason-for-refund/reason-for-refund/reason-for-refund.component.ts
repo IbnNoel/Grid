@@ -100,10 +100,6 @@ export class ReasonForRefundComponent implements OnInit {
     });
   }
 
-  actionButtons: Array<ActionButton>;
-  confirmationAction: ConfirmationAction;
-
-
   generateActionButtonForAddCustomRfR(languages, disable) {
     this.actionButtons = [];
     languages.forEach(value => {
