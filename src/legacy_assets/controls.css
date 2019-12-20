@@ -177,3 +177,11 @@ table.detailItems {
     background-color: #f2dede;
     border-color: #ebccd1;
 }
+.checkBoxCol {
+    width: 1px;
+    text-align: center;
+    padding: 10px !important;
+}
+.checkBoxCol input:hover{
+    cursor: pointer;
+}
