@@ -50,6 +50,8 @@ export class DataTableComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.constructTableSettings();
+    this.constructColumnSettings();
+    
     this.initRenderOnCollapse();
     this.initExpansionHandler();
 
@@ -69,10 +71,7 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   }
 
   constructTableSettings = () => {
-    const columnSettings = this.constructColumnSettings();
-
     this.tableSettings = {
-      columns: columnSettings,
       info: false,
       ordering: false,
       searching: false,
@@ -129,13 +128,12 @@ export class DataTableComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private constructColumnSettings(): Array<DataTables.ColumnSettings> {
+  private constructColumnSettings() {
     if(this.CheckBoxSettings){
       let cbHelper = new CheckBoxHelper(this);
       this.Columns.unshift(cbHelper.setUpCheckBoxCell());
     }
-    return _.map(this.Columns, (setting) => {
-      return new HandleColumnSettings(setting, this).getDataTablesColumns(); });
+    this.tableSettings.columns = _.map(this.Columns, (setting) => { return new HandleColumnSettings(setting, this).getDataTablesColumns(); });
   }
 
   ngOnInit() {

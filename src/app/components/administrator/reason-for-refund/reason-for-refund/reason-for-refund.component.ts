@@ -100,10 +100,6 @@ export class ReasonForRefundComponent implements OnInit {
     });
   }
 
-  actionButtons: Array<ActionButton>;
-  confirmationAction: ConfirmationAction;
-
-
   generateActionButtonForAddCustomRfR(languages, disable) {
     this.actionButtons = [];
     languages.forEach(value => {
@@ -196,7 +192,7 @@ export class ReasonForRefundComponent implements OnInit {
       {key: 'locale', className: 'data_grid_center_align', header: 'language', translate: true},
       {key: 'sortOrder', className: 'data_grid_center_align', header: 'sortOrder'},
       {key: 'reasonForRefund', className: 'data_grid_center_align', header: 'reasonForRefund'},
-      {key: 'hint', className: 'data_grid_center_align', header: 'hint'},
+      {key: 'hint', className: 'data_grid_center_align', header: 'hint', width:'350px'},
       {
         cellElement: (cellData, rowData, row) => {
           return this.generateActionMenuForRfRI18N(cellData, rowData, row);

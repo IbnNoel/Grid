@@ -117,14 +117,16 @@ export class HandleColumnSettings {
   }
   collapseGrid_Func() {
   }
-  width_Func() {
-  }
   hideCollapsed_Func() {
   }
   detailColumn_Func() {
   }
   calculateTotal_Func() {
     // totalCalculateColumns[colElement.key] = "";
+  }
+  width_Func(width: string){
+    this.colSettings.width = width;
+    this.dataTableComponent.tableSettings.autoWidth = false;
   }
 }
 
@@ -160,7 +162,7 @@ export interface ColumnDefs {
   type?: any;
   sortable?: string;
   collapseGrid?: string;
-  width?: number;
+  width?: string;
   hideCollapsed?: boolean;
   detailColumn?: any;
   /* 
@@ -172,7 +174,6 @@ export interface ColumnDefs {
   * Manully set the breakpoint at which the column should be view on screen !
   */
   breakpoint?: string;
-
 }
 
 type FunctionCellElement = (cellData?: any, rowData?: any, row?: number, col?: number, td?:any) => HTMLButtonElement | HTMLElement | GPFIButton | ActionMenuComponent | string | void;
