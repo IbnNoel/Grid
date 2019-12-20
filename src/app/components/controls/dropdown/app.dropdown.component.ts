@@ -73,7 +73,7 @@ export class AppDropdownComponent implements OnInit, ControlValueAccessor, After
     jQuery(this.dropdownRef.nativeElement)
       .uiDropdown({
         forceSelection: false,
-        showOnFocus: false,
+        showOnFocus: true,
         useLabels: false,
         allowTab: true,
         fullTextSearch: true,
