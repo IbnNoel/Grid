@@ -8,7 +8,7 @@ import {ColumnDefs} from '../../../controls/data-table/classes/Columns';
 import {BehaviorSubject, forkJoin} from 'rxjs';
 import {ActionButton, ActionMenuComponent} from '../../../controls/action-menu/action-menu.component';
 import {PageSettings} from '../../../controls/data-table/classes/Paging';
-import {EditRfRI18NComponent} from '../custom/edit-rf-ri18-n/edit-rf-ri18-n.component';
+import {EditRfRI18NComponent} from '../edit-rf-ri18-n/edit-rf-ri18-n.component';
 import {RefundReasonSettingComponent} from '../refund-reason-setting/refund-reason-setting.component';
 import * as _ from 'lodash';
 import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
@@ -17,6 +17,7 @@ import {ConfirmationAction, ConfirmationBoxComponent} from '../../../controls/co
 import {ExpansionSettings} from 'src/app/components/controls/data-table/classes/Expansion';
 import {RefdataService} from '../../../../core/refdata.service';
 import {SaveClientSettingsAction} from '../../../../actions/refundAction';
+import {EditRefundReasonSettingComponent} from "../edit-refund-reason-setting/edit-refund-reason-setting.component";
 
 
 @Component({
@@ -252,7 +253,7 @@ export class ReasonForRefundComponent implements OnInit {
   setupReasonCodeExpansionSettings() {
     return new ExpansionSettings(false, (viewContainerRef, rowData, row) => {
       return new Promise<any>((resolve) => {
-        const componentResolve = this.CFR.resolveComponentFactory(RefundReasonSettingComponent);
+        const componentResolve = this.CFR.resolveComponentFactory(EditRefundReasonSettingComponent);
         // Data table returns its own view container, so it can manage the removing of its instance on collapse of the grid
         // to prevent memory leaks.
         let component = viewContainerRef.createComponent(componentResolve);

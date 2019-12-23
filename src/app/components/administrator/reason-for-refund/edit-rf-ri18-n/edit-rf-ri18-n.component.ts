@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {CustomRfRI18N} from "../../../../../core/administrator.service";
+import {CustomRfRI18N} from "../../../../core/administrator.service";
 import {FormGroup} from "@angular/forms";
 
 @Component({
