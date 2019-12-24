@@ -9,7 +9,6 @@ import {BehaviorSubject, forkJoin} from 'rxjs';
 import {ActionButton, ActionMenuComponent} from '../../../controls/action-menu/action-menu.component';
 import {PageSettings} from '../../../controls/data-table/classes/Paging';
 import {EditRfRI18NComponent} from '../edit-rf-ri18-n/edit-rf-ri18-n.component';
-import {RefundReasonSettingComponent} from '../refund-reason-setting/refund-reason-setting.component';
 import * as _ from 'lodash';
 import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 import {ReasonForRefundValidatorService} from '../../../../validator/administrator/reason-for-refund/reason-for-refund-validator.service';
@@ -28,7 +27,7 @@ import {EditRefundReasonSettingComponent} from "../edit-refund-reason-setting/ed
 export class ReasonForRefundComponent implements OnInit {
   @ViewChild("confirmationBox", {static: true}) confirmationBox: ConfirmationBoxComponent = new ConfirmationBoxComponent();
   languages: Array<string>;
-  languagesList: Array<string>;
+  languagesList: Array<string> = [];
   addNewLanguagesList: Array<string> = [];
   customRfR: AddCustomRfR;
   reasonCodeColDef: Array<ColumnDefs>;
