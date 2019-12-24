@@ -2,13 +2,14 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {RefundsComponent} from '../refunds.component';
 import {AuthGuardService, RoleAuthGuard} from '../core/auth.guard.service';
-import {CreateRefundsComponent} from '../components/create-refunds/create-refunds.component';
 import {AdministratorComponent} from '../components/administrator/administrator.component';
 import {ClientSettingsComponent} from '../components/administrator/client-settings/client-settings.component';
 import {DirectRejectRequestComponent} from '../components/administrator/direct-reject-request/direct-reject-request.component';
 import {ReasonForRefundComponent} from '../components/administrator/reason-for-refund/reason-for-refund/reason-for-refund.component';
 import {RefundHandlingComponent} from '../components/administrator/refund-handling/refund-handling.component';
 import {CustomFieldsComponent} from '../components/administrator/custom-fields/custom-fields/custom-fields.component';
+import {ManageRefundsComponent} from "../components/manage-refunds/manage-refunds.component";
+
 const routes: Routes = [
   {
     path: 'refunds',
@@ -43,8 +44,10 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'create',
-        component: CreateRefundsComponent
+        path: 'manage',
+        component: ManageRefundsComponent,
+        canActivate: [AuthGuardService, RoleAuthGuard],
+        data: {roles: ["ViewRefund", "ManageRefundPortal", "ApproveRefund", "InitiateRefund"], redirectTo: 'refunds/manage'},
       },
       {
         path: '',
