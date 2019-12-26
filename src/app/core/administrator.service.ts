@@ -217,6 +217,7 @@ export interface RefundHandling {
   directRejectionCard: boolean;
   directRejectionNonCard: boolean;
   nonDirectRejection: boolean;
+  fulfilmentPartner: boolean;
 }
 
 export interface AdminSettings {
