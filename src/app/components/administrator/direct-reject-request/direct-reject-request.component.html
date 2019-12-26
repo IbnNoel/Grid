@@ -71,31 +71,5 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="form-group" >
-            <div class="col-md-3">
-                <label class="control-label">{{'refundRequest_reasonForRefund' | translate }}</label>
-            </div>
-            <div class="col-md-6 col-xs-12">
-                <div class="col-md-6 col-xs-12 list-group-item" >
-                    <div class="col-xs-6">
-                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.reasonForRefundVisible" [value] = "false" name="reasonForRefundVisible"> {{'refundRequest_hidden' | translate }}</label>
-                    </div>
-                    <div class="col-xs-6">
-                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.reasonForRefundVisible" [value] = "true"  name="reasonForRefundVisible"> {{'refundRequest_displayed' | translate }}</label>
-                    </div>
-                </div>
-                <div class="col-md-6 col-xs-12 list-group-item" >
-                    <div class="col-xs-6">
-                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.reasonForRefundMandatory" [value] = "false"  name="reasonForRefundMandatory"> {{'refundRequest_optional' | translate }}</label>
-                    </div>
-                    <div class="col-xs-6">
-                        <label class="radio-inline"><input type="radio" [(ngModel)]="rf.reasonForRefundMandatory" [value] ="true"  name="reasonForRefundMandatory"> {{'refundRequest_mandatory' | translate }}</label>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
 </ng-container>
 <app-operation-buttons (onCancel)="onCancel()" (onSave)="onSave($event)"></app-operation-buttons>

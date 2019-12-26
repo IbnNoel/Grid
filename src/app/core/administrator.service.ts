@@ -233,8 +233,6 @@ export interface RefundRequestSettings {
   clientId: number;
   pledgeReferenceMandatory: boolean;
   pledgeReferenceVisible: boolean;
-  reasonForRefundMandatory: boolean;
-  reasonForRefundVisible: boolean;
   refundAmountMandatory: boolean;
   refundAmountVisible: boolean;
   refundRequestInfoList: Array<{
