@@ -7,10 +7,12 @@ export class GeneralSettings{
 
     }
     AddRow(){}
-    UpddateRow(id, record){
-        this._generalSettingHelper.UpdateRow(id, record);
+    UpddateRow(rowInfo, record){
+        this._generalSettingHelper.UpdateRow(rowInfo, record);
     }
-    DeleteRow(){}
+    DeleteRow(rowInfo){
+        this._generalSettingHelper.DeleteRow(rowInfo);
+    }
     SetUpOnGridInit(){}
 
     set GeneralSettings(settings){
@@ -67,6 +69,13 @@ export class GeneralSettingsHelper{
             this.updateChildRows(tableRecord);
 
         }
+    }
+
+    DeleteRow(rowInfo: {id, propertyName: string} | DataTables.RowMethods | number){
+        let tableRecord = GeneralSettingsHelper.getDataTableRowObject(rowInfo, this._tableApi);
+        tableRecord.remove();
+        this._tableApi.draw(false);
+        // init page number refresh!
     }
 
     updateChildRows(tableRecord){
