@@ -2,7 +2,7 @@ import * as $ from 'jquery';
 import * as _ from 'lodash';
 import { Observable, timer, AsyncSubject } from 'rxjs';
 import { DataTableComponent } from '../data-table.component';
-import { ExpansionSettingsHandler } from './Expansion';
+import { ExpansionSettingsHandler, ExpansionSettings } from './Expansion';
 
  /*
  * Expansion can be achieved via td, objectId or DATA!
@@ -16,6 +16,7 @@ import { ExpansionSettingsHandler } from './Expansion';
     private _dataTableHtml: any;
     private _responsivePriorty: boolean;
     private _rowRenderedMap = new Map<number, AsyncSubject<any>>();
+    private _expansionSettings: ExpansionSettings;
 
     constructor(){}
 
@@ -37,6 +38,7 @@ import { ExpansionSettingsHandler } from './Expansion';
 
         this._dataTableHtml = dtComponent.tableHtml;
         this._dataTableSettings = dtComponent.tableSettings;
+        this._expansionSettings = dtComponent.ExpansionSettings;
         this._isDetailRowEnabled = (!!dtComponent.ExpansionSettings) ? dtComponent.ExpansionSettings._isDetailRow : false;
         this._expandHelper = dtComponent.expansionSettingsHandler;
         this._dataTableSettings.dom = (this._dataTableSettings.paging) ? "<'container-fluid'<'row gpfiPageLengthControl' <'clearfix'> l><'row't><'row'p>>" : "<'container-fluid'<'row't>>";
@@ -125,7 +127,7 @@ import { ExpansionSettingsHandler } from './Expansion';
         let currentRow =  $(tableApi.row(index).node());
 
         // if the table or row does'nt have detail row capability
-        if (!this._isDetailRowEnabled || currentRow.attr("detailenabled") == "false") {
+        if (!this._expansionSettings  || currentRow.attr("detailenabled") == "false") {
             // if no columns are hidden
             if (columnTable.find('tr').length == 0) {
                 return false;
