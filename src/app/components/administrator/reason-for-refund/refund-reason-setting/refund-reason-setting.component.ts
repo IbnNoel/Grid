@@ -11,7 +11,7 @@ export class RefundReasonSettingComponent implements OnInit {
 
   @Input() formName: FormGroup;
   @Input() customRfRSetting: CustomRfRSettings;
-  editMode: boolean;
+  @Input() editMode?: boolean;
   gridWidth: String;
   @Output() closeOverlay = new EventEmitter();
   @Output() updateRefundSetting = new EventEmitter();

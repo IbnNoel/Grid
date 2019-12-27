@@ -29,10 +29,14 @@
     </div>
     <div class="row" *ngFor="let i18n of customRfR.reasonForRefundList;let i18nIndex=index">
       <div class="col-md-11 row">
-        <app-refund-reason-language [formName]="i18nForm(i18nIndex,true)" [languages]="languages" [customRfRI18N]="i18n"></app-refund-reason-language>
+        <app-refund-reason-language [formName]="i18nForm(i18nIndex,true)" [languages]="languagesList" [customRfRI18N]="i18n"
+                                    (changeLanguageEvent)="changeLanguage()"></app-refund-reason-language>
       </div>
       <div class="col-md-1">
-        <app-action-menu [buttons]="actionButtons"></app-action-menu>
+        <button type="button" class="btn btn-primary" (click)="addLanguage(false)" style="
+    padding-top: 9px;" [disabled]="languagesList.length==0">
+          +
+        </button>
       </div>
     </div>
     <div>
@@ -47,10 +51,15 @@
     </span>
     <div class="row" *ngFor="let i18n of customRfR.reasonForRefundList;let i18nIndex=index">
       <div class="col-md-11 row">
-        <app-refund-reason-language [formName]="i18nForm(i18nIndex,false)" addNewLanguage="true" [languages]="languagesList" [customRfRI18N]="i18n"></app-refund-reason-language>
+        <app-refund-reason-language (changeLanguageEvent)="changeAddNewLanguage()" [formName]="i18nForm(i18nIndex,false)" addNewLanguage="true"
+                                    [languages]="addNewLanguagesList"
+                                    [customRfRI18N]="i18n"></app-refund-reason-language>
       </div>
       <div class="col-md-1">
-        <app-action-menu [buttons]="actionButtons"></app-action-menu>
+        <button type="button" class="btn btn-primary" (click)="addLanguage(true)" style="
+    padding-top: 9px;" [disabled]="addNewLanguagesList.length==0">
+          +
+        </button>
       </div>
     </div>
     <div>

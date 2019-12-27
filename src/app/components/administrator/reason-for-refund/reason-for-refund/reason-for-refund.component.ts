@@ -5,11 +5,10 @@ import {State} from '../../../../reducers';
 import {ActivatedRoute, Router} from '@angular/router';
 import {take} from 'rxjs/operators';
 import {ColumnDefs} from '../../../controls/data-table/classes/Columns';
-import {BehaviorSubject, forkJoin, Observable} from 'rxjs';
+import {BehaviorSubject, forkJoin} from 'rxjs';
 import {ActionButton, ActionMenuComponent} from '../../../controls/action-menu/action-menu.component';
 import {PageSettings} from '../../../controls/data-table/classes/Paging';
-import {EditRfRI18NComponent} from '../custom/edit-rf-ri18-n/edit-rf-ri18-n.component';
-import {RefundReasonSettingComponent} from '../refund-reason-setting/refund-reason-setting.component';
+import {EditRfRI18NComponent} from '../edit-rf-ri18-n/edit-rf-ri18-n.component';
 import * as _ from 'lodash';
 import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 import {ReasonForRefundValidatorService} from '../../../../validator/administrator/reason-for-refund/reason-for-refund-validator.service';
@@ -18,6 +17,8 @@ import {ExpansionSettings} from 'src/app/components/controls/data-table/classes/
 import {RefdataService} from '../../../../core/refdata.service';
 import {SaveClientSettingsAction} from '../../../../actions/refundAction';
 import { GeneralSettings } from 'src/app/components/controls/data-table/classes/General';
+import {EditRefundReasonSettingComponent} from "../edit-refund-reason-setting/edit-refund-reason-setting.component";
+
 
 
 @Component({
@@ -28,7 +29,8 @@ import { GeneralSettings } from 'src/app/components/controls/data-table/classes/
 export class ReasonForRefundComponent implements OnInit {
   @ViewChild("confirmationBox", {static: true}) confirmationBox: ConfirmationBoxComponent = new ConfirmationBoxComponent();
   languages: Array<string>;
-  languagesList: Array<string>;
+  languagesList: Array<string> = [];
+  addNewLanguagesList: Array<string> = [];
   customRfR: AddCustomRfR;
   reasonCodeColDef: Array<ColumnDefs>;
   reasonCodeI18NColDef: Array<ColumnDefs>;
@@ -64,6 +66,7 @@ export class ReasonForRefundComponent implements OnInit {
     this.customRfR = {clientId: this.clientId};
     this.generalSettings = new GeneralSettings();
   }
+
   actionButtons: Array<ActionButton>;
   confirmationAction: ConfirmationAction;
 
@@ -103,17 +106,6 @@ export class ReasonForRefundComponent implements OnInit {
     });
   }
 
-  generateActionButtonForAddCustomRfR(languages, disable) {
-    this.actionButtons = [];
-    languages.forEach(value => {
-      let button = new ActionButton();
-      button.data = value;
-      button.label = value;
-      button.action = (data => this.addLanguage(data, disable));
-      this.actionButtons.push(button);
-    });
-    return this.actionButtons;
-  }
 
   generateActionMenuForRfRI18N(cellData, rowData, row) {
     let menu = new ActionMenuComponent();
@@ -135,6 +127,7 @@ export class ReasonForRefundComponent implements OnInit {
     }
     return menu;
   }
+
   generateActionMenuForRfr(cellData, rowData, row) {
     let menu = new ActionMenuComponent();
     let editButton = new ActionButton();
@@ -165,14 +158,13 @@ export class ReasonForRefundComponent implements OnInit {
   createAddLanguageOverlay(data: CustomRfRSettings) {
     this.createAddLanguageForm();
     this.errorMessage = null;
-    let existingLocale = this.reasonCodesI18N.getValue().filter(i18n => i18n.reasonCode == data.reasonCode).map(value => value.locale);
-    this.languagesList = _.filter(this.languages, l => {
+    let existingLocale = this.languages.filter(value => this.refdataService.isDefaultLanguage(value));
+    this.addNewLanguagesList = _.filter(this.languages, l => {
       return !(existingLocale.indexOf(l) > -1);
     });
     this.customRfR = {clientId: this.clientId, reasonCode: data.reasonCode};
     this.customRfR.reasonForRefundList = [];
-    this.customRfR.reasonForRefundList.push({locale: this.languagesList[0]});
-    this.generateActionButtonForAddCustomRfR(this.languagesList, false);
+    this.customRfR.reasonForRefundList.push({locale: this.addNewLanguagesList[0]});
     $('#addNewLanguageOverlay').modal({show: true, backdrop: false});
   }
 
@@ -195,7 +187,7 @@ export class ReasonForRefundComponent implements OnInit {
       {key: 'locale', className: 'data_grid_center_align', header: 'language', translate: true},
       {key: 'sortOrder', className: 'data_grid_center_align', header: 'sortOrder'},
       {key: 'reasonForRefund', className: 'data_grid_center_align', header: 'reasonForRefund'},
-      {key: 'hint', className: 'data_grid_center_align', header: 'hint', width:'350px'},
+      {key: 'hint', className: 'data_grid_center_align', header: 'hint', width: '350px'},
       {
         cellElement: (cellData, rowData, row) => {
           return this.generateActionMenuForRfRI18N(cellData, rowData, row);
@@ -208,7 +200,11 @@ export class ReasonForRefundComponent implements OnInit {
     this.errorMessage = null;
     this.customRfR.reasonForRefundList = [];
     this.customRfR.reasonForRefundList.push({locale: this.refdataService.getDefaultLanguage()});
-    this.generateActionButtonForAddCustomRfR(this.languages, true);
+    let existingLocale: Array<String>;
+    existingLocale = this.addCustomRfRForm.getRawValue().i18n.map(value => value.locale);
+    this.languagesList = _.filter(this.languages, l => {
+      return !(existingLocale.indexOf(l) > -1);
+    });
     $('#addCustomRfROverlay').modal({show: true, backdrop: false});
   }
 
@@ -260,7 +256,7 @@ export class ReasonForRefundComponent implements OnInit {
   setupReasonCodeExpansionSettings() {
     return new ExpansionSettings(false, (viewContainerRef, rowData, row) => {
       return new Promise<any>((resolve) => {
-        const componentResolve = this.CFR.resolveComponentFactory(RefundReasonSettingComponent);
+        const componentResolve = this.CFR.resolveComponentFactory(EditRefundReasonSettingComponent);
         // Data table returns its own view container, so it can manage the removing of its instance on collapse of the grid
         // to prevent memory leaks.
         let component = viewContainerRef.createComponent(componentResolve);
@@ -382,12 +378,19 @@ export class ReasonForRefundComponent implements OnInit {
     this.confirmationBox.show();
   }
 
-  private addLanguage(locale: string, disable: boolean) {
-    if (!_.find(this.customRfR.reasonForRefundList, {locale: locale})) {
-      this.customRfR.reasonForRefundList.push({locale: locale});
-      this.i18nArray.push(this.validator.reasonForRefundI18NValidator(disable));
+  addLanguage(addNewLanguage: boolean) {
+    let existingLocale: Array<String>;
+    if (addNewLanguage) {
+      existingLocale = this.addLanguageForm.getRawValue().i18n.map(value => value.locale);
+      existingLocale.push(this.refdataService.getDefaultLanguage());
+    } else {
+      existingLocale = this.addCustomRfRForm.getRawValue().i18n.map(value => value.locale);
     }
-
+    let languagesList = _.filter(this.languages, l => {
+      return !(existingLocale.indexOf(l) > -1);
+    });
+    this.customRfR.reasonForRefundList.push({locale: languagesList[0]});
+    this.i18nArray.push(this.validator.reasonForRefundI18NValidator(false));
   }
 
   i18nForm(i18nIndex: number, addRfR: boolean) {
@@ -400,5 +403,22 @@ export class ReasonForRefundComponent implements OnInit {
 
   closeAddCustomOverlay(name: string) {
     this.close(name);
+  }
+
+  changeLanguage() {
+    let existingLocale: Array<String>;
+    existingLocale = this.addCustomRfRForm.getRawValue().i18n.map(value => value.locale);
+    this.languagesList = _.filter(this.languages, l => {
+      return !(existingLocale.indexOf(l) > -1);
+    });
+  }
+
+  changeAddNewLanguage() {
+    let existingLocale: Array<String>;
+    existingLocale = this.addLanguageForm.getRawValue().i18n.map(value => value.locale);
+    existingLocale.push(this.refdataService.getDefaultLanguage());
+    this.addNewLanguagesList = _.filter(this.languages, l => {
+      return !(existingLocale.indexOf(l) > -1);
+    });
   }
 }

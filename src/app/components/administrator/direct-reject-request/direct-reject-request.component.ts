@@ -8,7 +8,7 @@ import {forkJoin, Observable, of} from 'rxjs';
 import {ActionButton} from '../../controls/action-menu/action-menu.component';
 import * as _ from 'lodash';
 import {RefdataService} from "../../../core/refdata.service";
-import { MessageStatus, MessageType } from '../../controls/message/messageStatus';
+import {MessageStatus, MessageType} from '../../controls/message/messageStatus';
 
 @Component({
   selector: 'app-direct-reject-request',
@@ -20,6 +20,7 @@ export class DirectRejectRequestComponent implements OnInit {
   refundRequestSettings: RefundRequestSettings;
   languages$: Observable<Array<string>>;
   actionButtons: Array<ActionButton>;
+  clientId: number;
   infoTextList: Array<{ locale: string, text: string }> = [];
 
 
@@ -35,14 +36,16 @@ export class DirectRejectRequestComponent implements OnInit {
 
   setSavedState() {
     forkJoin({
-        rrSettings: this.store.pipe(
+        clientSettings: this.store.pipe(
           take(1),
-          select(createSelector((state) => state.adminSettings,
-            (adminSettings) => adminSettings.refundRequestSettings))),
+          select(
+            createSelector((state) => state.adminSettings,
+              (adminSettings) => adminSettings.clientSettings))),
         lang: this.languages$
       },
     ).subscribe((response) => {
-      this.refundRequestSettings = _.cloneDeep(response.rrSettings) as RefundRequestSettings;
+      this.clientId = response.clientSettings.clientId;
+      this.adminService.getRefundRequestSettings(this.clientId).subscribe(value => this.refundRequestSettings = value);
       this.setDefaultValue();
       this.setActionBtns(response.lang);
 

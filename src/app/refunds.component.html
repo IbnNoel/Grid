@@ -1,7 +1,7 @@
 <div id="page-wrapper" loadingDialog>
   <ul class="nav nav-tabs">
-    <li routerLinkActive="active" *ngIf="hasAdminPrivilege"><a routerLink="/refunds/admin">Administrator</a></li>
-    <li routerLinkActive="active"><a routerLink="/refunds/create" >Refunds</a></li>
+    <li routerLinkActive="active" *ngIf="hasAdminPrivilege"><a routerLink="/refunds/admin" translate="administrator"></a></li>
+    <li routerLinkActive="active"><a routerLink="/refunds/manage" translate="refunds"></a></li>
   </ul>
   <div class="content">
     <router-outlet></router-outlet>
