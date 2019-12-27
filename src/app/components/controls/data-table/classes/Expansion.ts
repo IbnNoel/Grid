@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 import { Observable, timer, AsyncSubject } from 'rxjs';
 import { DataTableComponent } from '../data-table.component';
 import { ViewContainerRef, QueryList, ElementRef, ComponentRef } from '@angular/core';
+import { GeneralSettingsHelper } from './General';
 
 export class ExpansionSettingsHandler{
     private _tableApi :  DataTables.Api;
@@ -11,6 +12,7 @@ export class ExpansionSettingsHandler{
     private _responsiveColsDisplayedInExpansion: Map<number,any> = new Map();
     private _componentMap: Map<number,ComponentRef<any>> = new Map();
     private _viewContainer: ViewContainerRef;
+    private _tableDom:any;
 
     constructor(){ }
 
@@ -23,6 +25,7 @@ export class ExpansionSettingsHandler{
                 this._tableApi.on('draw',(apiParam) => {
                     this.onGridRender(param.tableDom);
                 });
+                this._tableDom = param.tableDom;
             }
         })
     }
@@ -78,6 +81,13 @@ export class ExpansionSettingsHandler{
         this._expandCallback = callback;
     }
 
+    deleteChildComponents(){
+        this._componentMap.forEach((value,key,map) => {
+            map.delete(key);
+        });
+        $(this._tableDom).find("tr").removeClass("shown");
+    }
+
     /*
     * Dom is saved to a dictionary to be appended when a custom expansion is invoked
     */
@@ -94,17 +104,7 @@ export class ExpansionSettingsHandler{
     }
 
     getDataTableRowObject(rowInfo){
-        let row: DataTables.RowMethods;
-        if(!isNaN(rowInfo)){
-            row = this._tableApi.row(rowInfo);
-        }else if("propertyName" in rowInfo){
-            row = this._tableApi.row(function (idx, data, node) {
-                return data[(rowInfo as any).propertyName] == rowInfo.id;
-            })
-        }else{
-            row = rowInfo as DataTables.RowMethods;
-        }
-        return row;
+        return GeneralSettingsHelper.getDataTableRowObject(rowInfo,this._tableApi);
     }
 
     private getClassNameByPrefix(dom, prefix) {
@@ -113,22 +113,11 @@ export class ExpansionSettingsHandler{
         });
         if (keyClass.length > 0) {
             var keyString = keyClass[0].substring(prefix.length + 1);
-            keyString = this.addSlashToDot(keyString);
+            keyString = GeneralSettingsHelper.addSlashToDot(keyString);
             return keyString;
         } else {
             return null;
         }
-    }
-
-    /**
-     * TODO: extract into a different helper class
-     */
-    addSlashToDot(keyString) {
-        var dotIndex = keyString.indexOf('.');
-        if (dotIndex > -1) {
-            keyString = keyString.slice(0, dotIndex) + "\\" + keyString.slice(dotIndex);
-        }
-        return keyString;
     }
 }
 
@@ -167,6 +156,7 @@ export class ExpansionSettings{
         let row = this.handler.getDataTableRowObject(rowInfo);
         if (row.length > 0) {
             if (this.noExpansionBtn(row)) {
+                $(row.node()).toggleClass('shown', true);
                 this.handler.expandGrid(row);
             } else {
                 $(row.node()).find(".gpfiExpand.collapsed").click();
@@ -180,6 +170,7 @@ export class ExpansionSettings{
     CollapseGrid(rowInfo?: {id, propertyName: string} | DataTables.RowMethods | number){
         let row = this.handler.getDataTableRowObject(rowInfo);
         if (this.noExpansionBtn(row)) {
+            $(row.node()).toggleClass('shown', false);
             this.handler.collapseGrid(row);
         }else{
             $(row.node()).find(".gpfiExpand:not(.collapsed)").click();

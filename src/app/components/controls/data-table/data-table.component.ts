@@ -15,6 +15,8 @@ import { ExpansionSettings, ExpansionSettingsHandler } from './classes/Expansion
 import { RenderedResponsiveCollapsedHelper } from './classes/CollapsedResponsive';
 import { TranslateService } from '@ngx-translate/core';
 import { CheckBoxSettings, CheckBoxHelper } from './classes/CheckBox';
+import { FooterSettings, FooterSettingsHelper } from './classes/Footer';
+import { GeneralSettings, GeneralSettingsHelper } from './classes/General';
 
 @Component({
   selector: 'app-data-table',
@@ -31,6 +33,9 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   @Input() ExpansionSettings?: ExpansionSettings;
   @Input() CheckBoxSettings?: CheckBoxSettings;
   @Input() CollapseOnRender = true;
+  @Input() FooterSettings?: FooterSettings;
+  @Input() GeneralSettings?: GeneralSettings;
+  @Input('row-id') RowId?: string;
 
   dataTableApi: DataTables.Api;
   dataTableSettings: DataTables.Settings;
@@ -40,6 +45,7 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   pageChangeData: Observable<any>;
   tableSettings: DataTables.Settings;
   expansionSettingsHandler: ExpansionSettingsHandler = new ExpansionSettingsHandler();
+  generalSettingsHelper: GeneralSettingsHelper;
   renderedResponsiveCollapsedHelper: RenderedResponsiveCollapsedHelper = new RenderedResponsiveCollapsedHelper();
   onGridInit$ = new BehaviorSubject<{api: DataTables.Api, tableDom: any}>(null);
   translateService: TranslateService;
@@ -54,6 +60,8 @@ export class DataTableComponent implements OnInit, AfterViewInit {
     
     this.initRenderOnCollapse();
     this.initExpansionHandler();
+    this.initFooterSettings();
+    this.setUpUpdateSettings();
 
     this.dataTableApi = $(this.tableHtml.nativeElement).DataTable(this.tableSettings);
     this.onGridInit$.next({api: this.dataTableApi, tableDom: this.tableHtml.nativeElement});
@@ -86,18 +94,31 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   }
 
   private initTable(data) {
+    // check if any of the rows are expanded
+
     if (this.PageSettings) {
       this.pagingHelper.initPaging(() => {
         this.createTable(data);
-        /*  if (!update || !ctrl.detailRow) {
-              table.draw(false);
-         }*/
       });
     } else {
       this.createTable(data);
-      /*  if (!update || !ctrl.detailRow) {
-               table.draw();
-      }*/
+    }
+  }
+
+  private isUpdateNeeded(){
+    let expandedRows = $(this.tableHtml.nativeElement).find("tr.shown");
+    let update = false;
+    if (expandedRows.length > 0 && this.RowId != null) {
+        update = true;
+    }
+    return update;
+  }
+
+
+  private setUpUpdateSettings(){
+    this.generalSettingsHelper = new GeneralSettingsHelper(this);
+    if(this.GeneralSettings){
+      this.GeneralSettings.GeneralSettings = this.generalSettingsHelper;
     }
   }
 
@@ -114,9 +135,40 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   }
 
   private createTable(data) {
-    this.dataTableApi.clear();
-    this.dataTableApi.rows.add(data);
-    this.dataTableApi.draw();
+    let performUpdate = this.isUpdateNeeded();
+
+    if(performUpdate){
+      this.updateTable(data);
+    }else{
+      this.dataTableApi.clear();
+      this.dataTableApi.rows.add(data);
+      //if(!this.ExpansionSettings){
+        this.dataTableApi.draw(!!this.PageSettings);
+      //}
+    }
+  }
+
+  private updateTable(gridData){
+    if(gridData.length == 0){
+      this.dataTableApi.clear();
+      this.dataTableApi.draw();
+    }else{
+      for (var i = 0; i < gridData.length; i++) {
+        var rowInfo = {id: gridData[i][this.RowId], propertyName: this.RowId};
+        this.generalSettingsHelper.UpdateRow(rowInfo, gridData[i]);
+      }
+      let deletedRows = this.dataTableApi.rows((idx, data, node) => {
+        var delRow = gridData.filter((obj) => {
+            return obj[this.RowId] == data[this.RowId];
+        });
+        if (delRow.length == 0){
+            return this.dataTableApi.row(idx).data();
+        }
+      });
+      if (deletedRows.nodes().length > 0) {
+        deletedRows.remove().draw(false);
+      }
+    }
   }
 
   private initExpansionHandler() {
@@ -129,11 +181,18 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   }
 
   private constructColumnSettings() {
+    // TODO:- MOVE INTO OWN METHOD
     if(this.CheckBoxSettings){
       let cbHelper = new CheckBoxHelper(this);
       this.Columns.unshift(cbHelper.setUpCheckBoxCell());
     }
     this.tableSettings.columns = _.map(this.Columns, (setting) => { return new HandleColumnSettings(setting, this).getDataTablesColumns(); });
+  }
+
+  private initFooterSettings(){
+    if(this.FooterSettings){
+      let footerSettingsHelper = new FooterSettingsHelper(this);
+    }
   }
 
   ngOnInit() {

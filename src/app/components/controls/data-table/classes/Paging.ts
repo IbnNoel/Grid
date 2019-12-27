@@ -4,6 +4,7 @@ import { DataTableComponent } from '../data-table.component';
 import { TranslateService } from '@ngx-translate/core';
 import { switchMap, map, combineAll, toArray } from 'rxjs/operators';
 import * as _ from 'lodash';
+import { ExpansionSettings, ExpansionSettingsHandler } from './Expansion';
 
  export class PageSettings{
     private _pageSize = 10;
@@ -11,6 +12,8 @@ import * as _ from 'lodash';
     private _currentPage = 1;
     private _onPageChange : any;
 
+
+    // TODO:- Page return function a promise!!
     constructor(onPageChangeFunc: () => void){
       this._onPageChange = onPageChangeFunc;
     }
@@ -105,12 +108,16 @@ import * as _ from 'lodash';
     private _maxPageNumberBtn = 5;
     private _startingPageNumberBtn = 1;
     private _lengthControl: PageLengthControl;
+    private _expansionSettings:ExpansionSettings;
+    private _expansionSettingsHandler: ExpansionSettingsHandler;
 
     constructor(dtComponent: DataTableComponent){
       this._tableApi = dtComponent.dataTableApi;
       this._pagingSettings = dtComponent.PageSettings;
       this.getPageHolder().addClass("gpfiPagination");
       this._lengthControl = new PageLengthControl(dtComponent);
+      this._expansionSettings = dtComponent.ExpansionSettings;
+      this._expansionSettingsHandler = dtComponent.expansionSettingsHandler;
     }
 
     renderButtons(){
@@ -145,6 +152,9 @@ import * as _ from 'lodash';
         this.hidePagingButtons();
         // add loading overLay
         this._pagingSettings.currentPage = pageNo;
+        if(this._expansionSettings){
+          this._expansionSettingsHandler.deleteChildComponents();
+        }
         this._pagingSettings.onPageChange();
     }
 

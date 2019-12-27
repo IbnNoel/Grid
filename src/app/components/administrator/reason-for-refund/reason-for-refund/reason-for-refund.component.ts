@@ -17,6 +17,7 @@ import {ConfirmationAction, ConfirmationBoxComponent} from '../../../controls/co
 import {ExpansionSettings} from 'src/app/components/controls/data-table/classes/Expansion';
 import {RefdataService} from '../../../../core/refdata.service';
 import {SaveClientSettingsAction} from '../../../../actions/refundAction';
+import { GeneralSettings } from 'src/app/components/controls/data-table/classes/General';
 
 
 @Component({
@@ -51,6 +52,7 @@ export class ReasonForRefundComponent implements OnInit {
   editRefundI18nForm: FormGroup;
   errorMessage: string;
   clientSettings: ClientSettings;
+  generalSettings:GeneralSettings;
 
   constructor(private adminService: AdministratorService, private store: Store<State>, private router: Router, private route: ActivatedRoute, private viewContainerRef: ViewContainerRef, private CFR: ComponentFactoryResolver, private validator: ReasonForRefundValidatorService, private fb: FormBuilder, private refdataService: RefdataService) {
     this.reasonCodeExpansionSettings = this.setupReasonCodeExpansionSettings();
@@ -60,6 +62,7 @@ export class ReasonForRefundComponent implements OnInit {
     this.createAddCustomRfRForm();
     this.createAddLanguageForm();
     this.customRfR = {clientId: this.clientId};
+    this.generalSettings = new GeneralSettings();
   }
   actionButtons: Array<ActionButton>;
   confirmationAction: ConfirmationAction;
@@ -118,7 +121,7 @@ export class ReasonForRefundComponent implements OnInit {
     editButton.label = "edit";
     editButton.data = rowData;
     editButton.action = (data) => {
-      this.reasonCodeI18ExpansionSettings.ExpandGrid(row);
+      this.reasonCodeI18ExpansionSettings.ExpandGrid({id: rowData.reasonCode, propertyName: "reasonCode"});
     };
     let deleteButton = new ActionButton();
     deleteButton.label = "delete";
@@ -138,7 +141,7 @@ export class ReasonForRefundComponent implements OnInit {
     editButton.label = "edit";
     editButton.data = rowData;
     editButton.action = (data) => {
-      this.reasonCodeExpansionSettings.ExpandGrid(row);
+      this.reasonCodeExpansionSettings.ExpandGrid({id: rowData.reasonCode, propertyName: "reasonCode"});
     };
     let deleteButton = new ActionButton();
     deleteButton.label = "delete";
@@ -265,7 +268,8 @@ export class ReasonForRefundComponent implements OnInit {
         this.editRefundSettingForm = this.validator.reasonForRefundSettingValidator();
         component.instance.formName = this.editRefundSettingForm;
         component.instance.editMode = true;
-        component.instance.closeOverlay.asObservable().subscribe(value => this.reasonCodeExpansionSettings.CollapseGrid(row));
+        component.instance.closeOverlay.asObservable().subscribe(value => {
+          this.reasonCodeExpansionSettings.CollapseGrid({id: value.reasonCode, propertyName: "reasonCode"})});
         component.instance.updateRefundSetting.asObservable().subscribe(value => this.updateRefundSetting(value));
         resolve(component);
       });
@@ -276,14 +280,17 @@ export class ReasonForRefundComponent implements OnInit {
     return new ExpansionSettings(false, (viewContainerRef, rowData, row) => {
       return new Promise<any>((resolve) => {
         const componentResolve = this.CFR.resolveComponentFactory(EditRfRI18NComponent);
-        let component = this.viewContainerRef.createComponent(componentResolve);
+
+        let component = viewContainerRef.createComponent(componentResolve);
         this.editRefundI18nForm = this.validator.reasonForRefundI18NValidator();
         component.instance.i18nForm = this.editRefundI18nForm;
         component.instance.data = rowData;
         component.instance.isStandardRfREnabled = this.isStandardRfREnabled;
         component.instance.resetToStandard.asObservable().subscribe(value => this.resetToStandard(value));
-        component.instance.updateRfRI18N.asObservable().subscribe(value => this.updateRfRI18N(value));
-        component.instance.closeOverlay.asObservable().subscribe(value => this.reasonCodeI18ExpansionSettings.CollapseGrid(row));
+        component.instance.updateRfRI18N.asObservable().subscribe(value => this.updateRfRI18N(value, row));
+        component.instance.closeOverlay.asObservable().subscribe(value => {
+          this.reasonCodeI18ExpansionSettings.CollapseGrid({id: value.reasonCode, propertyName: "reasonCode"})
+        });
         resolve(component);
       });
     });
@@ -301,14 +308,16 @@ export class ReasonForRefundComponent implements OnInit {
     this.updateReasonCodeI18NTable();
   }
 
-  private updateRfRI18N(data: CustomRfRI18N) {
+  private updateRfRI18N(data: CustomRfRI18N, row) {
     if (this.editRefundI18nForm.valid) {
       Object.assign(data, this.editRefundI18nForm.value);
       data.clientId = this.clientId;
       data.sortOrder = null;
       this.adminService.updateRfRI18NForClient(data).subscribe(value => {
-        this.reasonCodeI18ExpansionSettings.CollapseGrid({propertyName: 'clientId', id: value.clientId});
-        this.updateTables();
+        let rowInfo = {id: value.reasonCode, propertyName: "reasonCode"};
+        this.reasonCodeI18ExpansionSettings.CollapseGrid(rowInfo);
+        this.generalSettings.UpddateRow(rowInfo, value);
+        this.updateReasonCodeTable();
 
       });
     } else {
@@ -349,8 +358,10 @@ export class ReasonForRefundComponent implements OnInit {
       request.clientId = this.clientId;
       Object.assign(request, this.editRefundSettingForm.value);
       this.adminService.updateRfRForClient(request).subscribe(value => {
-        this.updateTables();
-        this.reasonCodeExpansionSettings.CollapseGrid({propertyName: 'clientId', id: value.clientId});
+        this.updateReasonCodeI18NTable();
+        let rowInfo = {id: value.reasonCode, propertyName: "reasonCode"};
+        this.generalSettings.UpddateRow(rowInfo, value);
+        this.reasonCodeExpansionSettings.CollapseGrid(rowInfo)
       });
     } else {
       this.editRefundSettingForm.markAllAsTouched();
