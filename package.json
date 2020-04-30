@@ -39,7 +39,7 @@
     "datatables.net-rowgroup-bs": "^1.1.1",
     "datatables.net-rowreorder-bs": "^1.2.6",
     "express": "^4.17.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "lodash": "^4.17.15",
     "rxjs": "^6.5.3",
     "tslib": "^1.10.0",
