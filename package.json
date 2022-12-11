@@ -38,7 +38,7 @@
     "datatables.net-responsive-bs": "^2.2.3",
     "datatables.net-rowgroup-bs": "^1.1.1",
     "datatables.net-rowreorder-bs": "^1.2.6",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "jquery": "^3.4.1",
     "lodash": "^4.17.15",
     "rxjs": "^6.5.3",
